@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Tree</title>
+    <style media="screen">
+        .app {
+            width: 340px;
+            height: 430px;
+            font-size: 15px;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="vue.js"></script>
+    <script src="dist/vue-tree.js"></script>
+    <!-- <script src="/dist/vue.js"></script>
+    <script src="/dist/vue-carousel.js"></script> -->
+
+    <script type="x-template" id="demo">
+        <div class="app">
+            <tree
+                :data="data"
+                :options="{checkbox: true}"
+                @selected="onSelected"
+            />
+        </div>
+    </script>
+
+    <script type="text/javascript">
+
+        Vue.component('tree', VueTree.default.TreeRoot);
+
+        let data = [
+            {
+                text: 'Item 1'
+            },
+
+            {
+                text: 'Item 2',
+                children: [
+                    {text: 'Item 2.1'},
+                    {text: 'Item 2.2'},
+                    {
+                        text: 'Item 2.3',
+                        children: [
+                            {text: 'Item 2.2.3.1'},
+                            {text: 'Item 2.2.3.2'},
+                            {text: 'Item 2.2.3.3'},
+                            {text: 'Item 2.2.3.4', children: [
+                                {text: 'Item 2.2.3.4.1'},
+                                {text: 'Item 2.2.3.4.2'}
+                            ]}
+                        ]
+                    },
+                    {text: 'Item 2.4'}
+                ]
+            },
+
+            {
+                text: 'Item 3'
+            },
+
+            {
+                text: 'Item 4'
+            },
+
+            {
+                text: 'Item 5',
+                state: {
+                    opened: true
+                },
+                children: [
+                    {text: 'Item 5.1'},
+                    {text: 'Item 5.2'},
+                    {text: 'Item 5.3'}
+                ]
+            }
+
+        ];
+
+        let app = new Vue({
+            el: '#app',
+            template: '#demo',
+            data() {
+                return {
+                    data
+                }
+            },
+            methods: {
+                onSelected(nodes) {
+                    console.log(nodes);
+                }
+            }
+        });
+
+
+        // let app = new Vue({
+        //     el: '#app',
+        //     template: `<div class="app"><calendar :readonly="true" :date="new Date"></calendar></div>`,
+        //     created() {
+        //
+        //         this.$on('calendar:changed', (e) => {console.log(e);})
+        //     }
+        // });
+    </script>
+
+  </body>
+</html>
