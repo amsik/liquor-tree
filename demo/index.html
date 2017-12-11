@@ -24,7 +24,7 @@
         <div class="app">
             <tree
                 :data="data"
-                :options="{checkbox: true}"
+                :options="{checkbox: !true}"
                 @selected="onSelected"
             />
         </div>
@@ -36,13 +36,16 @@
 
         let data = [
             {
-                text: 'Item 1'
+                text: 'Item 1',
+                state: {
+                    selected: true
+                }
             },
 
             {
                 text: 'Item 2',
                 children: [
-                    {text: 'Item 2.1'},
+                    {text: 'Item 2.1', state: {checked: true}},
                     {text: 'Item 2.2'},
                     {
                         text: 'Item 2.3',

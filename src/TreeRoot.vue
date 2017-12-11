@@ -9,6 +9,7 @@
                 :options="options"
                 @toggle="onToggle"
                 @selected="onSelected"
+                @checked="onChecked"
             />
         </ul>
     </div>
@@ -38,44 +39,38 @@
 
         methods: {
             onToggle(data) {
-                console.log(data);
+                this.$emit('toggle', data);
+            },
+
+            onChecked(data) {
+                if (data.state.checked) {
+                    this.selectedNodes.push(data);
+                } else {
+                    this.selectedNodes.splice(this.selectedNodes.indexOf(data), 1);
+                }
+
+                if (data.children) {
+                    this.deepSelect(data);
+                }
+
+                this.$emit('checked', data);
             },
 
             onSelected(data) {
-                if (this.options.checkbox) {
-                    if (data.state.selected) {
-                        this.selectedNodes.push(data);
-                    } else {
-                        this.selectedNodes.splice(this.selectedNodes.indexOf(data), 1);
-                    }
+                console.log('selected');
+                let selected = this.selectedNodes[0];
 
-                    if (data.children) {
-                        this.deepSelect(data);
-                    }
-
-                    // data.state.selected = !data.state.selected;
-
-                    // if (data.children) {
-                    //     data.children.forEach(child => {
-                    //         child.state.selected = data.state.selected;
-                    //     });
-                    // }
-
-                } else {
-                    let selected = this.selectedNodes[0];
-
-                    if (selected) {
-                        selected.state.selected = false;
-                    }
-
-                    this.selectedNodes.splice(0, 1, data);
-                    this.$emit('selected', this.selectedNodes[0]);
+                if (selected) {
+                    selected.state.selected = false;
                 }
+
+                this.selectedNodes.splice(0, 1, data);
+                this.$emit('selected', this.selectedNodes[0]);
             },
 
             deepSelect(data) {
                 data.children.forEach(child => {
-                    child.state.selected = data.state.selected;
+                    child.state.checked = data.state.checked;
 
                     if (child.children) {
                         this.deepSelect(child);

@@ -1,11 +1,11 @@
 <template>
-    <li class="tree-node" :class="{'tree--has-child': hasChildren(), 'tree--opened': hasChildren() && state.opened, 'tree--selected': state.selected}">
-        <i class="tree-arrow" @click="toggleState"></i>
-        <i class="tree-checkbox" v-if="options.checkbox" @click="onClick"></i>
+    <li class="tree-node" :class="nodeClass">
+        <i class="tree-arrow" @click="toggle"></i>
+        <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
         <a
             href="javascript:void(0)"
             class="tree-anchor"
-            @click="onClick"
+            @click="select"
             @mouseenter="onMouseEnter"
             @mouseleave="onMouseLeave">
                 {{ data.text }}
@@ -22,6 +22,7 @@
                     :options="options"
                     @toggle="onToggle"
                     @selected="onSelected"
+                    @checked="onChecked"
                 >
                 </node>
         </ul>
@@ -43,26 +44,31 @@
             }
         },
 
+        computed: {
+            nodeClass() {
+                let state = this.data.state;
+                let hasChildren = this.hasChildren();
+
+                return {
+                    'tree--has-child': hasChildren, 
+                    'tree--opened': hasChildren && state.opened, 
+                    'tree--selected': state.selected,
+                    'tree--checked': state.checked && this.options.checkbox
+                }
+            }
+        },
+
         methods: {
             onToggle(data) {
                 this.$emit('toggle', data);
             },
 
+            onChecked(data) {
+                this.$emit('checked', data);
+            },
+
             onSelected(data) {
                 this.$emit('selected', data);
-            },
-
-            toggleState() {
-                if (this.hasChildren()) {
-                    this.data.state.opened = !this.data.state.opened;
-                    this.$emit('toggle', this.data);
-                }
-            },
-
-
-            onClick() {
-                this.data.state.selected = !this.data.state.selected;
-                this.$emit('selected', this.data);
             },
 
             onMouseLeave() {
@@ -73,8 +79,23 @@
 
             },
 
-            getEventData() {
-                return this.data;
+            check() {
+                this.data.state.checked = !this.data.state.checked;
+                this.data.state.selected = this.data.state.checked;
+
+                this.$emit('checked', this.data);
+            },
+
+            select() {
+                this.data.state.selected = !this.data.state.selected;
+                this.$emit('selected', this.data);
+            },
+
+            toggle() {
+                if (this.hasChildren()) {
+                    this.data.state.opened = !this.data.state.opened;
+                    this.$emit('toggle', this.data);
+                }
             },
 
             hasChildren() {
@@ -100,11 +121,11 @@
     }
 
     .tree-anchor:hover {
-        background-color: #eee;
+        background-color: #fafafa;
     }
 
     .tree--selected > .tree-anchor {
-        background: #dadada;
+        background: #f0f0f0;
     }
 
     .tree-checkbox {
@@ -118,8 +139,12 @@
         background-position-y: -30px;
     }
 
-    .tree--selected > .tree-checkbox {
+    .tree--checked > .tree-checkbox {
         background-position-y: 0;
+    }
+
+    .tree--checked > .tree-anchor {
+        background: #dadada;
     }
 
     .tree-arrow {

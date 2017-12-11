@@ -1,7 +1,8 @@
 const defaults = {
     selected: false,
     opened: false,
-    disabled: false
+    disabled: false,
+    checked: false
 };
 
 const extend = Object.assign;
