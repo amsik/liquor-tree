@@ -31,9 +31,7 @@
 </template>
 
 <script>
-    import TreeNode from './TreeNode.vue';
-
-    export default {
+    const TreeNode = {
         name: 'Node',
 
         props: ['data', 'root', 'options'],
@@ -50,8 +48,8 @@
                 let hasChildren = this.hasChildren();
 
                 return {
-                    'tree--has-child': hasChildren, 
-                    'tree--opened': hasChildren && state.opened, 
+                    'tree--has-child': hasChildren,
+                    'tree--opened': hasChildren && state.opened,
                     'tree--selected': state.selected,
                     'tree--checked': state.checked && this.options.checkbox
                 }
@@ -103,6 +101,8 @@
             }
         }
     }
+
+    export default TreeNode;
 </script>
 
 <style>
