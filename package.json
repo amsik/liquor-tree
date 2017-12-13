@@ -1,5 +1,5 @@
 {
-  "name": "vue-tree",
+  "name": "liquor-tree",
   "description": "A Vue.js tree component.",
   "version": "1.0.0",
   "author": "Konstantin <phlyze@gmail.com>",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/amsik/vue-tree.git"
+    "url": "git+https://github.com/amsik/liquor-tree.git"
   },
   "module": "dist/vue-tree.esm.js",
   "keywords": [
@@ -19,7 +19,7 @@
     "vue-tree"
   ],
   "dependencies": {
-    "vue": "^2.1.0"
+    "vue": "^2.5.10"
   },
   "devDependencies": {
     "rollup-plugin-buble": "^0.18.0",
