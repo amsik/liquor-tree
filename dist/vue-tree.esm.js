@@ -153,7 +153,17 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
         'node': TreeNode
     },
 
-    props: ['data', 'options'],
+    props: {
+        data: {
+            type: Array,
+            default: function() {return []}
+        },
+
+        options: {
+            type: Object,
+            default: function() {return {}}
+        }
+    },
 
     data: function data() {
         var computedData = Hierarchy(this.data);

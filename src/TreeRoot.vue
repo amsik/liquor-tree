@@ -26,7 +26,17 @@
             'node': TreeNode
         },
 
-        props: ['data', 'options'],
+        props: {
+            data: {
+                type: Array,
+                default: function() {return []}
+            },
+
+            options: {
+                type: Object,
+                default: function() {return {}}
+            }
+        },
 
         data() {
             let computedData = Hierarchy(this.data);
