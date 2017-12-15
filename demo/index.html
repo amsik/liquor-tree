@@ -22,9 +22,12 @@
         <div class="app">
             <tree
                 :data="data"
-                :options="{checkbox: !true}"
+                :options="{checkbox: true}"
                 @selected="onSelected"
+                ref="tree"
             />
+
+            <button @click="getTreeData">GET data!</button>
         </div>
     </script>
 
@@ -94,6 +97,10 @@
             methods: {
                 onSelected(nodes) {
                     console.log(nodes);
+                },
+
+                getTreeData() {
+                    console.log(this.$refs.tree.getSelected());
                 }
             }
         });

@@ -48,17 +48,32 @@
         },
 
         methods: {
+            getChecked() {
+                let checkedList = [];
+                let testCheckedState = item => {
+                    if (item.state.checked && !item.children) {
+                        checkedList.push(item);
+                    } else if (item.children) {
+                        item.children.forEach(testCheckedState);
+                    }
+                }
+
+                this.computedData.forEach(testCheckedState);
+
+                return checkedList;
+            },
+
+            getSelected() {
+                return !this.options.checkbox
+                    ? this.selectedNodes
+                    : this.getChecked();
+            },
+
             onToggle(data) {
                 this.$emit('toggle', data);
             },
 
             onChecked(data) {
-                if (data.state.checked) {
-                    this.selectedNodes.push(data);
-                } else {
-                    this.selectedNodes.splice(this.selectedNodes.indexOf(data), 1);
-                }
-
                 if (data.children) {
                     this.deepSelect(data);
                 }
@@ -67,7 +82,6 @@
             },
 
             onSelected(data) {
-                console.log('selected');
                 let selected = this.selectedNodes[0];
 
                 if (selected) {

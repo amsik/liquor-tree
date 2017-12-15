@@ -175,17 +175,32 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
     },
 
     methods: {
+        getChecked: function getChecked() {
+            var checkedList = [];
+            var testCheckedState = function (item) {
+                if (item.state.checked && !item.children) {
+                    checkedList.push(item);
+                } else if (item.children) {
+                    item.children.forEach(testCheckedState);
+                }
+            };
+
+            this.computedData.forEach(testCheckedState);
+
+            return checkedList;
+        },
+
+        getSelected: function getSelected() {
+            return !this.options.checkbox
+                ? this.selectedNodes
+                : this.getChecked();
+        },
+
         onToggle: function onToggle(data) {
             this.$emit('toggle', data);
         },
 
         onChecked: function onChecked(data) {
-            if (data.state.checked) {
-                this.selectedNodes.push(data);
-            } else {
-                this.selectedNodes.splice(this.selectedNodes.indexOf(data), 1);
-            }
-
             if (data.children) {
                 this.deepSelect(data);
             }
@@ -194,7 +209,6 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
         },
 
         onSelected: function onSelected(data) {
-            console.log('selected');
             var selected = this.selectedNodes[0];
 
             if (selected) {
