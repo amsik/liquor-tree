@@ -124,9 +124,9 @@ function hierarchy(node) {
 }
 
 
-var Hierarchy = function(data) {
+function hierarchy(data) {
     return data.map(hierarchy);
-};
+}
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree-root, .tree-children { list-style: none; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 

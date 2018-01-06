@@ -20,6 +20,6 @@ function hierarchy(node) {
 }
 
 
-export default function(data) {
+export default function hierarchy(data) {
     return data.map(hierarchy);
 }
