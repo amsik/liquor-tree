@@ -182,6 +182,10 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
 
     methods: {
         getChecked: function getChecked() {
+            if (!this.options.checkbox) {
+                return null;
+            }
+
             var checkedList = [];
             var testCheckedState = function (item) {
                 if (item.state.checked && !item.children) {
@@ -197,6 +201,10 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
         },
 
         getSelected: function getSelected() {
+            return this.selectedNodes[0] || null;
+        },
+
+        getValue: function getValue() {
             return !this.options.checkbox
                 ? this.selectedNodes
                 : this.getChecked();

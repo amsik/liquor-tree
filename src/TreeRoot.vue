@@ -49,6 +49,10 @@
 
         methods: {
             getChecked() {
+                if (!this.options.checkbox) {
+                    return null;
+                }
+
                 let checkedList = [];
                 let testCheckedState = item => {
                     if (item.state.checked && !item.children) {
@@ -64,6 +68,10 @@
             },
 
             getSelected() {
+                return this.selectedNodes[0] || null;
+            },
+
+            getValue() {
                 return !this.options.checkbox
                     ? this.selectedNodes
                     : this.getChecked();
