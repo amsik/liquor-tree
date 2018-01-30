@@ -17,7 +17,7 @@
 
 <script>
     import TreeNode from './TreeNode.vue';
-    import Hierarchy from './Hierarchy.js';
+    import Hierarchy from './Hierarchy';
 
     export default {
         name: 'Tree',
@@ -29,12 +29,12 @@
         props: {
             data: {
                 type: Array,
-                default: function() {return []}
+                default: _ => []
             },
 
             options: {
                 type: Object,
-                default: function() {return {}}
+                default: _ => {}
             }
         },
 

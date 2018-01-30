@@ -111,20 +111,28 @@ var defaults = {
 
 var extend = Object.assign;
 
-function hierarchy(node) {
+function hierarchy(node, i) {
     var state = node.state || {};
+    var id = i + 1;
 
     node.state = extend({}, defaults, state);
 
+    if (undefined === node.id) {
+        node.id = node.parent ? ((node.parent.id) + "." + id) : '' + id;
+    }
+
     if (node.children) {
-        node.children.forEach(hierarchy);
+        node.children.forEach(function (el, i) {
+            el.parent = node;
+            hierarchy(el, i);
+        });
     }
 
     return node;
 }
 
 
-function hierarchy(data) {
+function Hierarchy(data) {
     return data.map(hierarchy);
 }
 
@@ -156,12 +164,12 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
     props: {
         data: {
             type: Array,
-            default: function() {return []}
+            default: function (_) { return []; }
         },
 
         options: {
             type: Object,
-            default: function() {return {}}
+            default: function (_) {}
         }
     },
 
@@ -239,11 +247,16 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
             });
         }
     }
+}
+
+var install = function (Vue) {
+  Vue.component(TreeRoot.name, TreeRoot);
 };
 
-var main = {
-    TreeRoot: TreeRoot,
-    TreeNode: TreeNode
-};
+TreeRoot.install = install;
 
-export default main;
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(TreeRoot);
+}
+
+export default TreeRoot;

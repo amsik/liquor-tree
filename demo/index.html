@@ -33,14 +33,15 @@
 
     <script type="text/javascript">
 
-        Vue.component('tree', VueTree.TreeRoot);
+        // Vue.component('tree', VueTree.TreeRoot);
 
         let data = [
             {
                 text: 'Item 1',
                 state: {
                     selected: true
-                }
+                },
+                id: 1123123
             },
 
             {
@@ -65,7 +66,8 @@
             },
 
             {
-                text: 'Item 3'
+                text: 'Item 3',
+                id: 1111111111
             },
 
             {
@@ -81,11 +83,12 @@
                     {text: 'Item 5.1'},
                     {text: 'Item 5.2'},
                     {text: 'Item 5.3'}
-                ]
+                ],
+                id: 222
             }
 
         ];
-console.log('master and dev и без лишней хуйни');
+
         let app = new Vue({
             el: '#app',
             template: '#demo',
