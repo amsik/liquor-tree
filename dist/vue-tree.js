@@ -213,10 +213,24 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
     },
 
     data: function data() {
+        var reducer = function (a, b) {
+            if (b.children) {
+                a = b.children.reduce(reducer, a);
+            }
+
+            if (b.state.selected) {
+                a.push(b);
+            }
+
+            return a
+        };
+
         var computedData = Hierarchy(this.data);
+        var selectedNodes = computedData.reduce(reducer, []);
+
 
         return {
-            selectedNodes: [],
+            selectedNodes: selectedNodes,
             computedData: computedData
         }
     },

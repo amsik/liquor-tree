@@ -40,10 +40,24 @@
         },
 
         data() {
+            let reducer = (a, b) => {
+                if (b.children) {
+                    a = b.children.reduce(reducer, a)
+                }
+
+                if (b.state.selected) {
+                    a.push(b);
+                }
+
+                return a
+            }
+
             let computedData = Hierarchy(this.data)
+            let selectedNodes = computedData.reduce(reducer, [])
+
 
             return {
-                selectedNodes: [],
+                selectedNodes,
                 computedData
             }
         },
