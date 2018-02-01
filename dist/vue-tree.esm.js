@@ -60,12 +60,12 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
             this.$emit('toggle', data);
         },
 
-        onChecked: function onChecked(data, ctrlKey) {
-            this.$emit('checked', data, ctrlKey);
+        onChecked: function onChecked(data) {
+            this.$emit('checked', data);
         },
 
-        onSelected: function onSelected(data) {
-            this.$emit('selected', data);
+        onSelected: function onSelected(data, ctrlKey) {
+            this.$emit('selected', data, ctrlKey);
         },
 
         check: function check() {
@@ -263,6 +263,7 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
                     List.remove(this.selectedNodes, data);
                 }
             } else {
+                // clear all node selection
                 this.selectedNodes.forEach(function (node) { return node.state.selected = false; });
 
                 if (data.state.selected) {

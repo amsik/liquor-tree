@@ -60,12 +60,12 @@
                 this.$emit('toggle', data);
             },
 
-            onChecked(data, ctrlKey) {
-                this.$emit('checked', data, ctrlKey);
+            onChecked(data) {
+                this.$emit('checked', data);
             },
 
-            onSelected(data) {
-                this.$emit('selected', data);
+            onSelected(data, ctrlKey) {
+                this.$emit('selected', data, ctrlKey);
             },
 
             check() {

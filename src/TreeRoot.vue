@@ -85,6 +85,7 @@
                         List.remove(this.selectedNodes, data)
                     }
                 } else {
+                    // clear all node selection
                     this.selectedNodes.forEach(node => node.state.selected = false)
 
                     if (data.state.selected) {
