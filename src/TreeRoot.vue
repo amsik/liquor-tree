@@ -86,7 +86,12 @@
                     }
                 } else {
                     this.selectedNodes.forEach(node => node.state.selected = false)
-                    this.selectedNodes.splice(0, this.selectedNodes.length, data)
+
+                    if (data.state.selected) {
+                        this.selectedNodes.splice(0, this.selectedNodes.length, data)
+                    } else {
+                        List.empty(this.selectedNodes)
+                    }
                 }
 
                 this.$emit('selected', data)

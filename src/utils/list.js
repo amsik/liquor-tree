@@ -13,5 +13,11 @@ export default {
 				1
 			)
 		}
+	},
+
+	empty(source) {
+		if (source.splice) {
+			source.splice(0, source.length)
+		}
 	}
 }

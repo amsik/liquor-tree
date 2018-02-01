@@ -173,6 +173,12 @@ var List = {
 				1
 			);
 		}
+	},
+
+	empty: function empty(source) {
+		if (source.splice) {
+			source.splice(0, source.length);
+		}
 	}
 };
 
@@ -258,7 +264,12 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
                 }
             } else {
                 this.selectedNodes.forEach(function (node) { return node.state.selected = false; });
-                this.selectedNodes.splice(0, this.selectedNodes.length, data);
+
+                if (data.state.selected) {
+                    this.selectedNodes.splice(0, this.selectedNodes.length, data);
+                } else {
+                    List.empty(this.selectedNodes);
+                }
             }
 
             this.$emit('selected', data);
