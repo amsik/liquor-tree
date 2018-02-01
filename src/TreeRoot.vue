@@ -16,8 +16,9 @@
 </template>
 
 <script>
-    import TreeNode from './TreeNode.vue';
-    import Hierarchy from './Hierarchy';
+    import TreeNode from './TreeNode.vue'
+    import Hierarchy from './utils/Hierarchy'
+    import TreeAPI from './utils/TreeAPI'
 
     export default {
         name: 'Tree',
@@ -39,7 +40,7 @@
         },
 
         data() {
-            let computedData = Hierarchy(this.data);
+            let computedData = Hierarchy(this.data)
 
             return {
                 selectedNodes: [],
@@ -48,64 +49,37 @@
         },
 
         methods: {
-            getChecked() {
-                if (!this.options.checkbox) {
-                    return null;
-                }
-
-                let checkedList = [];
-                let testCheckedState = item => {
-                    if (item.state.checked && !item.children) {
-                        checkedList.push(item);
-                    } else if (item.children) {
-                        item.children.forEach(testCheckedState);
-                    }
-                }
-
-                this.computedData.forEach(testCheckedState);
-
-                return checkedList;
-            },
-
-            getSelected() {
-                return this.selectedNodes[0] || null;
-            },
-
-            getValue() {
-                return !this.options.checkbox
-                    ? this.selectedNodes
-                    : this.getChecked();
-            },
+            ...TreeAPI,
 
             onToggle(data) {
-                this.$emit('toggle', data);
+                this.$emit('toggle', data)
             },
 
             onChecked(data) {
                 if (data.children) {
-                    this.deepSelect(data);
+                    this.deepSelect(data)
                 }
 
-                this.$emit('checked', data);
+                this.$emit('checked', data)
             },
 
             onSelected(data) {
-                let selected = this.selectedNodes[0];
+                let selected = this.selectedNodes[0]
 
                 if (selected) {
-                    selected.state.selected = false;
+                    selected.state.selected = false
                 }
 
-                this.selectedNodes.splice(0, 1, data);
-                this.$emit('selected', this.selectedNodes[0]);
+                this.selectedNodes.splice(0, 1, data)
+                this.$emit('selected', this.selectedNodes[0])
             },
 
             deepSelect(data) {
                 data.children.forEach(child => {
-                    child.state.checked = data.state.checked;
+                    child.state.checked = data.state.checked
 
                     if (child.children) {
-                        this.deepSelect(child);
+                        this.deepSelect(child)
                     }
                 });
             }

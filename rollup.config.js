@@ -4,7 +4,7 @@ import buble from 'rollup-plugin-buble'
 
 const plugins = [
     vue({ css: true }),
-    buble()
+    buble({ objectAssign: 'Object.assign' })
 ];
 
 export default {

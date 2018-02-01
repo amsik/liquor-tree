@@ -11,22 +11,23 @@
                 {{ data.text }}
         </a>
 
-        <ul
-            v-if="hasChildren() && state.opened"
-            class="tree-children">
-                <node
-                    v-for="(child, i) in data.children"
-                    :key="i"
-                    :data="child"
-                    :root="data"
-                    :options="options"
-                    @toggle="onToggle"
-                    @selected="onSelected"
-                    @checked="onChecked"
-                >
-                </node>
-        </ul>
-
+        <transition name="l-fade">
+            <ul
+                v-if="hasChildren() && state.opened"
+                class="tree-children">
+                    <node
+                        v-for="(child, i) in data.children"
+                        :key="i"
+                        :data="child"
+                        :root="data"
+                        :options="options"
+                        @toggle="onToggle"
+                        @selected="onSelected"
+                        @checked="onChecked"
+                    >
+                    </node>
+            </ul>
+        </transition>
     </li>
 </template>
 
@@ -158,13 +159,22 @@
     .tree--has-child > .tree-arrow {
         margin-left: 0;
         width: 30px;
-        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA8CAQAAADbXcIUAAAAAmJLR0QA/4ePzL8AAAAJcEhZcwAADdcAAA3XAUIom3gAAAAHdElNRQfhDAsIEgqVD8DyAAAAqElEQVRIx+2WvQqDMBRGj53FZk0F8wQiurn4/m8SyJQ1xKFLh1KUxhs69Z41fOTnhnsuKP9My0MeHsl08vhEwtJI4ysBJ999I2Lk8YW9Jj7j6Y+Xbr+sd8WxKx6solQVn6Tqe94ZtDsoiqJc6pvjSTNuv4cHMtOBAnLZlNKRWD/Ek8oVYAlsb7oL2PJ7Nzgiy0uyEXfVWYadmVnqZ4PHyyeS/mwaUZRCnkuXHRqKzB2RAAAAAElFTkSuQmCC');
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAACROWYpAAAACXBIWXMAAA3XAAAN1wFCKJt4AAADGGlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGBgYGBITG5uMAxIMCHgYGBIS8/L5UBFTAyMHy7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHhCwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKhpaWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BSMDVQYqg4jIKAUICxE+CDEESC4tKoMHJQODAIMCgwGDA0MAQyJDPcMChqMMbxjFGV0YSxlXMN5jEmMKYprAdIFZmDmSeSHzGxZLlg6WW6x6rK2s99gs2aaxfWMPZ9/NocTRxfGFM5HzApcj1xZuTe4FPFI8U3mFeCfxCfNN45fhXyygI7BD0FXwilCq0A/hXhEVkb2i4aJfxCaJG4lfkaiQlJM8JpUvLS19QqZMVl32llyfvIv8H4WtioVKekpvldeqFKiaqP5UO6jepRGqqaT5QeuA9iSdVF0rPUG9V/pHDBYY1hrFGNuayJsym740u2C+02KJ5QSrOutcmzjbQDtXe2sHY0cdJzVnJRcFV3k3BXdlD3VPXS8Tbxsfd99gvwT//ID6wIlBS4N3hVwMfRnOFCEXaRUVEV0RMzN2T9yDBLZE3aSw5IaUNak30zkyLDIzs+ZmX8xlz7PPryjYVPiuWLskq3RV2ZsK/cqSql01jLVedVPrHzbqNdU0n22VaytsP9op3VXUfbpXta+x/+5Em0mzJ/+dGj/t8AyNmf2zvs9JmHt6vvmCpYtEFrcu+bYsc/m9lSGrTq9xWbtvveWGbZtMNm/ZarJt+w6rnft3u+45uy9s/4ODOYd+Hmk/Jn58xUnrU+fOJJ/9dX7SRe1LR68kXv13fc5Nm1t379TfU75/4mHeY7En+59lvhB5efB1/lv5dxc+NH0y/fzq64Lv4T8Ffp360/rP8f9/AA0ADzT6lvFdAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACCSURBVHja7JSxDkBQDEVPzYIVg/gAETaL//8NFonJKiRMwlAR78UgtOs9uU1vU1kwL4cffjcsrkTC3vecUxq8S+tFbSBnJNxMT1SnMFT0JKYw1AwEpjCUzASmMBR0xLrKKucHx7ZYmEVUFkeSMR3PU1eJ/gDFx6c9wqrq/56fgNcBAInl7e4ANk/XAAAAAElFTkSuQmCC');
         background-repeat: no-repeat;
-        background-position: 0 0;
+        transition: transform .3s;
     }
 
     .tree--opened > .tree-arrow {
-        background-position: 0 -31px;
+        transform: rotate(90deg);
+    }
+
+    .l-fade-enter-active, .l-fade-leave-active {
+        transition: opacity .3s, transform .3s;
+        transform: translateX(0);
+    }
+    .l-fade-enter, .l-fade-leave-to {
+        opacity: 0;
+        transform: translateX(-2em);
     }
 
 </style>
