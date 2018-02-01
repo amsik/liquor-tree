@@ -20,7 +20,7 @@ export default {
 	},
 	
 	getSelected() {
-		return this.selectedNodes[0] || null;
+		return this.selectedNodes || null;
 	},
 
 	getValue() {

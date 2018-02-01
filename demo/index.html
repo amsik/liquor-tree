@@ -5,25 +5,46 @@
     <meta charset="utf-8">
     <title>Tree</title>
     <style media="screen">
-        .app {
+        .app,
+        .app2 {
             width: 340px;
-            height: 430px;
             font-size: 15px;
+            float: left;
         }
     </style>
   </head>
   <body>
     <div id="app"></div>
+    <div id="app2"></div>
 
     <script src="vue.js"></script>
     <script src="../dist/vue-tree.js"></script>
 
     <script type="x-template" id="demo">
         <div class="app">
+            <h3>Tree select</h3>
             <tree
                 :data="data"
                 :options="{checkbox: !true}"
                 @selected="onSelected"
+                @checked="onChecked"
+                @toggle="onToggle"
+                ref="tree"
+            />
+
+            <button @click="getTreeData">GET data!</button>
+        </div>
+    </script>
+
+   <script type="x-template" id="demo2">
+        <div class="app2">
+            <h3>Tree checkbox</h3>
+            <tree
+                :data="data"
+                :options="{checkbox: true}"
+                @selected="onSelected"
+                @checked="onChecked"
+                @toggle="onToggle"
                 ref="tree"
             />
 
@@ -35,7 +56,7 @@
 
         // Vue.component('tree', VueTree.TreeRoot);
 
-        let data = [
+        let data = _ => ([
             {
                 text: 'Item 1',
                 state: {
@@ -67,7 +88,8 @@
 
             {
                 text: 'Item 3',
-                id: 1111111111
+                id: 1111111111,
+                state: {selected: true}
             },
 
             {
@@ -87,19 +109,27 @@
                 id: 222
             }
 
-        ];
+        ]);
 
         let app = new Vue({
             el: '#app',
             template: '#demo',
             data() {
                 return {
-                    data
+                    data: data()
                 }
             },
             methods: {
                 onSelected(nodes) {
-                    console.log(nodes);
+                    console.log('selected', nodes);
+                },
+
+                onToggle(...args) {
+                    console.log('toggle', args)
+                },
+
+                onChecked(...args) {
+                    console.log('checked', args)
                 },
 
                 getTreeData() {
@@ -112,6 +142,36 @@
             }
         });
 
+        let app2 = new Vue({
+            el: '#app2',
+            template: '#demo2',
+            data() {
+                return {
+                    data: data()
+                }
+            },
+            methods: {
+                onSelected(nodes) {
+                    console.log('selected', nodes);
+                },
+
+                onToggle(...args) {
+                    console.log('toggle', args)
+                },
+
+                onChecked(...args) {
+                    console.log('checked', args)
+                },
+
+                getTreeData() {
+                    console.log(this.$refs.tree.getSelected());
+                }
+            },
+
+            mounted() {
+                window.bb = this.$refs.tree;
+            }
+        });
 
         // let app = new Vue({
         //     el: '#app',

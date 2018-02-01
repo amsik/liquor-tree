@@ -36,9 +36,7 @@
 
 
 
-
-
-var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggle}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)"},on:{"click":_vm.select,"mouseenter":_vm.onMouseEnter,"mouseleave":_vm.onMouseLeave}},[_vm._v(" "+_vm._s(_vm.data.text)+" ")]),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.opened)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.data.children),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.data,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})})):_vm._e()])],1)},staticRenderFns: [],
+var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggle}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)"},on:{"click":_vm.select}},[_vm._v(" "+_vm._s(_vm.data.text)+" ")]),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.opened)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.data.children),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.data,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})})):_vm._e()])],1)},staticRenderFns: [],
     name: 'Node',
 
     props: ['data', 'root', 'options'],
@@ -68,20 +66,12 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
             this.$emit('toggle', data);
         },
 
-        onChecked: function onChecked(data) {
-            this.$emit('checked', data);
+        onChecked: function onChecked(data, ctrlKey) {
+            this.$emit('checked', data, ctrlKey);
         },
 
         onSelected: function onSelected(data) {
             this.$emit('selected', data);
-        },
-
-        onMouseLeave: function onMouseLeave() {
-
-        },
-
-        onMouseEnter: function onMouseEnter() {
-
         },
 
         check: function check() {
@@ -91,9 +81,9 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
             this.$emit('checked', this.data);
         },
 
-        select: function select() {
+        select: function select(evnt) {
             this.data.state.selected = !this.data.state.selected;
-            this.$emit('selected', this.data);
+            this.$emit('selected', this.data, evnt.ctrlKey);
         },
 
         toggle: function toggle() {
@@ -164,7 +154,7 @@ var TreeAPI = {
 	},
 	
 	getSelected: function getSelected() {
-		return this.selectedNodes[0] || null;
+		return this.selectedNodes || null;
 	},
 
 	getValue: function getValue() {
@@ -173,6 +163,23 @@ var TreeAPI = {
 			: this.getChecked();
 	},
 
+};
+
+var List = {
+	add: function add(source, target) {
+		if (source.push) {
+			source.push(target);
+		}
+	},
+
+	remove: function remove(source, target) {
+		if (source.includes && source.includes(target)) {
+			source.splice(
+				source.indexOf(target),
+				1
+			);
+		}
+	}
 };
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree-root, .tree-children { list-style: none; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
@@ -228,7 +235,6 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
         var computedData = Hierarchy(this.data);
         var selectedNodes = computedData.reduce(reducer, []);
 
-
         return {
             selectedNodes: selectedNodes,
             computedData: computedData
@@ -249,15 +255,19 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
             this.$emit('checked', data);
         },
 
-        onSelected: function onSelected(data) {
-            var selected = this.selectedNodes[0];
-
-            if (selected) {
-                selected.state.selected = false;
+        onSelected: function onSelected(data, ctrlKey) {
+            if (ctrlKey) {
+                if (data.state.selected) {
+                    List.add(this.selectedNodes, data);
+                } else {
+                    List.remove(this.selectedNodes, data);
+                }
+            } else {
+                this.selectedNodes.forEach(function (node) { return node.state.selected = false; });
+                this.selectedNodes.splice(0, this.selectedNodes.length, data);
             }
 
-            this.selectedNodes.splice(0, 1, data);
-            this.$emit('selected', this.selectedNodes[0]);
+            this.$emit('selected', data);
         },
 
         deepSelect: function deepSelect(data) {

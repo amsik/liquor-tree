@@ -5,9 +5,7 @@
         <a
             href="javascript:void(0)"
             class="tree-anchor"
-            @click="select"
-            @mouseenter="onMouseEnter"
-            @mouseleave="onMouseLeave">
+            @click="select">
                 {{ data.text }}
         </a>
 
@@ -62,20 +60,12 @@
                 this.$emit('toggle', data);
             },
 
-            onChecked(data) {
-                this.$emit('checked', data);
+            onChecked(data, ctrlKey) {
+                this.$emit('checked', data, ctrlKey);
             },
 
             onSelected(data) {
                 this.$emit('selected', data);
-            },
-
-            onMouseLeave() {
-
-            },
-
-            onMouseEnter() {
-
             },
 
             check() {
@@ -85,9 +75,9 @@
                 this.$emit('checked', this.data);
             },
 
-            select() {
+            select(evnt) {
                 this.data.state.selected = !this.data.state.selected;
-                this.$emit('selected', this.data);
+                this.$emit('selected', this.data, evnt.ctrlKey);
             },
 
             toggle() {

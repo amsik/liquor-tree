@@ -19,6 +19,7 @@
     import TreeNode from './TreeNode.vue'
     import Hierarchy from './utils/Hierarchy'
     import TreeAPI from './utils/TreeAPI'
+    import List from './utils/list'
 
     export default {
         name: 'Tree',
@@ -55,7 +56,6 @@
             let computedData = Hierarchy(this.data)
             let selectedNodes = computedData.reduce(reducer, [])
 
-
             return {
                 selectedNodes,
                 computedData
@@ -77,15 +77,19 @@
                 this.$emit('checked', data)
             },
 
-            onSelected(data) {
-                let selected = this.selectedNodes[0]
-
-                if (selected) {
-                    selected.state.selected = false
+            onSelected(data, ctrlKey) {
+                if (ctrlKey) {
+                    if (data.state.selected) {
+                        List.add(this.selectedNodes, data)
+                    } else {
+                        List.remove(this.selectedNodes, data)
+                    }
+                } else {
+                    this.selectedNodes.forEach(node => node.state.selected = false)
+                    this.selectedNodes.splice(0, this.selectedNodes.length, data)
                 }
 
-                this.selectedNodes.splice(0, 1, data)
-                this.$emit('selected', this.selectedNodes[0])
+                this.$emit('selected', data)
             },
 
             deepSelect(data) {
