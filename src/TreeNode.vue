@@ -5,8 +5,8 @@
         <a
             href="javascript:void(0)"
             class="tree-anchor"
+            v-html="data.text"
             @click="select">
-                {{ data.text }}
         </a>
 
         <transition name="l-fade">

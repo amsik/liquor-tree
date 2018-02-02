@@ -20,4 +20,4 @@ export default {
 			source.splice(0, source.length)
 		}
 	}
-}
+};
