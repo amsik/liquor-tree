@@ -112,8 +112,13 @@
 </script>
 
 <style>
+    .tree {
+        overflow: auto;
+    }
+
     .tree-root,
     .tree-children {
         list-style: none;
+        width: 100%;
     }
 </style>
