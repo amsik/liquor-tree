@@ -97,6 +97,10 @@
 </script>
 
 <style>
+    .tree-node {
+        white-space: nowrap;
+    }
+
     .tree-anchor {
         display: inline-block;
         text-decoration: none;

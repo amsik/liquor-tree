@@ -119,6 +119,9 @@
     .tree-root,
     .tree-children {
         list-style: none;
-        width: 100%;
+    }
+
+    .tree > .tree-root {
+        padding: 0;
     }
 </style>
