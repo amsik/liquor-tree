@@ -72,12 +72,12 @@
         this.$emit('toggle', data)
       },
 
-      onChecked(data) {
-        if (data.children) {
-          this.deepSelect(data)
+      onChecked(node) {
+        if (node.children || node.parent) {
+          this.updateCheckedState(node)
         }
 
-        this.$emit('checked', data)
+        this.$emit('checked', node)
       },
 
       onSelected(data, ctrlKey) {
@@ -101,14 +101,55 @@
         this.$emit('selected', data)
       },
 
-      deepSelect(data) {
-        data.children.forEach(child => {
-          child.state.checked = data.state.checked
+      updateCheckedState(node) {
+        let children = node.children
+        let parent = node.parent
 
-          if (child.children) {
-            this.deepSelect(child)
+        if (parent) {
+          let childrenLength = parent.children.length
+          let checkedChildren = parent.children.filter(n => n.state.checked || n.state.mixed).length
+
+          if (checkedChildren > 0) {
+            parent.state.mixed = checkedChildren < childrenLength
+            parent.state.checked = checkedChildren == childrenLength
+          } else {
+            parent.state.checked = false
+            parent.state.mixed = false
           }
-        });
+
+          if (parent.parent) {
+            let _parent = parent;
+            let mixed = parent.state.mixed
+
+            while(_parent = _parent.parent) {
+              _parent.state.mixed = mixed
+            }
+          }
+        }
+
+        if (children) {
+          let childrenLength = children.length
+          let checkedChildren = children.filter(n => n.state.checked).length
+          let setState = (state, key = 'checked') => {
+            return function updateState(node) {
+              node.state[key] = state
+
+              if (node.children) {
+                node.children.forEach(child => updateState(child))
+              }
+            }
+          }
+
+          if (node.state.mixed) {
+            children.forEach(setState(false))
+            children.forEach(setState(false, 'mixed'))
+
+            node.state.checked = false
+            node.state.mixed = false
+          } else {
+            children.forEach(setState(node.state.checked))
+          }
+        }
       }
     }
   }

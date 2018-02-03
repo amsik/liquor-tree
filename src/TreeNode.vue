@@ -43,61 +43,66 @@
 
     computed: {
       nodeClass() {
-        let state = this.data.state;
-        let hasChildren = this.hasChildren();
-
-        return {
+        let state = this.data.state
+        let hasChildren = this.hasChildren()
+        let classes = {
           'tree--has-child': hasChildren,
           'tree--opened': hasChildren && state.opened,
-          'tree--selected': state.selected,
-          'tree--checked': state.checked && this.options.multiple
+          'tree--selected': state.selected
         }
+
+        if (this.options.multiple) {
+          classes['tree--checked'] = state.checked
+          classes['tree--mixed'] = state.mixed
+        }
+
+        return classes
       }
     },
 
     methods: {
       onToggle(data) {
-        this.$emit('toggle', data);
+        this.$emit('toggle', data)
       },
 
       onChecked(data) {
-        this.$emit('checked', data);
+        this.$emit('checked', data)
       },
 
       onSelected(data, ctrlKey) {
-        this.$emit('selected', data, ctrlKey);
+        this.$emit('selected', data, ctrlKey)
       },
 
       check() {
-        this.data.state.checked = !this.data.state.checked;
-        this.data.state.selected = this.data.state.checked;
+        this.data.state.checked = !this.data.state.checked
+        this.data.state.selected = this.data.state.checked
 
-        this.$emit('checked', this.data);
+        this.$emit('checked', this.data)
       },
 
       select(evnt) {
         if (!this.options.parentSelect && this.hasChildren()) {
-          return this.toggle();
+          return this.toggle()
         }
 
-        this.data.state.selected = !this.data.state.selected;
-        this.$emit('selected', this.data, evnt.ctrlKey);
+        this.data.state.selected = !this.data.state.selected
+        this.$emit('selected', this.data, evnt.ctrlKey)
       },
 
       toggle() {
         if (this.hasChildren()) {
-          this.data.state.opened = !this.data.state.opened;
-          this.$emit('toggle', this.data);
+          this.data.state.opened = !this.data.state.opened
+          this.$emit('toggle', this.data)
         }
       },
 
       hasChildren() {
-        return this.data.children && this.data.children.length > 0;
+        return this.data.children && this.data.children.length > 0
       }
     }
   }
 
-  export default TreeNode;
+  export default TreeNode
 </script>
 
 <style>
@@ -132,7 +137,7 @@
     height: 30px;
     width: 30px;
     cursor: pointer;
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAA8CAYAAABxVAqfAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAejAAAHowEwL7LFAAAAB3RJTUUH4QwLCxc1XFin0wAAAWNJREFUWMNjfP7m7X+GAQBMDAMERi0etXjU4sFt8fPnrxiuXr1NX4vfv//I0NY5g+H+wyf0s/jbtx8MnT2zGXR11Bl8vBzpY/GfP38Z+ifOZxAS5GdITgylTxz///+fYebs5Qw/fvxkyM+NZ2BmZqKPxStWbmW4e/cRQ2lxCgM7Oxt1UvXsuasYfv/5g1N+1+4jDIcOn2YoL01j4OPjoV52evbsJUNTyxSG9+8/YsidPnOZYeXqbQwlxckM4uIi1M3H1ZVZDAry0gzVdf0MN2/dh4vfun2fYcas5Qw5WbEMykpyJEcPI7EtkH37TzAsWbaRITrSl0FLU4WhoXkKQ0SYN4OjgzlZ6YKRlKbPrdsPGCZOXsjw48dPBi9Pe4bgQHeyEyQjqW2u9+8/Mdy6fZ/B3EyfopzAONrYG7V41OJRi0ctHrV41OJRi0ctHrV41OJRi0ctHrV41OJRi0ctHrWYegAAArh2QRte6KIAAAAASUVORK5CYII=');
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAABaCAYAAACv+ebYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAejAAAHowEwL7LFAAAAB3RJTUUH4gIDCy4HZhufyQAAAZVJREFUaN7t2U8og3EYB/DvO3pdRKR2UIiViNzsyE4yHCQiSSIHkQOSFuZPSqklDliSkhknBw4UhYPiJgebNaQtorc5rHfz6nVz0cqYdzt8n+PvOXz69TxPPfUI/pdXFXEIHeIUhAkTTmzY73/G9bVbW1iSApiZXYL3/lE7OBiUMTtnR2lJIWrNJm1gRfmAbX4NmRnp6Oxo1KbGqqpi2e6ALIfQ39eOpCSdNvCWcw8ezwOGBrqQkiLGpqvtq9t4V5SI+YPDM5ycXmB4qBtpaamxGyef7wmT04uQpMC33MXlFZw7+xgc6IRenxXbObaM9CAvNxuWMRtuXN6vd5fbi6UVB3p72lCQnxN1eYSfbiBHx+fY2NxFa0sdiosMsE4tormpBqZK46/6Qohm9XG57zC/sA5ZDsFcXYGG+qpfN6QQ7c4lSW9wub0wlpf9aRIELnuECRMmTJgwYcKECRMmTJgwYcKECRMmTJgwYcL/EMmRElMTVnhubyGKIhDtnUYAwuEwCgwGjI5bE+vHvDsRJkyYMOGI8Ql68IQ9vE0/3AAAAABJRU5ErkJggg==');
     background-repeat: no-repeat;
     background-position-x: center;
     background-position-y: -30px;
@@ -140,6 +145,10 @@
 
   .tree--checked > .tree-checkbox {
     background-position-y: 0;
+  }
+
+  .tree--mixed > .tree-checkbox {
+    background-position-y: -60px;
   }
 
   .tree--checked > .tree-anchor {
