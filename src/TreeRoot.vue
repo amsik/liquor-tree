@@ -36,7 +36,10 @@
 
       options: {
         type: Object,
-        default: _ => ({})
+        default: _ => ({
+          multiple: false,
+          parentSelect: false
+        })
       }
     },
 

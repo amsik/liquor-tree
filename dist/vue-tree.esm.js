@@ -30,7 +30,7 @@
 
 
 
-var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggle}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)"},domProps:{"innerHTML":_vm._s(_vm.data.text)},on:{"click":_vm.select}}),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.opened)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.data.children),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.data,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})})):_vm._e()])],1)},staticRenderFns: [],
+var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggle}}),_vm._v(" "),(_vm.options.multiple)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)"},domProps:{"innerHTML":_vm._s(_vm.data.text)},on:{"click":_vm.select}}),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.opened)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.data.children),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.data,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})})):_vm._e()])],1)},staticRenderFns: [],
   name: 'Node',
 
   props: ['data', 'root', 'options'],
@@ -50,7 +50,7 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
         'tree--has-child': hasChildren,
         'tree--opened': hasChildren && state.opened,
         'tree--selected': state.selected,
-        'tree--checked': state.checked && this.options.checkbox
+        'tree--checked': state.checked && this.options.multiple
       }
     }
   },
@@ -76,6 +76,10 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
     },
 
     select: function select(evnt) {
+      if (!this.options.parentSelect && this.hasChildren()) {
+        return this.toggle();
+      }
+
       this.data.state.selected = !this.data.state.selected;
       this.$emit('selected', this.data, evnt.ctrlKey);
     },
@@ -128,7 +132,7 @@ function Hierarchy(data) {
 }
 
 var TreeAPI = {
-  getChecked: function getChecked() {
+  getCheckedNodes: function getCheckedNodes() {
     if (!this.options.checkbox) {
       return null;
     }
@@ -147,12 +151,12 @@ var TreeAPI = {
     return checkedList;
   },
 
-  getSelected: function getSelected() {
+  getSelectedNodes: function getSelectedNodes() {
     return this.selectedNodes || null;
   },
 
-  getValue: function getValue() {
-    return !this.options.checkbox ?
+  getNodes: function getNodes() {
+    return !this.options.multiple ?
       this.selectedNodes :
       this.getChecked();
   }
@@ -214,7 +218,10 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
 
     options: {
       type: Object,
-      default: function (_) { return ({}); }
+      default: function (_) { return ({
+        multiple: false,
+        parentSelect: false
+      }); }
     }
   },
 

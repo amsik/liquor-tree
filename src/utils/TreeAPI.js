@@ -1,5 +1,5 @@
 export default {
-  getChecked() {
+  getCheckedNodes() {
     if (!this.options.checkbox) {
       return null;
     }
@@ -18,12 +18,12 @@ export default {
     return checkedList;
   },
 
-  getSelected() {
+  getSelectedNodes() {
     return this.selectedNodes || null;
   },
 
-  getValue() {
-    return !this.options.checkbox ?
+  getNodes() {
+    return !this.options.multiple ?
       this.selectedNodes :
       this.getChecked();
   }

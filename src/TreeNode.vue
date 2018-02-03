@@ -1,7 +1,7 @@
 <template>
   <li class="tree-node" :class="nodeClass">
     <i class="tree-arrow" @click="toggle"></i>
-    <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
+    <i class="tree-checkbox" v-if="options.multiple" @click="check"></i>
     <a
       href="javascript:void(0)"
       class="tree-anchor"
@@ -50,7 +50,7 @@
           'tree--has-child': hasChildren,
           'tree--opened': hasChildren && state.opened,
           'tree--selected': state.selected,
-          'tree--checked': state.checked && this.options.checkbox
+          'tree--checked': state.checked && this.options.multiple
         }
       }
     },
@@ -76,6 +76,10 @@
       },
 
       select(evnt) {
+        if (!this.options.parentSelect && this.hasChildren()) {
+          return this.toggle();
+        }
+
         this.data.state.selected = !this.data.state.selected;
         this.$emit('selected', this.data, evnt.ctrlKey);
       },
