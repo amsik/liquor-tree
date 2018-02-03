@@ -101,31 +101,20 @@
         this.$emit('selected', data)
       },
 
+      isMixed(node) {
+        if (!node.children) {
+          return false
+        }
+
+        let childrenLength = node.children.length
+        let checkedChildren = node.children.filter(n => n.state.checked).length
+
+        return checkedChildren > 0 && checkedChildren < childrenLength
+      },
+
       updateCheckedState(node) {
         let children = node.children
         let parent = node.parent
-
-        if (parent) {
-          let childrenLength = parent.children.length
-          let checkedChildren = parent.children.filter(n => n.state.checked || n.state.mixed).length
-
-          if (checkedChildren > 0) {
-            parent.state.mixed = checkedChildren < childrenLength
-            parent.state.checked = checkedChildren == childrenLength
-          } else {
-            parent.state.checked = false
-            parent.state.mixed = false
-          }
-
-          if (parent.parent) {
-            let _parent = parent;
-            let mixed = parent.state.mixed
-
-            while(_parent = _parent.parent) {
-              _parent.state.mixed = mixed
-            }
-          }
-        }
 
         if (children) {
           let childrenLength = children.length
@@ -140,16 +129,54 @@
             }
           }
 
+          // decheck all children
           if (node.state.mixed) {
             children.forEach(setState(false))
             children.forEach(setState(false, 'mixed'))
+            children.forEach(setState(false, 'selected'))
 
             node.state.checked = false
             node.state.mixed = false
+            node.state.selected = false
           } else {
             children.forEach(setState(node.state.checked))
           }
         }
+
+        // check if need set mixed state...
+        if (parent) {
+          let childrenLength = parent.children.length
+          let checkedChildren = parent.children.filter(n => n.state.checked).length
+
+          if (checkedChildren > 0) {
+            parent.state.mixed = checkedChildren < childrenLength
+            parent.state.checked = checkedChildren == childrenLength
+          } else {
+            parent.state.checked = false
+            parent.state.mixed = false
+          }
+
+          if (parent.parent) {
+            let _parent = parent;
+            let _mixed;
+
+            while(_parent = _parent.parent) {
+              _mixed = this.isMixed(_parent)
+
+              if (_parent.state.mixed != _mixed) {
+                _parent.state.mixed = _mixed
+                _parent.state.checked = !_mixed
+              }
+
+              // _parent.state.mixed = this.isMixed(_parent)
+              //
+              // if (_parent.state.mixed) {
+              //   _parent.state.checked = false
+              // }
+            }
+          }
+        }
+
       }
     }
   }

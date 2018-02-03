@@ -288,35 +288,26 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
       this.$emit('selected', data);
     },
 
+    isMixed: function isMixed(node) {
+      if (!node.children) {
+        return false
+      }
+
+      var childrenLength = node.children.length;
+      var checkedChildren = node.children.filter(function (n) { return n.state.checked; }).length;
+
+      return checkedChildren > 0 && checkedChildren < childrenLength
+    },
+
     updateCheckedState: function updateCheckedState(node) {
+      var this$1 = this;
+
       var children = node.children;
       var parent = node.parent;
 
-      if (parent) {
-        var childrenLength = parent.children.length;
-        var checkedChildren = parent.children.filter(function (n) { return n.state.checked || n.state.mixed; }).length;
-
-        if (checkedChildren > 0) {
-          parent.state.mixed = checkedChildren < childrenLength;
-          parent.state.checked = checkedChildren == childrenLength;
-        } else {
-          parent.state.checked = false;
-          parent.state.mixed = false;
-        }
-
-        if (parent.parent) {
-          var _parent = parent;
-          var mixed = parent.state.mixed;
-
-          while(_parent = _parent.parent) {
-            _parent.state.mixed = mixed;
-          }
-        }
-      }
-
       if (children) {
-        var childrenLength$1 = children.length;
-        var checkedChildren$1 = children.filter(function (n) { return n.state.checked; }).length;
+        var childrenLength = children.length;
+        var checkedChildren = children.filter(function (n) { return n.state.checked; }).length;
         var setState = function (state, key) {
           if ( key === void 0 ) key = 'checked';
 
@@ -329,16 +320,54 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
           }
         };
 
+        // decheck all children
         if (node.state.mixed) {
           children.forEach(setState(false));
           children.forEach(setState(false, 'mixed'));
+          children.forEach(setState(false, 'selected'));
 
           node.state.checked = false;
           node.state.mixed = false;
+          node.state.selected = false;
         } else {
           children.forEach(setState(node.state.checked));
         }
       }
+
+      // check if need set mixed state...
+      if (parent) {
+        var childrenLength$1 = parent.children.length;
+        var checkedChildren$1 = parent.children.filter(function (n) { return n.state.checked; }).length;
+
+        if (checkedChildren$1 > 0) {
+          parent.state.mixed = checkedChildren$1 < childrenLength$1;
+          parent.state.checked = checkedChildren$1 == childrenLength$1;
+        } else {
+          parent.state.checked = false;
+          parent.state.mixed = false;
+        }
+
+        if (parent.parent) {
+          var _parent = parent;
+          var _mixed;
+
+          while(_parent = _parent.parent) {
+            _mixed = this$1.isMixed(_parent);
+
+            if (_parent.state.mixed != _mixed) {
+              _parent.state.mixed = _mixed;
+              _parent.state.checked = !_mixed;
+            }
+
+            // _parent.state.mixed = this.isMixed(_parent)
+            //
+            // if (_parent.state.mixed) {
+            //   _parent.state.checked = false
+            // }
+          }
+        }
+      }
+
     }})
 }
 
