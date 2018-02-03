@@ -1,5 +1,5 @@
 {
-  "name": "@liquor/tree",
+  "name": "liquor/tree",
   "description": "A Vue.js tree component.",
   "version": "0.0.8",
   "author": "Konstantin <phlyze@gmail.com>",

@@ -129,9 +129,9 @@ function hierarchy(node, i) {
 }
 
 
-var Hierarchy = function(data) {
+function Hierarchy(data) {
   return data.map(hierarchy);
-};
+}
 
 var TreeAPI = {
   getChecked: function getChecked() {
@@ -162,7 +162,7 @@ var TreeAPI = {
       this.selectedNodes :
       this.getChecked();
   }
-};
+}
 
 var List = {
   add: function add(source, target) {
@@ -205,7 +205,7 @@ var List = {
 
 
 
-var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree"},[_c('ul',{staticClass:"tree-root"},_vm._l((_vm.computedData),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.computedData,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})}))])},staticRenderFns: [],
+var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree"},[_c('ul',{staticClass:"tree-root"},_vm._l((_vm.computedData),function(child,i){return _c('node',{key:i,attrs:{"data":child,"root":_vm.computedData,"options":_vm.options},on:{"toggle":_vm.onToggle,"selected":_vm.onSelected,"checked":_vm.onChecked}})}))])},staticRenderFns: [],
   name: 'Tree',
 
   components: {
@@ -292,18 +292,18 @@ var TreeRoot$1 = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
         }
       });
     }})
-};
-
-var install = function (Vue) {
-  Vue.component(TreeRoot$1.name, TreeRoot$1);
-};
-
-TreeRoot$1.install = install;
-
-if (typeof window !== 'undefined' && window.Vue) {
-  window.Vue.use(TreeRoot$1);
 }
 
-return TreeRoot$1;
+var install = function (Vue) {
+  Vue.component(TreeRoot.name, TreeRoot);
+};
+
+TreeRoot.install = install;
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(TreeRoot);
+}
+
+return TreeRoot;
 
 })));
