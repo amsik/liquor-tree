@@ -36,7 +36,7 @@
 
       options: {
         type: Object,
-        default: _ => {}
+        default: _ => ({})
       }
     },
 

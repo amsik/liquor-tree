@@ -220,7 +220,7 @@ var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
 
     options: {
       type: Object,
-      default: function (_) {}
+      default: function (_) { return ({}); }
     }
   },
 
