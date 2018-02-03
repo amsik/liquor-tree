@@ -20,9 +20,6 @@
     "vue-tree"
   ],
   "dependencies": {
-    "cssnano": "^3.10.0",
-    "rollup-plugin-css-only": "^0.4.0",
-    "rollup-plugin-css-porter": "^0.1.2",
     "vue": "^2.5.10"
   },
   "devDependencies": {
