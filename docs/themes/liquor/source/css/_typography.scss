@@ -1,0 +1,33 @@
+$highlightColor: #333333;
+$subColor: #444444;
+
+h1 {
+  border-bottom: 1px solid $bordersColor;
+  margin-bottom: 30px;
+  line-height: 50px;
+  font-size: 34px;
+  font-weight: 800;
+  color: $highlightColor;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: 600;
+  color: $highlightColor;
+  margin-bottom: 20px;
+  margin-top: 30px;
+}
+
+p, ul li {
+  color: $subColor;
+  font-size: 15px;
+  line-height: 23px;
+}
+
+a {
+  color: $primary;
+
+  &:hover {
+    color: darken($primary, 10%);
+  }
+}

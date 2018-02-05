@@ -145,7 +145,7 @@ function Hierarchy(data) {
 
 var TreeAPI = {
   getCheckedNodes: function getCheckedNodes() {
-    if (!this.options.checkbox) {
+    if (!this.options.multiple) {
       return null;
     }
 
@@ -170,7 +170,7 @@ var TreeAPI = {
   getNodes: function getNodes() {
     return !this.options.multiple ?
       this.selectedNodes :
-      this.getChecked();
+      this.getCheckedNodes();
   }
 }
 
