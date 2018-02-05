@@ -10,8 +10,7 @@ export default [{
     format: 'es'
   },
   plugins: [
-    vue({ autoStyles: false, styleToImports: true }),
-    css(),
+    vue({ css: true }),
     buble({ objectAssign: 'Object.assign' })
   ]
 }, {
