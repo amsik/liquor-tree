@@ -3,10 +3,10 @@
 - title: Getting Started
   items:
   - id: installation
-    href: \#installation
+    href: \#Installation
     title: Installation
   - id: Events
-    href: \#basic-usage
+    href: \#Basic-Usage
     title: Basic Usage
 
 - title: GUIDES

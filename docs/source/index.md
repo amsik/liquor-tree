@@ -1,106 +1,73 @@
 ---
 layout: default
 id: index
-title: What is it?
 ---
 
-## Global Config
+## Introduction
 
-`Vue.config` is an object containing Vue's global configurations. You can modify its properties listed below before bootstrapping your application:
+This library allows you to present hierarchically organized data in a nice and logical manner based on [VueJS](http://vuejs.org) framework.
+There are lots of libraries but always something was missing (in my humble opinion). This library includes all styles (although very little) and it appends `style` tag with styles to the document.
 
-### silent
+`Just try it. The tree you were waiting for!`
 
-- **Type:** `boolean`
 
-- **Default:** `false`
+### Features
+- events for every action
+- flexible configuration
+- any number of instances per page
+- multi selection (use Ctrl + Click or API) | optional
+- ready for touch devices
 
-- **Usage:**
+## Getting Started
 
-  ``` js
-  Vue.config.silent = true
-  ```
+### Installation
 
-  Suppress all Vue logs and warnings.
+To install `liquor-tree` using npm:
 
-### optionMergeStrategies
+``` bash
+$ npm install --save liquor-tree
+```
 
-- **Type:** `{ [key: string]: Function }`
+**It's time to start using the library**
 
-- **Default:** `{}`
+It has to be installed to VueJS instance. You no need to care about styles, they automatically connect to the document.
+Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if it needs of course).
 
-- **Usage:**
+- **When used with a module system there are 3 ways to registrate the component (maybe more... I don't know).
+Okay. It's our ways:**
 
-  ``` js
-  Vue.config.optionMergeStrategies._my_option = function (parent, child, vm) {
-    return child + 1
-  }
+``` javascript
+import Vue from 'Vue'
+import LiquorTree from 'liquor-tree'
 
-  const Profile = Vue.extend({
-    _my_option: 1
-  })
+Vue.use(LiquorTree)
+```
 
-  // Profile.options._my_option = 2
-  ```
+``` javascript
+import Vue from 'Vue'
+import LiquorTree from 'liquor-tree'
 
-  Define custom merging strategies for options.
+Vue.component(LiquorTree.name, LiquorTree)
+```
 
-  The merge strategy receives the value of that option defined on the parent and child instances as the first and second arguments, respectively. The context Vue instance is passed as the third argument.
+``` javascript
+import LiquorTree from 'liquor-tree'
 
-- **See also:** [Custom Option Merging Strategies](../guide/mixins.html#Custom-Option-Merge-Strategies)
+export default {
+  name: 'your-awesome-component',
+  components: {
+    // you can name tree as you wish
+    [LiquorTree.name]: LiquorTree
+  },
+  ...
+}
+```
 
-### devtools
+- **Here is another way in install `LiquorTree`. Using CDN**
 
-- **Type:** `boolean`
+``` html
+<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/vue-tree.esm.js"></script>
+```
 
-- **Default:** `true` (`false` in production builds)
-
-- **Usage:**
-
-  ``` js
-  // make sure to set this synchronously immediately after loading Vue
-  Vue.config.devtools = true
-  ```
-
-  Configure whether to allow [vue-devtools](https://github.com/vuejs/vue-devtools) inspection. This option's default value is `true` in development builds and `false` in production builds. You can set it to `true` to enable inspection for production builds.
-
-### errorHandler
-
-- **Type:** `Function`
-
-- **Default:** `undefined`
-
-- **Usage:**
-
-  ``` js
-  Vue.config.errorHandler = function (err, vm, info) {
-    // handle error
-    // `info` is a Vue-specific error info, e.g. which lifecycle hook
-    // the error was found in. Only available in 2.2.0+
-  }
-  ```
-
-  Assign a handler for uncaught errors during component render function and watchers. The handler gets called with the error and the Vue instance.
-
-  > In 2.2.0+, this hook also captures errors in component lifecycle hooks. Also, when this hook is `undefined`, captured errors will be logged with `console.error` instead of crashing the app.
-
-  > In 2.4.0+ this hook also captures errors thrown inside Vue custom event handlers.
-
-  > Error tracking services [Sentry](https://sentry.io/for/vue/) and [Bugsnag](https://docs.bugsnag.com/platforms/browsers/vue/) provide official integrations using this option.
-
-### warnHandler
-
-> New in 2.4.0+
-
-- **Type:** `Function`
-
-- **Default:** `undefined`
-
-- **Usage:**
-
-  ``` js
-  Vue.config.warnHandler = function (msg, vm, trace) {
-    // `trace` is the component hierarchy trace
-  }
-  ```
-
-  Assign a custom handler for runtime Vue warnings. Note this only works during development and is ignored in production.
+To registrate the library you can choose between 3 ways I mentioned before.
+Okey, `LiquorTree` is installed. Let's go use it

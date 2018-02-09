@@ -10,7 +10,8 @@
 <body>
   <div class='menu'>
     <div class='logo'>
-      Documentation
+      <img src="img/vue-logo.png" alt="">
+      <span>LiquorTree</span>
     </div>
     <nav class='menu-nav'>
       {% for section in site.data.nav %}

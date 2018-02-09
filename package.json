@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/amsik/liquor-tree.git"
   },
-  "module": "dist/vue-tree.esm.js",
-  "main": "dist/vue-tree.umd.js",
+  "module": "dist/liquor-tree.esm.js",
+  "main": "dist/liquor-tree.umd.js",
   "keywords": [
     "vue",
     "tree",

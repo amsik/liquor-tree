@@ -49,7 +49,7 @@ module.exports = {
           warnings: false
         }
       },
-      sourceMap: false  ,
+      sourceMap: false,
       parallel: true
     })
   ]
