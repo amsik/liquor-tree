@@ -209,9 +209,6 @@ export default class Tree {
     }
   }
 
-  refreshIndeterminateState(node) {
-  }
-
 
   expand(node) {
     if (node.expanded()) {

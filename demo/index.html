@@ -11,11 +11,26 @@
             font-size: 15px;
             float: left;
         }
+
+        .logger {
+          clear: both;
+          height: 300px;
+          overflow: auto;
+          border: 1px solid #eee
+        }
+
+        .logger p {
+          margin: 0
+        }
     </style>
   </head>
   <body>
     <div id="app"></div>
     <div id="app2"></div>
+
+    <div class="logger">
+
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
     <script src="../dist/vue-tree.esm.js"></script>
@@ -27,11 +42,8 @@
             <tree
                 :data="data"
                 :options="options"
-                @node:selected="onSelected"
                 ref="tree"
             />
-
-            <button @click="getTreeData">GET data!</button>
         </div>
     </script>
 
@@ -41,21 +53,12 @@
             <tree
                 :data="data"
                 :options="{checkbox: true, parentSelect: true}"
-                @selected="onSelected"
-                @node:checked="onChecked"
-                @node:unchecked="onUnchecked"
-                @node:expanded="onExpanded"
-                @node:collapsed="onCollapsed"
-                @toggle="onToggle"
                 ref="tree2"
             />
-
-            <button @click="getTreeData">GET data!</button>
         </div>
     </script>
 
     <script type="text/javascript">
-
         let data = _ => ([
             {
                 text: 'Item 1',
@@ -111,6 +114,50 @@
 
         ]);
 
+        // yeah.. :-D
+        let $logger = document.querySelector('.logger')
+        let log = msg => {
+          let p = document.createElement('p');
+          let d = new Date
+
+          if (!log._group) {
+            log._group = {}
+          }
+
+          p.innerHTML = [
+            d.getHours(),
+            d.getMinutes(),
+            d.getSeconds() < 10 ? '0' + d.getSeconds() : d.getSeconds()
+          ].join(':') + ': ' + msg;
+
+          if (!log._group[d.getMinutes() + d.getSeconds()]) {
+            log._group[d.getMinutes() + d.getSeconds()] = true
+
+              let delim = document.createElement('p')
+              delim.innerHTML = '&nbsp;'
+              $logger.prepend(delim)
+          }
+
+          $logger.prepend(p)
+        }
+
+        let events = [
+          'node:selected',
+          'node:deselected',
+          'node:checked',
+          'node:unchecked',
+          'node:expanded',
+          'node:collapsed'
+        ]
+
+        function addEvents() {
+          events.forEach(name => {
+            (this.$refs.tree || this.$refs.tree2).$on(name, node => {
+              log(`<b>${name}:</b> ${node.text}`)
+            })
+          })
+        }
+
         let app = new Vue({
             el: '#app',
             template: '#demo',
@@ -123,26 +170,9 @@
                     }
                 }
             },
-            methods: {
-                onSelected(nodes) {
-                    console.log('selected', arguments);
-                },
-
-                onToggle(...args) {
-                    // console.log('toggle', args)
-                },
-
-                onChecked(...args) {
-                    // console.log('checked', args)
-                },
-
-                getTreeData() {
-                    // console.log(this.$refs.tree.getSelectedNodes());
-                }
-            },
 
             mounted() {
-                window.aa = this.$refs.tree;
+              addEvents.call(this)
             }
         });
 
@@ -154,38 +184,9 @@
                     data: data()
                 }
             },
-            methods: {
-                onSelected(nodes) {
-                    // console.log('selected', nodes);
-                },
-
-                onToggle(...args) {
-                    // console.log('toggle', args)
-                },
-
-                onChecked(...args) {
-                    console.log('checked', args)
-                },
-
-                onUnchecked(...args) {
-                    console.log('unchecked', args)
-                },
-
-                getTreeData() {
-                    // console.log(this.$refs.tree.getSelectedNodes());
-                },
-
-                onCollapsed(node) {
-                  console.log('collapsed', node)
-                },
-
-                onExpanded(node) {
-                  console.log('expanded', node)
-                }
-            },
 
             mounted() {
-                window.bb = this.$refs.tree;
+              addEvents.call(this)
             }
         });
 

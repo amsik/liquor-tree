@@ -109,11 +109,11 @@ export default class Node {
   }
 
   collapse() {
-    this.state('expanded', false)
+    return this.state('expanded', false)
   }
 
   expand() {
-    this.state('expanded', true)
+    return this.state('expanded', true)
   }
 
 
