@@ -18,15 +18,14 @@ $ npm install --save liquor-tree
 
 ## Usage
 
-** YouComponent.vue **
+**YouComponent.vue**
 
 ```html
     <tree
         :data="items"
         :options="options"
-        @selected="onSelected"
-        @checked="onChecked"
-        @toggle="onToggle"
+        @node:selected="onSelected"
+        @node:checked="onChecked"
         ref="tree"
     />
 ```
@@ -52,13 +51,10 @@ $ npm install --save liquor-tree
     },
     
     methods: {
-      onSelected(item) {
+      onSelected(node) {
       },
       
-      onChecked(item) {
-      },
-      
-      onToggle(item) {
+      onChecked(node) {
       }
     }
     ...

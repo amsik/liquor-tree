@@ -1,27 +1,23 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <i class="tree-arrow" @click="toggle"></i>
-    <i class="tree-checkbox" v-if="options.multiple" @click="check"></i>
+    <i class="tree-arrow" @click="toggleExpand"></i>
+    <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
     <a
       href="javascript:void(0)"
       class="tree-anchor"
-      v-html="data.text"
+      v-html="node.text"
       @click="select">
-      </a>
+    </a>
 
     <transition name="l-fade">
       <ul
-        v-if="hasChildren() && state.opened"
+        v-if="hasChildren() && state.expanded"
         class="tree-children">
           <node
-            v-for="(child, i) in data.children"
+            v-for="(child, i) in node.children"
             :key="i"
-            :data="child"
-            :root="data"
+            :node="child"
             :options="options"
-            @toggle="onToggle"
-            @selected="onSelected"
-            @checked="onChecked"
             >
           </node>
       </ul>
@@ -32,72 +28,76 @@
 <script>
   const TreeNode = {
     name: 'Node',
-
-    props: ['data', 'root', 'options'],
+    inject: ['tree'],
+    props: ['node', 'options'],
 
     data() {
       return {
-        state: this.data.state
+        state: this.node.states
       }
     },
 
     computed: {
       nodeClass() {
-        let state = this.data.state
+        let state = this.state
         let hasChildren = this.hasChildren()
         let classes = {
           'tree--has-child': hasChildren,
-          'tree--opened': hasChildren && state.opened,
+          'tree--expanded': hasChildren && state.expanded,
           'tree--selected': state.selected
         }
 
-        if (this.options.multiple) {
+        if (this.options.checkbox) {
           classes['tree--checked'] = state.checked
-          classes['tree--mixed'] = state.mixed
+          classes['tree--indeterminate'] = state.indeterminate
         }
 
         return classes
       }
     },
 
+
     methods: {
-      onToggle(data) {
-        this.$emit('toggle', data)
-      },
-
-      onChecked(data) {
-        this.$emit('checked', data)
-      },
-
-      onSelected(data, ctrlKey) {
-        this.$emit('selected', data, ctrlKey)
-      },
-
       check() {
-        this.data.state.checked = !this.data.state.checked
-        this.data.state.selected = this.data.state.checked
-
-        this.$emit('checked', this.data)
+        if (this.node.checked()) {
+          this.tree.uncheck(this.node)
+        } else {
+          this.tree.check(this.node)
+        }
       },
 
       select(evnt) {
         if (!this.options.parentSelect && this.hasChildren()) {
-          return this.toggle()
+          return this.toggleExpand()
         }
 
-        this.data.state.selected = !this.data.state.selected
-        this.$emit('selected', this.data, evnt.ctrlKey)
+        if (!this.node.selected()) {
+          this.tree.select(
+            this.node, evnt.ctrlKey
+          )
+        } else {
+          if (evnt.ctrlKey) {
+            this.tree.deselect(this.node)
+          } else {
+            this.tree.deselectAll()
+
+            if (this.options.multiple) {
+              this.tree.select(this.node)
+            }
+          }
+        }
       },
 
-      toggle() {
+      toggleExpand() {
         if (this.hasChildren()) {
-          this.data.state.opened = !this.data.state.opened
-          this.$emit('toggle', this.data)
+          this.tree.toggleExpand(
+            this.node
+          )
         }
       },
 
       hasChildren() {
-        return this.data.children && this.data.children.length > 0
+        return this.node.hasChildren()
       }
     }
   }
@@ -147,7 +147,7 @@
     background-position-y: 0;
   }
 
-  .tree--mixed > .tree-checkbox {
+  .tree--indeterminate > .tree-checkbox {
     background-position-y: -60px;
   }
 
@@ -171,7 +171,7 @@
     transition: transform .3s;
   }
 
-  .tree--opened > .tree-arrow {
+  .tree--expanded > .tree-arrow {
     transform: rotate(90deg);
   }
 

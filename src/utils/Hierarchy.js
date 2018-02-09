@@ -1,27 +1,32 @@
+import Node from '@/lib/Node'
+
 const defaults = {
   selected: false,
-  opened: false,
-  disabled: false,
+  selectable: true,
   checked: false,
-  mixed: false
+  expanded: false,
+  disabled: false,
+  indeterminate: false
 };
 
 const extend = Object.assign;
 
-function hierarchy(node, i) {
-  let state = node.state || {};
+
+function hierarchy(n, i) {
+  let node = new Node(n)
+  let state = node.states || {};
   let id = i + 1;
 
-  node.state = extend({}, defaults, state);
+  node.states = extend({}, defaults, state);
 
   if (undefined === node.id) {
     node.id = node.parent ? `${node.parent.id}.${id}` : '' + id;
   }
 
   if (node.children) {
-    node.children.forEach((el, i) => {
+    node.children = node.children.map((el, i) => {
       el.parent = node;
-      hierarchy(el, i);
+      return hierarchy(el, i);
     });
   }
 

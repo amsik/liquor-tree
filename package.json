@@ -1,7 +1,7 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.0.12",
+  "version": "0.1.0-alpha",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/dev.conf.js",

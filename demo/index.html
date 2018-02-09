@@ -17,7 +17,7 @@
     <div id="app"></div>
     <div id="app2"></div>
 
-    <script src="dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
     <script src="../dist/vue-tree.esm.js"></script>
     <!-- <script src="dist/vue-tree.esm.js"></script> -->
 
@@ -26,9 +26,8 @@
             <h3>Tree select</h3>
             <tree
                 :data="data"
-                @selected="onSelected"
-                @checked="onChecked"
-                @toggle="onToggle"
+                :options="options"
+                @node:selected="onSelected"
                 ref="tree"
             />
 
@@ -41,11 +40,14 @@
             <h3>Tree checkbox</h3>
             <tree
                 :data="data"
-                :options="{multiple: true, parentSelect: true}"
+                :options="{checkbox: true, parentSelect: true}"
                 @selected="onSelected"
-                @checked="onChecked"
+                @node:checked="onChecked"
+                @node:unchecked="onUnchecked"
+                @node:expanded="onExpanded"
+                @node:collapsed="onCollapsed"
                 @toggle="onToggle"
-                ref="tree"
+                ref="tree2"
             />
 
             <button @click="getTreeData">GET data!</button>
@@ -53,8 +55,6 @@
     </script>
 
     <script type="text/javascript">
-
-        // Vue.component('tree', VueTree.TreeRoot);
 
         let data = _ => ([
             {
@@ -116,24 +116,28 @@
             template: '#demo',
             data() {
                 return {
-                    data: data()
+                    data: data(),
+                    options: {
+                      multiple: true,
+                      parentSelect: false
+                    }
                 }
             },
             methods: {
                 onSelected(nodes) {
-                    console.log('selected', nodes);
+                    console.log('selected', arguments);
                 },
 
                 onToggle(...args) {
-                    console.log('toggle', args)
+                    // console.log('toggle', args)
                 },
 
                 onChecked(...args) {
-                    console.log('checked', args)
+                    // console.log('checked', args)
                 },
 
                 getTreeData() {
-                    console.log(this.$refs.tree.getSelectedNodes());
+                    // console.log(this.$refs.tree.getSelectedNodes());
                 }
             },
 
@@ -152,19 +156,31 @@
             },
             methods: {
                 onSelected(nodes) {
-                    console.log('selected', nodes);
+                    // console.log('selected', nodes);
                 },
 
                 onToggle(...args) {
-                    console.log('toggle', args)
+                    // console.log('toggle', args)
                 },
 
                 onChecked(...args) {
                     console.log('checked', args)
                 },
 
+                onUnchecked(...args) {
+                    console.log('unchecked', args)
+                },
+
                 getTreeData() {
-                    console.log(this.$refs.tree.getSelectedNodes());
+                    // console.log(this.$refs.tree.getSelectedNodes());
+                },
+
+                onCollapsed(node) {
+                  console.log('collapsed', node)
+                },
+
+                onExpanded(node) {
+                  console.log('expanded', node)
                 }
             },
 
