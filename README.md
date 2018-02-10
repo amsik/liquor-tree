@@ -1,13 +1,13 @@
-# vue-tree
+A Vue tree component that allows you to present hierarchically organized data in a nice and logical manner.
 
-A Vue.js tree component.
-
+[documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/)
 
 ## Features
-* simple and convenient API
-* very fast with large data
-* keyboard support
-* easily configurable
+* events for every action
+* flexible configuration
+* any number of instances per page
+* multi selection (use Ctrl + Click or API) | optional
+* ready for touch devices
 
 ## Installation
 **Install liquor-tree using npm:**
