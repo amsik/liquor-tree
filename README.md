@@ -1,3 +1,5 @@
+# Liquor Tree
+
 A Vue tree component that allows you to present hierarchically organized data in a nice and logical manner.
 
 [documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/)
