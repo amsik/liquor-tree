@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charSet='utf-8' />
+  <title>Liquor Tree - What is it?</title>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700' rel='stylesheet' type='text/css'>
+  <link href='/css/docs.css' rel='stylesheet'>
+</head>
+<body>
+  <div class='menu'>
+    <div class='logo'>
+      Documentation
+    </div>
+    <nav class='menu-nav'>
+      
+        <ul class='nav'>
+          <span>Introduction</span>
+          <ul class='nav'>
+            
+          </ul>
+        </ul>
+      
+        <ul class='nav'>
+          <span>Getting Started</span>
+          <ul class='nav'>
+            
+              <li>
+                <a href='\#installation'>Installation</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-usage'>Basic Usage</a>
+              </li>
+            
+          </ul>
+        </ul>
+      
+        <ul class='nav'>
+          <span>GUIDES</span>
+          <ul class='nav'>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+              <li>
+                <a href='\#basic-features'>Basic Features</a>
+              </li>
+            
+          </ul>
+        </ul>
+      
+        <ul class='nav'>
+          <span>API</span>
+          <ul class='nav'>
+            
+              <li>
+                <a href='\#props'>Props</a>
+              </li>
+            
+              <li>
+                <a href='\#events'>Events</a>
+              </li>
+            
+          </ul>
+        </ul>
+      
+    </nav>
+  </div>
+  <div class='page'>
+    <div class='page-content'>
+      <h1>What is it?</h1>
+      <h2 id="Global-Config"><a href="#Global-Config" class="headerlink" title="Global Config"></a>Global Config</h2><p><code>Vue.config</code> is an object containing Vue’s global configurations. You can modify its properties listed below before bootstrapping your application:</p>
+<h3 id="silent"><a href="#silent" class="headerlink" title="silent"></a>silent</h3><ul>
+<li><p><strong>Type:</strong> <code>boolean</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>false</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.silent = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>Suppress all Vue logs and warnings.</p>
+</li>
+</ul>
+<h3 id="optionMergeStrategies"><a href="#optionMergeStrategies" class="headerlink" title="optionMergeStrategies"></a>optionMergeStrategies</h3><ul>
+<li><p><strong>Type:</strong> <code>{ [key: string]: Function }</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>{}</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.optionMergeStrategies._my_option = <span class="function"><span class="keyword">function</span> (<span class="params">parent, child, vm</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> child + <span class="number">1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Profile = Vue.extend(&#123;</span><br><span class="line">  _my_option: <span class="number">1</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// Profile.options._my_option = 2</span></span><br></pre></td></tr></table></figure>
+<p>Define custom merging strategies for options.</p>
+<p>The merge strategy receives the value of that option defined on the parent and child instances as the first and second arguments, respectively. The context Vue instance is passed as the third argument.</p>
+</li>
+<li><p><strong>See also:</strong> <a href="../guide/mixins.html#Custom-Option-Merge-Strategies">Custom Option Merging Strategies</a></p>
+</li>
+</ul>
+<h3 id="devtools"><a href="#devtools" class="headerlink" title="devtools"></a>devtools</h3><ul>
+<li><p><strong>Type:</strong> <code>boolean</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>true</code> (<code>false</code> in production builds)</p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// make sure to set this synchronously immediately after loading Vue</span></span><br><span class="line">Vue.config.devtools = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<p>Configure whether to allow <a href="https://github.com/vuejs/vue-devtools" target="_blank" rel="noopener">vue-devtools</a> inspection. This option’s default value is <code>true</code> in development builds and <code>false</code> in production builds. You can set it to <code>true</code> to enable inspection for production builds.</p>
+</li>
+</ul>
+<h3 id="errorHandler"><a href="#errorHandler" class="headerlink" title="errorHandler"></a>errorHandler</h3><ul>
+<li><p><strong>Type:</strong> <code>Function</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>undefined</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.errorHandler = <span class="function"><span class="keyword">function</span> (<span class="params">err, vm, info</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// handle error</span></span><br><span class="line">  <span class="comment">// `info` is a Vue-specific error info, e.g. which lifecycle hook</span></span><br><span class="line">  <span class="comment">// the error was found in. Only available in 2.2.0+</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Assign a handler for uncaught errors during component render function and watchers. The handler gets called with the error and the Vue instance.</p>
+<blockquote>
+<p>In 2.2.0+, this hook also captures errors in component lifecycle hooks. Also, when this hook is <code>undefined</code>, captured errors will be logged with <code>console.error</code> instead of crashing the app.</p>
+<p>In 2.4.0+ this hook also captures errors thrown inside Vue custom event handlers.</p>
+<p>Error tracking services <a href="https://sentry.io/for/vue/" target="_blank" rel="noopener">Sentry</a> and <a href="https://docs.bugsnag.com/platforms/browsers/vue/" target="_blank" rel="noopener">Bugsnag</a> provide official integrations using this option.</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="warnHandler"><a href="#warnHandler" class="headerlink" title="warnHandler"></a>warnHandler</h3><blockquote>
+<p>New in 2.4.0+</p>
+</blockquote>
+<ul>
+<li><p><strong>Type:</strong> <code>Function</code></p>
+</li>
+<li><p><strong>Default:</strong> <code>undefined</code></p>
+</li>
+<li><p><strong>Usage:</strong></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Vue.config.warnHandler = <span class="function"><span class="keyword">function</span> (<span class="params">msg, vm, trace</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// `trace` is the component hierarchy trace</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Assign a custom handler for runtime Vue warnings. Note this only works during development and is ignored in production.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+</html>
