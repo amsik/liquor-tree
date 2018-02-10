@@ -20,7 +20,7 @@
           <ul class='nav'>
             {% for item in section.items %}
               <li>
-                <a href='{{item.href }}'{% if item.id == page.id %} class='active'{% endif %}>{{item.title}}</a>
+                <a href='{{ item.href }}'{% if item.id == page.id %} class='active'{% endif %}>{{item.title}}</a>
               </li>
             {% endfor %}
           </ul>
