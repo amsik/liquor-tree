@@ -77,4 +77,6 @@ theme: liquor
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
-  type:
+  type: git
+  repo: https://github.com/amsik/liquor-tree
+  branch: gh-pages # remember that GitHub Pages uses this branch
