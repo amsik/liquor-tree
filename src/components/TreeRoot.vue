@@ -16,6 +16,12 @@
   import TreeMixin from '@/mixins/TreeMixin'
   import Tree from '@/lib/Tree'
 
+  const defaults = {
+    multiple: true,
+    checkbox: false,
+    parentSelect: false
+  }
+
   export default {
     name: 'Tree',
     components: {
@@ -36,15 +42,18 @@
 
       options: {
         type: Object,
-        default: _ => ({
-          multiple: true,
-          checkbox: false,
-          parentSelect: false
-        })
+        default: _ => ({})
       }
     },
 
     data() {
+      // we should not mutating a prop directly... that's why we add if it necessary
+      for (let prop in defaults) {
+        if ( false === (prop in this.options) ) {
+          this.options[prop] = defaults[prop]
+        }
+      }
+
       return {
         model: null,
         tree: null

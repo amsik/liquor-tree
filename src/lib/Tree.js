@@ -39,7 +39,7 @@ export default class Tree {
       }
     })
 
-    if (!this.options.multiple) {
+    if (!this.options.multiple && this.selectedNodes.length) {
       let top = this.selectedNodes.top()
 
       this.selectedNodes.forEach(node => {

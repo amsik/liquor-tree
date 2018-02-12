@@ -145,3 +145,26 @@ Okey, `LiquorTree` is installed. Let's go use it
   </script>
 </html>
 ```
+
+## Guides
+
+### Basic Features
+
+This example demonstrates default behaviour of tree without any configurations. Each node from received data has its **own states properties** ([view full list](#node-atata))
+
+<iframe width="100%" height="300" src="http://localhost:9000/exampes/basic-features.html" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;) 
+
+### Checkboxes
+
+It was a default mode. You can switch it to `checkbox` mode. To do it you have to add tree's option: 
+
+``` html
+    <tree
+      :data="treeData"
+      :options="{ checkbox: true }"
+    />
+```
+
+States of node like **checked** and **selected** are not interchangeable. They can be uses together.
