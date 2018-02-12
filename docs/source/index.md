@@ -31,7 +31,7 @@ $ npm install --save liquor-tree
 #### CDN:
 
 ``` html
-<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.esm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
 ```
 
 
@@ -129,7 +129,7 @@ In this way you no need to registrate the library as a component.
   <!-- first import Vue -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <!-- import JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/vue-tree.esm.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/vue-tree.umd.js"></script>
   <script>
     new Vue({
       el: '#app',

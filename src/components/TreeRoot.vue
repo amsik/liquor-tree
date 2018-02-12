@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import TreeNode from '@/components/TreeNode.vue'
+  import TreeNode from '@/components/TreeNode'
   import TreeMixin from '@/mixins/TreeMixin'
   import Tree from '@/lib/Tree'
 
