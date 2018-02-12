@@ -31,7 +31,7 @@ $ npm install --save liquor-tree
 #### CDN:
 
 ``` html
-<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/vue-tree.esm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.esm.js"></script>
 ```
 
 
@@ -109,6 +109,8 @@ Okey, `LiquorTree` is installed. Let's go use it
 
 #### If you are using CDN that's all you need to build your first app (I mean app that using `VueTree` library)
 
+In this way you no need to registrate the library as a component. 
+
 ``` html
 <!DOCTYPE html>
 <html>
@@ -152,7 +154,7 @@ Okey, `LiquorTree` is installed. Let's go use it
 
 This example demonstrates default behaviour of tree without any configurations. Each node from received data has its **own states properties** ([view full list](#node-atata))
 
-<iframe width="100%" height="300" src="http://localhost:9000/exampes/basic-features.html" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/3/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;) 
 
@@ -167,4 +169,6 @@ It was a default mode. You can switch it to `checkbox` mode. To do it you have t
     />
 ```
 
-States of node like **checked** and **selected** are not interchangeable. They can be uses together.
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/1/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+> States of node like **checked** and **selected** are not interchangeable. They can be uses together.

@@ -15,6 +15,10 @@
       href: "#Basic-Features"
       title: Basic Features
 
+    - id: checkboxes
+      href: "#Checkboxes"
+      title: Checkboxes
+
 - title: API
   items:
   - id: props

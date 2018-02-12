@@ -3,6 +3,7 @@
   "description": "A Vue.js tree component.",
   "version": "0.1.0-alpha.2",
   "author": "Kostiantyn <phlyze@gmail.com>",
+  "library": "LiquorTree",
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/dev.conf.js",
     "build": "webpack  --config build/prod.conf.js"
