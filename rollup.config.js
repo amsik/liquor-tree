@@ -9,15 +9,16 @@ const path = require('path')
 
 const config = {
   input: 'src/main.js',
-  sourcemap: true,
   output: [
     {
       file: pkg.module,
-      format: 'es'
+      format: 'es',
+      sourcemap: true
     }, {
       file: pkg.main,
       format: 'umd',
-      name: 'LiquorTree'
+      name: 'LiquorTree',
+      sourcemap: true
     }
   ],
   plugins: [
@@ -28,13 +29,13 @@ const config = {
 }
 
 if ('production' == process.env.NODE_ENV) {
-  config.sourcemap = false
+  config.output.forEach(c => (c.sourcemap = false))
   config.plugins.push(uglify())
 }
 
 if ('development' == process.env.NODE_ENV) {
   config.plugins.push(serve({
-    contentBase: ['demo', 'dist'],
+    contentBase: ['dist', 'demo'],
     port: 8081,
     open: true
   }))

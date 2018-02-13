@@ -1,5 +1,5 @@
 <template>
-    <div class="tree">
+    <div class="tree" role="tree">
         <ul class="tree-root">
             <node
                 v-for="(node, i) in model"
@@ -31,7 +31,7 @@
     mixins: [TreeMixin],
 
     provide: _ => ({
-      tree: new Tree()
+      tree: null
     }),
 
     props: {
@@ -47,7 +47,8 @@
     },
 
     data() {
-      // we should not mutating a prop directly... that's why we add if it necessary
+      // we should not mutating a prop directly...
+      // that's why we add if it necessary
       for (let prop in defaults) {
         if ( false === (prop in this.options) ) {
           this.options[prop] = defaults[prop]

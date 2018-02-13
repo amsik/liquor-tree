@@ -1,25 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Basic usage</title>
+  <title>Checkboxes</title>
   <meta charset="UTF-8">
 </head>
 <body>
   <div id="app">
     <tree
       :data="treeData"
+      :options="treeOptions"
     />
   </div>
 </body>
   <!-- first import Vue -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
-  <script src="liquor-tree.umd.js"></script>
+  <script src="/liquor-tree.umd.js"></script>
   <script>
     new Vue({
       el: '#app',
       data: function() {
         return {
-          treeData: getTreeData()
+          treeData: getTreeData(),
+          treeOptions: {
+            checkbox: true
+          }
         }
       }
     })

@@ -6,6 +6,10 @@ export default class Node {
     this.text = data.text
     this.children = data.children || []
     this.parent = data.parent || null
+
+    if (data.component) {
+      this.component = data.component
+    }
   }
 
   state(name, value) {
@@ -114,6 +118,10 @@ export default class Node {
 
   expand() {
     return this.state('expanded', true)
+  }
+
+  remove() {
+    return this.tree.removeNode(this)
   }
 
 

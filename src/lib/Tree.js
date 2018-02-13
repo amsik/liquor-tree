@@ -1,16 +1,33 @@
 import hierarchy from '@/utils/hierarchy'
+import objectToNode from '@/utils/objectToNode'
 import Node from '@/lib/Node'
 import { List } from '@/utils/stack'
 
 import { recurseDown } from '@/utils/recurse'
 
-// import EventEmmiter from '@/utils/EventEmmiter'
-// export default class Tree extends EventEmmiter {
-
 
 export default class Tree {
-  constructor() {
-    this.options = {}
+  constructor(vm) {
+    this.vm = vm
+    this.options = vm.options
+
+    this.setModel(vm.model)
+  }
+
+  $on(name, ...args) {
+    this.vm.$on(name, ...args)
+  }
+
+  $once(name, ...args) {
+    this.vm.$once(name, ...args)
+  }
+
+  $off(name, ...args) {
+    this.vm.$off(name, ...args)
+  }
+
+  $emit(name, ...args) {
+    this.vm.$emit(name, ...args)
   }
 
   setModel(model) {
@@ -250,6 +267,36 @@ export default class Tree {
     return true
   }
 
+
+  addNode(node) {
+    const index = this.model.length
+
+    node = objectToNode(node)
+
+    this.model.splice(index, 0, node)
+    this.$emit('node:added', node)
+
+    return node
+  }
+
+  removeNode(node) {
+    if (!node.parent) {
+      this.model.splice(
+        this.model.indexOf(node),
+        1
+      )
+    } else {
+      node.parent.children.splice(
+        node.parent.children.indexOf(node),
+        1
+      )
+    }
+
+    this.selectedNodes.remove(node)
+    this.checkedNodes.remove(node)
+
+    return node
+  }
 
 
   findNode(node) {
