@@ -109,7 +109,7 @@ Okey, `LiquorTree` is installed. Let's go use it
 
 #### If you are using CDN that's all you need to build your first app (I mean app that using `VueTree` library)
 
-In this way you no need to registrate the library as a component. 
+In this way you no need to registrate the library as a component.
 
 ``` html
 <!DOCTYPE html>
@@ -154,13 +154,13 @@ In this way you no need to registrate the library as a component.
 
 This example demonstrates default behaviour of tree without any configurations. Each node from received data has its **own states properties** ([view full list](#node-atata))
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/3/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/5/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;) 
+You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;)
 
 ### Checkboxes
 
-It was a default mode. You can switch it to `checkbox` mode. To do it you have to add tree's option: 
+It was a default mode. You can switch it to `checkbox` mode. To do it you have to add tree's option:
 
 ``` html
     <tree
@@ -169,6 +169,6 @@ It was a default mode. You can switch it to `checkbox` mode. To do it you have t
     />
 ```
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/1/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/3/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 > States of node like **checked** and **selected** are not interchangeable. They can be uses together.
