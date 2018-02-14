@@ -32,6 +32,14 @@ export default {
       return this.tree.checkedNodes
     },
 
+    append(node) {
+      return this.tree.append(node)
+    },
+
+    prepend(node) {
+      return this.tree.prepend(node)
+    },
+
     addNode(node) {
       return this.tree.addNode(node)
     }

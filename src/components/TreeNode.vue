@@ -18,7 +18,7 @@
         class="tree-children">
           <node
             v-for="(child, i) in node.children"
-            :key="i"
+            :key="child.id"
             :node="child"
             :options="options"
             >
@@ -53,6 +53,7 @@
     },
 
     data() {
+      console.log(this.node);
       return {
         state: this.node.states
       }

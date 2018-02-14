@@ -3,7 +3,7 @@
         <ul class="tree-root">
             <node
                 v-for="(node, i) in model"
-                :key="i"
+                :key="node.id"
                 :node="node"
                 :options="options"
             />

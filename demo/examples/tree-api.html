@@ -14,9 +14,18 @@
       <span slot-scope="{ node }">
         {{ node.text }}
 
-        <button @click.stop="log">✂</button>
+        <button @click.stop="remove(node)">✂</button>
       </span>
-  </tree>
+    </tree>
+
+    <div class="tree-controls">
+      <select v-model="adderType">
+        <option value="append">Append</option>
+        <option value="prepend">Prepend</option>
+      </select>
+      <input type="text" v-model="newNodeText" />
+      <button type="button" name="button" @click="addNode">Add node</button>
+    </div>
   </div>
 </body>
   <!-- first import Vue -->
@@ -30,13 +39,27 @@
           treeData: getTreeData(),
           treeOptions: {
             checkbox: true
-          }
+          },
+
+          newNodeText: 'New Node TEXT',
+          adderType: 'append'
         }
       },
 
       methods: {
-        log() {
-          console.log(5);
+        addNode() {
+          if (!this.newNodeText) {
+            return alert('Add note text!')
+          }
+
+          let type = this.adderType
+
+          this.$refs.tree[type](this.newNodeText)
+          this.newNodeText = '';
+        },
+
+        remove(node) {
+          node.remove()
         }
       }
     })
