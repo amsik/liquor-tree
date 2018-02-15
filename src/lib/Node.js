@@ -3,13 +3,37 @@ export default class Node {
   constructor(data) {
     this.id = data.id
     this.states = data.state
-    this.text = data.text
+
     this.children = data.children || []
     this.parent = data.parent || null
 
-    if (data.component) {
-      this.component = data.component
+    this._data = Object.assign({}, {
+      text: data.text
+    }, data.data || {})
+
+    if (data.tree) {
+      this.tree = data.tree
     }
+  }
+
+  get text() {
+    return this.data('text')
+  }
+
+  set text(text) {
+    let oldText = this.text
+
+    this.data('text', text)
+    this.tree.$emit('node:text:changed', text, oldText)
+  }
+
+  data(name, value) {
+    if (undefined === value) {
+      return this._data[name]
+    }
+
+    this._data[name] = value
+    return this
   }
 
   state(name, value) {
