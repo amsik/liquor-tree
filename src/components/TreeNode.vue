@@ -53,7 +53,6 @@
     },
 
     data() {
-      console.log(this.node);
       return {
         state: this.node.states
       }

@@ -269,7 +269,9 @@ export default class Tree {
 
   addToModel(node, index = this.model.length) {
     this.model.splice(index, 0, node)
-    node.tree = this
+    this.recurseDown(node, n => {
+      n.tree = this
+    })
   }
 
 
