@@ -100,16 +100,13 @@ export default class Tree {
     if (this.options.multiple && extendList) {
       this.selectedNodes.add(treeNode)
     } else {
-      this.selectedNodes.forEach(node => this.deselect(node))
+      this.selectedNodes.forEach(node => this.unselect(node))
       this.selectedNodes
         .empty()
         .add(treeNode)
     }
 
-    this.$emit(
-      'node:selected',
-      treeNode.select()
-    )
+    treeNode.select()
 
     return true
   }
@@ -122,25 +119,21 @@ export default class Tree {
     this.selectedNodes.empty()
 
     this.recurseDown(node => {
-      node.select()
-
-      this.selectedNodes.add(node)
-      this.$emit('node:selected', node)
+      this.selectedNodes.add(
+        node.select()
+      )
     })
 
     return true
   }
 
 
-  deselect(node) {
+  unselect(node) {
     if (!node.selected() || !node.selectable()) {
       return false
     }
 
-    this.$emit(
-      'node:deselected',
-      node.deselect()
-    )
+    node.unselect()
 
     return true
   }
@@ -169,20 +162,12 @@ export default class Tree {
 
     if (node.hasChildren()) {
       this.recurseDown(node, child => {
-        this.checkedNodes.add(child)
-
-        if (!child.checked()) {
-          this.$emit(
-            'node:checked',
-            child.check()
-          )
-        }
+        this.checkedNodes.add(
+          child.check()
+        )
       })
     } else {
-      this.checkedNodes.add(node)
-
-      this.$emit(
-        'node:checked',
+      this.checkedNodes.add(
         node.check()
       )
     }
@@ -203,20 +188,12 @@ export default class Tree {
       this.recurseDown(node, child => {
         child.state('indeterminate', false)
 
-        this.checkedNodes.remove(child)
-
-        if (child.checked()) {
-          this.$emit(
-            'node:unchecked',
-            child.uncheck()
-          )
-        }
+        this.checkedNodes.remove(
+          child.uncheck()
+        )
       })
     } else {
-      this.checkedNodes.remove(node)
-
-      this.$emit(
-        'node:unchecked',
+      this.checkedNodes.remove(
         node.uncheck()
       )
     }
@@ -232,23 +209,17 @@ export default class Tree {
       return false
     }
 
-    this.$emit(
-      'node:expanded',
-      node.expand()
-    )
+    node.expand()
 
     return true
   }
 
   collapse(node) {
-    if (!node.expanded()) {
+    if (node.collapsed()) {
       return false
     }
 
-    this.$emit(
-      'node:collapsed',
-      node.collapse()
-    )
+    node.collapse()
 
     return true
   }
@@ -258,11 +229,17 @@ export default class Tree {
       return false
     }
 
-    if (node.expanded()) {
-      this.collapse(node)
-    } else {
-      this.expand(node)
+    node.toggleExpand()
+
+    return true
+  }
+
+  toggleCollapse(node) {
+    if (!node.hasChildren()) {
+      return false
     }
+
+    node.toggleCollapse()
 
     return true
   }

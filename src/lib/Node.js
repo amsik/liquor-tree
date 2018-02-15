@@ -71,19 +71,9 @@ export default class Node {
       })
 
       if (checked == childrenCount) {
-        if (!this.checked()) {
-          this.tree.$emit(
-            'node:checked',
-            this.check()
-          )
-        }
+        this.check()
       } else {
-        if (this.checked()) {
-          this.tree.$emit(
-            'node:unchecked',
-            this.uncheck()
-          )
-        }
+        this.uncheck()
       }
 
       if (!this.checked()) {
@@ -232,32 +222,62 @@ export default class Node {
 
 
 
+  expand() {
+    if (this.expanded()) {
+      return this
+    }
+
+    this.state('expanded', true)
+    this.$emit('expanded')
+
+    return this
+  }
+
   expanded() {
     return this.state('expanded')
   }
 
-  toggleExpand() {
-    return this.toggleState('expanded')
-  }
-
   collapse() {
-    return this.state('expanded', false)
+    if (this.collapsed()) {
+      return this
+    }
+
+    this.state('expanded', false)
+    this.$emit('collapsed')
+
+    return this
   }
 
-  expand() {
-    return this.state('expanded', true)
+  collapsed() {
+    return !this.state('expanded')
   }
+
+  toggleExpand() {
+    return this._toggleOpenedState()
+  }
+
+  toggleCollapse() {
+    return this._toggleOpenedState()
+  }
+
+
+  _toggleOpenedState() {
+    if (this.expanded()) {
+      return this.collapse()
+    }
+
+    return this.expand()
+  }
+
+
 
   remove() {
-    return this.tree.removeNode(this)
+    this.tree.removeNode(this)
+    this.$emit('removed')
+
+    return this
   }
 
-
-  toggleState(state) {
-    if (state in this.states) {
-      this.states[state] = !this.states[state]
-    }
-  }
 
   hasChildren() {
     return this.children.length > 0
