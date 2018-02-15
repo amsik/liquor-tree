@@ -42,12 +42,12 @@
           const vm = this.node.tree.vm
 
           return vm.$scopedSlots.default
-              ? vm.$scopedSlots.default({ node: this.node })
-              : h('span', {
-                domProps: {
-                  innerHTML: node.text
-                }
-              })
+            ? vm.$scopedSlots.default({ node: this.node })
+            : h('span', {
+              domProps: {
+                innerHTML: node.text
+              }
+            })
         }
       }
     },

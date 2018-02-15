@@ -1,1 +1,850 @@
-!function(){if("undefined"!=typeof document){var e=document.head||document.getElementsByTagName("head")[0],t=document.createElement("style"),n=" li.tree-node { white-space: nowrap; display: flex; flex-direction: column; } a.tree-anchor { display: inline-block; text-decoration: none; color: #343434; vertical-align: top; height: 24px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } a.tree-anchor:hover { background-color: #fafafa; } .tree--selected > .tree-node__content > .tree-anchor { background: #f0f0f0; } .tree-checkbox { display: inline-block; height: 30px; width: 30px; cursor: pointer; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAABaCAYAAACv+ebYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAejAAAHowEwL7LFAAAAB3RJTUUH4gIDCy4HZhufyQAAAZVJREFUaN7t2U8og3EYB/DvO3pdRKR2UIiViNzsyE4yHCQiSSIHkQOSFuZPSqklDliSkhknBw4UhYPiJgebNaQtorc5rHfz6nVz0cqYdzt8n+PvOXz69TxPPfUI/pdXFXEIHeIUhAkTTmzY73/G9bVbW1iSApiZXYL3/lE7OBiUMTtnR2lJIWrNJm1gRfmAbX4NmRnp6Oxo1KbGqqpi2e6ALIfQ39eOpCSdNvCWcw8ezwOGBrqQkiLGpqvtq9t4V5SI+YPDM5ycXmB4qBtpaamxGyef7wmT04uQpMC33MXlFZw7+xgc6IRenxXbObaM9CAvNxuWMRtuXN6vd5fbi6UVB3p72lCQnxN1eYSfbiBHx+fY2NxFa0sdiosMsE4tormpBqZK46/6Qohm9XG57zC/sA5ZDsFcXYGG+qpfN6QQ7c4lSW9wub0wlpf9aRIELnuECRMmTJgwYcKECRMmTJgwYcKECRMmTJgwYcL/EMmRElMTVnhubyGKIhDtnUYAwuEwCgwGjI5bE+vHvDsRJkyYMOGI8Ql68IQ9vE0/3AAAAABJRU5ErkJggg=='); background-repeat: no-repeat; background-position-x: center; background-position-y: -30px; } .tree--checked > .tree-node__content > .tree-checkbox { background-position-y: 0; } .tree--indeterminate > .tree-node__content > .tree-checkbox { background-position-y: -60px; } .tree--checked > .tree-node__content > .tree-anchor { background: #dadada; } .tree-arrow { display: inline-block; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree--has-child > .tree-node__content > .tree-arrow { margin-left: 0; width: 30px; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAACROWYpAAAACXBIWXMAAA3XAAAN1wFCKJt4AAADGGlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGBgYGBITG5uMAxIMCHgYGBIS8/L5UBFTAyMHy7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHhCwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKhpaWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BSMDVQYqg4jIKAUICxE+CDEESC4tKoMHJQODAIMCgwGDA0MAQyJDPcMChqMMbxjFGV0YSxlXMN5jEmMKYprAdIFZmDmSeSHzGxZLlg6WW6x6rK2s99gs2aaxfWMPZ9/NocTRxfGFM5HzApcj1xZuTe4FPFI8U3mFeCfxCfNN45fhXyygI7BD0FXwilCq0A/hXhEVkb2i4aJfxCaJG4lfkaiQlJM8JpUvLS19QqZMVl32llyfvIv8H4WtioVKekpvldeqFKiaqP5UO6jepRGqqaT5QeuA9iSdVF0rPUG9V/pHDBYY1hrFGNuayJsym740u2C+02KJ5QSrOutcmzjbQDtXe2sHY0cdJzVnJRcFV3k3BXdlD3VPXS8Tbxsfd99gvwT//ID6wIlBS4N3hVwMfRnOFCEXaRUVEV0RMzN2T9yDBLZE3aSw5IaUNak30zkyLDIzs+ZmX8xlz7PPryjYVPiuWLskq3RV2ZsK/cqSql01jLVedVPrHzbqNdU0n22VaytsP9op3VXUfbpXta+x/+5Em0mzJ/+dGj/t8AyNmf2zvs9JmHt6vvmCpYtEFrcu+bYsc/m9lSGrTq9xWbtvveWGbZtMNm/ZarJt+w6rnft3u+45uy9s/4ODOYd+Hmk/Jn58xUnrU+fOJJ/9dX7SRe1LR68kXv13fc5Nm1t379TfU75/4mHeY7En+59lvhB5efB1/lv5dxc+NH0y/fzq64Lv4T8Ffp360/rP8f9/AA0ADzT6lvFdAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACCSURBVHja7JSxDkBQDEVPzYIVg/gAETaL//8NFonJKiRMwlAR78UgtOs9uU1vU1kwL4cffjcsrkTC3vecUxq8S+tFbSBnJNxMT1SnMFT0JKYw1AwEpjCUzASmMBR0xLrKKucHx7ZYmEVUFkeSMR3PU1eJ/gDFx6c9wqrq/56fgNcBAInl7e4ANk/XAAAAAElFTkSuQmCC'); background-repeat: no-repeat; transition: transform .3s; } .tree--expanded > .tree-node__content > .tree-arrow { transform: rotate(90deg); } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } ";t.type="text/css",t.styleSheet?t.styleSheet.cssText=n:t.appendChild(document.createTextNode(n)),e.appendChild(t)}}();var TreeNode={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("li",{staticClass:"tree-node",class:e.nodeClass},[n("div",{staticClass:"tree-node__content"},[n("i",{staticClass:"tree-arrow",on:{click:e.toggleExpand}}),e._v(" "),e.options.checkbox?n("i",{staticClass:"tree-checkbox",on:{click:e.check}}):e._e(),e._v(" "),n("a",{staticClass:"tree-anchor",attrs:{href:"javascript:void(0)"},on:{click:e.select}},[n("node-content",{attrs:{node:e.node}})],1)]),e._v(" "),n("transition",{attrs:{name:"l-fade"}},[e.hasChildren()&&e.state.expanded?n("ul",{staticClass:"tree-children"},e._l(e.node.children,function(t,o){return n("node",{key:o,attrs:{node:t,options:e.options}})})):e._e()])],1)},staticRenderFns:[],name:"Node",inject:["tree"],props:["node","options"],components:{NodeContent:{props:["node"],render:function(e){var t=this.node,n=this.node.tree.vm;return n.$scopedSlots.default?n.$scopedSlots.default({node:this.node}):e("span",{domProps:{innerHTML:t.text}})}}},data:function(){return{state:this.node.states}},computed:{nodeClass:function(){var e=this.state,t=this.hasChildren(),n={"tree--has-child":t,"tree--expanded":t&&e.expanded,"tree--selected":e.selected};return this.options.checkbox&&(n["tree--checked"]=e.checked,n["tree--indeterminate"]=e.indeterminate),n}},methods:{check:function(){this.node.checked()?this.tree.uncheck(this.node):this.tree.check(this.node)},select:function(e){if(!this.options.parentSelect&&this.hasChildren())return this.toggleExpand();this.node.selected()?e.ctrlKey?this.tree.deselect(this.node):(this.tree.deselectAll(),this.options.multiple&&this.tree.select(this.node)):this.tree.select(this.node,e.ctrlKey)},toggleExpand:function(){this.hasChildren()&&this.tree.toggleExpand(this.node)},hasChildren:function(){return this.node.hasChildren()}}},Node=function(e){this.id=e.id,this.states=e.state,this.text=e.text,this.children=e.children||[],this.parent=e.parent||null,e.component&&(this.component=e.component)};Node.prototype.state=function(e,t){return void 0===t?this.states[e]:(this.states[e]=t,this)},Node.prototype.refreshIndeterminateState=function(){if(this.state("indeterminate",!1),this.hasChildren()){var e=this.children.length,t=0,n=0;this.children.forEach(function(e){e.checked()&&t++,e.indeterminate()&&n++}),t==e?this.checked()||this.tree.$emit("node:checked",this.check()):this.checked()&&this.tree.$emit("node:unchecked",this.uncheck()),this.checked()||this.state("indeterminate",n>0||t>0&&t<e)}this.parent&&this.parent.refreshIndeterminateState()},Node.prototype.indeterminate=function(){return this.state("indeterminate")},Node.prototype.selectable=function(){return this.state("selectable")},Node.prototype.selected=function(){return this.state("selected")},Node.prototype.select=function(){return this.state("selected",!0)},Node.prototype.deselect=function(){return this.state("selected",!1)},Node.prototype.checked=function(){return this.state("checked")},Node.prototype.check=function(){return this.state("checked",!0)},Node.prototype.uncheck=function(){return this.state("checked",!1)},Node.prototype.expanded=function(){return this.state("expanded")},Node.prototype.toggleExpand=function(){return this.toggleState("expanded")},Node.prototype.collapse=function(){return this.state("expanded",!1)},Node.prototype.expand=function(){return this.state("expanded",!0)},Node.prototype.remove=function(){return this.tree.removeNode(this)},Node.prototype.toggleState=function(e){e in this.states&&(this.states[e]=!this.states[e])},Node.prototype.hasChildren=function(){return this.children.length>0},Node.prototype.isRoot=function(){return null===this.parent};var defaults={selected:!1,selectable:!0,checked:!1,expanded:!1,disabled:!1,indeterminate:!1},extend=Object.assign;function hierarchy(e,t){var n=new Node(e),o=n.states||{},r=t+1;return n.states=extend({},defaults,o),void 0===n.id&&(n.id=n.parent?n.parent.id+"."+r:""+r),n.children&&(n.children=n.children.map(function(e,t){return e.parent=n,hierarchy(e,t)})),n}function hierarchy$1(e){return e.map(hierarchy)}var nodeStates={selected:!1,selectable:!0,checked:!1,expanded:!1,disabled:!1,indeterminate:!1};function merge(e){return void 0===e&&(e={}),Object.assign({},nodeStates,e)}function objectToNode(e){var t=null;return"string"==typeof e?t=new Node({text:e,state:merge()}):Array.isArray(e)||((t=new Node(e)).states=merge(t.states),t.children.length&&(t.children=t.children.map(function(e){return(e=objectToNode(e)).parent=t,e}))),t}var List=function(e){function t(){e.call(this)}return e&&(t.__proto__=e),t.prototype=Object.create(e&&e.prototype),t.prototype.constructor=t,t.prototype.empty=function(){return this.length=0,this},t.prototype.add=function(){for(var e,t=[],n=arguments.length;n--;)t[n]=arguments[n];return(e=this).push.apply(e,t),this},t.prototype.remove=function(e){return this.splice(this.indexOf(e),1),this},t.prototype.removeAll=function(e){for(;this.includes(e);)this.remove(e);return this},t.prototype.top=function(){return this[this.length-1]},t}(Array);function recurseDown(e,t){var n;return Array.isArray(e)?e.map(function(e){return recurseDown(e,t)}):(!1!==(n=t(e))&&e.hasChildren()&&(n=recurseDown(e.children,t)),n)}var Tree=function(e){this.vm=e,this.options=e.options,this.setModel(e.model)};Tree.prototype.$on=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$on.apply(t,[e].concat(n))},Tree.prototype.$once=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$once.apply(t,[e].concat(n))},Tree.prototype.$off=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$off.apply(t,[e].concat(n))},Tree.prototype.$emit=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$emit.apply(t,[e].concat(n))},Tree.prototype.setModel=function(e){var t=this;if(this.model=e,this.selectedNodes=new List,this.checkedNodes=new List,recurseDown(e,function(e){e.tree=t,e.selected()&&t.selectedNodes.add(e),e.checked()&&(t.checkedNodes.add(e),e.parent&&e.parent.refreshIndeterminateState())}),!this.options.multiple&&this.selectedNodes.length){var n=this.selectedNodes.top();this.selectedNodes.forEach(function(e){n!==e&&e.state("selected",!1)}),this.selectedNodes.empty().add(n)}},Tree.prototype.recurseDown=function(e,t){return!t&&e&&(t=e,e=this.model),recurseDown(e,t)},Tree.prototype.select=function(e,t){var n=this;if(e.selected()||!e.selectable())return!1;var o=this.findNode(e);return!!o&&(this.options.multiple&&t?this.selectedNodes.add(o):(this.selectedNodes.forEach(function(e){return n.deselect(e)}),this.selectedNodes.empty().add(o)),this.$emit("node:selected",o.select()),!0)},Tree.prototype.selectAll=function(){var e=this;return!!this.options.multiple&&(this.selectedNodes.empty(),this.recurseDown(function(t){t.select(),e.selectedNodes.add(t),e.$emit("node:selected",t)}),!0)},Tree.prototype.deselect=function(e){return!(!e.selected()||!e.selectable())&&(this.$emit("node:deselected",e.deselect()),!0)},Tree.prototype.deselectAll=function(){var e=this;return this.selectedNodes.forEach(function(t){e.deselect(t)}),this.selectedNodes.empty(),!0},Tree.prototype.check=function(e){var t=this;return!e.checked()&&(e.indeterminate()?this.uncheck(e):(e.state("indeterminate",!1),e.hasChildren()?this.recurseDown(e,function(e){t.checkedNodes.add(e),e.checked()||t.$emit("node:checked",e.check())}):(this.checkedNodes.add(e),this.$emit("node:checked",e.check())),void(e.parent&&e.parent.refreshIndeterminateState())))},Tree.prototype.uncheck=function(e){var t=this;if(!e.checked()&&!e.indeterminate())return!1;e.state("indeterminate",!1),e.hasChildren()?this.recurseDown(e,function(e){e.state("indeterminate",!1),t.checkedNodes.remove(e),e.checked()&&t.$emit("node:unchecked",e.uncheck())}):(this.checkedNodes.remove(e),this.$emit("node:unchecked",e.uncheck())),e.parent&&e.parent.refreshIndeterminateState()},Tree.prototype.expand=function(e){return!e.expanded()&&(this.$emit("node:expanded",e.expand()),!0)},Tree.prototype.collapse=function(e){return!!e.expanded()&&(this.$emit("node:collapsed",e.collapse()),!0)},Tree.prototype.toggleExpand=function(e){return!!e.hasChildren()&&(e.expanded()?this.collapse(e):this.expand(e),!0)},Tree.prototype.addNode=function(e){var t=this.model.length;return e=objectToNode(e),this.model.splice(t,0,e),this.$emit("node:added",e),e},Tree.prototype.removeNode=function(e){return e.parent?e.parent.children.splice(e.parent.children.indexOf(e),1):this.model.splice(this.model.indexOf(e),1),this.selectedNodes.remove(e),this.checkedNodes.remove(e),e},Tree.prototype.findNode=function(e){if("string"==typeof e);else if(e instanceof Node)return e},Tree.parseModel=function(e){return hierarchy$1(e)};var TreeMixin={mounted:function(){this.model=Tree.parseModel(this.data),this._provided.tree=new Tree(this,this.model),this.tree=this._provided.tree},methods:{selected:function(){return this.options.multiple?this.tree.selectedNodes:this.tree.selectedNodes[0]||null},checked:function(){return this.options.checkbox?this.tree.checkedNodes:null},addNode:function(e){return this.tree.addNode(e)}}};!function(){if("undefined"!=typeof document){var e=document.head||document.getElementsByTagName("head")[0],t=document.createElement("style"),n=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; } .tree > .tree-root { padding: 0; } ";t.type="text/css",t.styleSheet?t.styleSheet.cssText=n:t.appendChild(document.createTextNode(n)),e.appendChild(t)}}();var defaults$1={multiple:!0,checkbox:!1,parentSelect:!1},TreeRoot={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"tree",attrs:{role:"tree"}},[n("ul",{staticClass:"tree-root"},e._l(e.model,function(t,o){return n("node",{key:o,attrs:{node:t,options:e.options}})}))])},staticRenderFns:[],name:"Tree",components:{node:TreeNode},mixins:[TreeMixin],provide:function(e){return{tree:null}},props:{data:{type:Array,default:function(e){return[]}},options:{type:Object,default:function(e){return{}}}},data:function(){for(var e in defaults$1)!1==e in this.options&&(this.options[e]=defaults$1[e]);return{model:null,tree:null}}},install=function(e){e.component(TreeRoot.name,TreeRoot),e.component(TreeNode.name,TreeNode)};TreeRoot.install=install,"undefined"!=typeof window&&window.Vue&&window.Vue.use(TreeRoot);export default TreeRoot;export{TreeRoot,TreeNode};
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" li.tree-node { white-space: nowrap; display: flex; flex-direction: column; } a.tree-anchor { display: inline-block; text-decoration: none; color: #343434; vertical-align: top; height: 24px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } a.tree-anchor:hover { background-color: #fafafa; } .tree--selected > .tree-node__content > .tree-anchor { background: #f0f0f0; } .tree-checkbox { display: inline-block; height: 30px; width: 30px; cursor: pointer; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAABaCAYAAACv+ebYAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAejAAAHowEwL7LFAAAAB3RJTUUH4gIDCy4HZhufyQAAAZVJREFUaN7t2U8og3EYB/DvO3pdRKR2UIiViNzsyE4yHCQiSSIHkQOSFuZPSqklDliSkhknBw4UhYPiJgebNaQtorc5rHfz6nVz0cqYdzt8n+PvOXz69TxPPfUI/pdXFXEIHeIUhAkTTmzY73/G9bVbW1iSApiZXYL3/lE7OBiUMTtnR2lJIWrNJm1gRfmAbX4NmRnp6Oxo1KbGqqpi2e6ALIfQ39eOpCSdNvCWcw8ezwOGBrqQkiLGpqvtq9t4V5SI+YPDM5ycXmB4qBtpaamxGyef7wmT04uQpMC33MXlFZw7+xgc6IRenxXbObaM9CAvNxuWMRtuXN6vd5fbi6UVB3p72lCQnxN1eYSfbiBHx+fY2NxFa0sdiosMsE4tormpBqZK46/6Qohm9XG57zC/sA5ZDsFcXYGG+qpfN6QQ7c4lSW9wub0wlpf9aRIELnuECRMmTJgwYcKECRMmTJgwYcKECRMmTJgwYcL/EMmRElMTVnhubyGKIhDtnUYAwuEwCgwGjI5bE+vHvDsRJkyYMOGI8Ql68IQ9vE0/3AAAAABJRU5ErkJggg=='); background-repeat: no-repeat; background-position-x: center; background-position-y: -30px; } .tree--checked > .tree-node__content > .tree-checkbox { background-position-y: 0; } .tree--indeterminate > .tree-node__content > .tree-checkbox { background-position-y: -60px; } .tree--checked > .tree-node__content > .tree-anchor { background: #dadada; } .tree-arrow { display: inline-block; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree--has-child > .tree-node__content > .tree-arrow { margin-left: 0; width: 30px; background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAACROWYpAAAACXBIWXMAAA3XAAAN1wFCKJt4AAADGGlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGBgYGBITG5uMAxIMCHgYGBIS8/L5UBFTAyMHy7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHhCwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKhpaWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BSMDVQYqg4jIKAUICxE+CDEESC4tKoMHJQODAIMCgwGDA0MAQyJDPcMChqMMbxjFGV0YSxlXMN5jEmMKYprAdIFZmDmSeSHzGxZLlg6WW6x6rK2s99gs2aaxfWMPZ9/NocTRxfGFM5HzApcj1xZuTe4FPFI8U3mFeCfxCfNN45fhXyygI7BD0FXwilCq0A/hXhEVkb2i4aJfxCaJG4lfkaiQlJM8JpUvLS19QqZMVl32llyfvIv8H4WtioVKekpvldeqFKiaqP5UO6jepRGqqaT5QeuA9iSdVF0rPUG9V/pHDBYY1hrFGNuayJsym740u2C+02KJ5QSrOutcmzjbQDtXe2sHY0cdJzVnJRcFV3k3BXdlD3VPXS8Tbxsfd99gvwT//ID6wIlBS4N3hVwMfRnOFCEXaRUVEV0RMzN2T9yDBLZE3aSw5IaUNak30zkyLDIzs+ZmX8xlz7PPryjYVPiuWLskq3RV2ZsK/cqSql01jLVedVPrHzbqNdU0n22VaytsP9op3VXUfbpXta+x/+5Em0mzJ/+dGj/t8AyNmf2zvs9JmHt6vvmCpYtEFrcu+bYsc/m9lSGrTq9xWbtvveWGbZtMNm/ZarJt+w6rnft3u+45uy9s/4ODOYd+Hmk/Jn58xUnrU+fOJJ/9dX7SRe1LR68kXv13fc5Nm1t379TfU75/4mHeY7En+59lvhB5efB1/lv5dxc+NH0y/fzq64Lv4T8Ffp360/rP8f9/AA0ADzT6lvFdAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACCSURBVHja7JSxDkBQDEVPzYIVg/gAETaL//8NFonJKiRMwlAR78UgtOs9uU1vU1kwL4cffjcsrkTC3vecUxq8S+tFbSBnJNxMT1SnMFT0JKYw1AwEpjCUzASmMBR0xLrKKucHx7ZYmEVUFkeSMR3PU1eJ/gDFx6c9wqrq/56fgNcBAInl7e4ANk/XAAAAAElFTkSuQmCC'); background-repeat: no-repeat; transition: transform .3s; } .tree--expanded > .tree-node__content > .tree-arrow { transform: rotate(90deg); } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('div',{staticClass:"tree-node__content"},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggleExpand}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)"},on:{"click":_vm.select}},[_c('node-content',{attrs:{"node":_vm.node}})],1)]),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.expanded)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.node.children),function(child,i){return _c('node',{key:i,attrs:{"node":child,"options":_vm.options}})})):_vm._e()])],1)},staticRenderFns: [],
+  name: 'Node',
+  inject: ['tree'],
+  props: ['node', 'options'],
+
+  components: {
+    NodeContent: {
+      props: ['node'],
+      render: function render(h) {
+        var node = this.node;
+        var vm = this.node.tree.vm;
+
+        return vm.$scopedSlots.default
+          ? vm.$scopedSlots.default({ node: this.node })
+          : h('span', {
+            domProps: {
+              innerHTML: node.text
+            }
+          })
+      }
+    }
+  },
+
+  data: function data() {
+    return {
+      state: this.node.states
+    }
+  },
+
+  computed: {
+    nodeClass: function nodeClass() {
+      var state = this.state;
+      var hasChildren = this.hasChildren();
+      var classes = {
+        'tree--has-child': hasChildren,
+        'tree--expanded': hasChildren && state.expanded,
+        'tree--selected': state.selected
+      };
+
+      if (this.options.checkbox) {
+        classes['tree--checked'] = state.checked;
+        classes['tree--indeterminate'] = state.indeterminate;
+      }
+
+      return classes
+    }
+  },
+
+
+  methods: {
+    check: function check() {
+      if (this.node.checked()) {
+        this.tree.uncheck(this.node);
+      } else {
+        this.tree.check(this.node);
+      }
+    },
+
+    select: function select(evnt) {
+      if (!this.options.parentSelect && this.hasChildren()) {
+        return this.toggleExpand()
+      }
+
+      if (!this.node.selected()) {
+        this.tree.select(
+          this.node, evnt.ctrlKey
+        );
+      } else {
+        if (evnt.ctrlKey) {
+          this.tree.deselect(this.node);
+        } else {
+          this.tree.deselectAll();
+
+          if (this.options.multiple) {
+            this.tree.select(this.node);
+          }
+        }
+      }
+    },
+
+    toggleExpand: function toggleExpand() {
+      if (this.hasChildren()) {
+        this.tree.toggleExpand(
+          this.node
+        );
+      }
+    },
+
+    hasChildren: function hasChildren() {
+      return this.node.hasChildren()
+    }
+  }
+};
+
+var Node = function Node(data) {
+  this.id = data.id;
+  this.states = data.state;
+  this.text = data.text;
+  this.children = data.children || [];
+  this.parent = data.parent || null;
+
+  if (data.component) {
+    this.component = data.component;
+  }
+};
+
+Node.prototype.state = function state (name, value) {
+  if (undefined === value) {
+    return this.states[name]
+  }
+
+  this.states[name] = value;
+  return this
+};
+
+Node.prototype.refreshIndeterminateState = function refreshIndeterminateState () {
+  this.state('indeterminate', false);
+
+  if (this.hasChildren()) {
+    var childrenCount = this.children.length;
+    var checked = 0;
+    var indeterminate = 0;
+
+    this.children.forEach(function (child) {
+      if (child.checked()) {
+        checked++;
+      }
+
+      if (child.indeterminate()) {
+        indeterminate++;
+      }
+    });
+
+    if (checked == childrenCount) {
+      if (!this.checked()) {
+        this.tree.$emit(
+          'node:checked',
+          this.check()
+        );
+      }
+    } else {
+      if (this.checked()) {
+        this.tree.$emit(
+          'node:unchecked',
+          this.uncheck()
+        );
+      }
+    }
+
+    if (!this.checked()) {
+      this.state(
+        'indeterminate',
+        indeterminate > 0 || (checked > 0 && checked < childrenCount)
+      );
+    }
+  }
+
+  if (this.parent) {
+    this.parent.refreshIndeterminateState();
+  }
+};
+
+
+Node.prototype.indeterminate = function indeterminate () {
+  return this.state('indeterminate')
+};
+
+
+Node.prototype.selectable = function selectable () {
+  return this.state('selectable')
+};
+
+Node.prototype.selected = function selected () {
+  return this.state('selected')
+};
+
+Node.prototype.select = function select () {
+  return this.state('selected', true)
+};
+
+Node.prototype.deselect = function deselect () {
+  return this.state('selected', false)
+};
+
+
+Node.prototype.checked = function checked () {
+  return this.state('checked')
+};
+
+Node.prototype.check = function check () {
+  return this.state('checked', true)
+};
+
+Node.prototype.uncheck = function uncheck () {
+  return this.state('checked', false)
+};
+
+
+Node.prototype.expanded = function expanded () {
+  return this.state('expanded')
+};
+
+Node.prototype.toggleExpand = function toggleExpand () {
+  return this.toggleState('expanded')
+};
+
+Node.prototype.collapse = function collapse () {
+  return this.state('expanded', false)
+};
+
+Node.prototype.expand = function expand () {
+  return this.state('expanded', true)
+};
+
+Node.prototype.remove = function remove () {
+  return this.tree.removeNode(this)
+};
+
+
+Node.prototype.toggleState = function toggleState (state) {
+  if (state in this.states) {
+    this.states[state] = !this.states[state];
+  }
+};
+
+Node.prototype.hasChildren = function hasChildren () {
+  return this.children.length > 0
+};
+
+/**
+* Sometimes it's no need to have a parent. It possible to have more than 1 parent
+*/
+Node.prototype.isRoot = function isRoot () {
+  return null === this.parent
+};
+
+var defaults = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  indeterminate: false
+};
+
+var extend = Object.assign;
+
+
+function hierarchy(n, i) {
+  var node = new Node(n);
+  var state = node.states || {};
+  var id = i + 1;
+
+  node.states = extend({}, defaults, state);
+
+  if (undefined === node.id) {
+    node.id = node.parent ? ((node.parent.id) + "." + id) : '' + id;
+  }
+
+  if (node.children) {
+    node.children = node.children.map(function (el, i) {
+      el.parent = node;
+      return hierarchy(el, i);
+    });
+  }
+
+  return node;
+}
+
+
+function hierarchy$1(data) {
+  return data.map(hierarchy);
+}
+
+var nodeStates = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  indeterminate: false
+};
+
+function merge(state) {
+  if ( state === void 0 ) state = {};
+
+  return Object.assign({}, nodeStates, state)
+}
+
+function objectToNode(obj) {
+  var node = null;
+
+  if ('string' == typeof obj) {
+    node = new Node({
+      text: obj,
+      state: merge()
+    });
+  } else if (Array.isArray(obj)) {
+
+  } else {
+    node = new Node(obj);
+    node.states = merge(node.states);
+
+    if (node.children.length) {
+      node.children = node.children.map(function (child) {
+        child = objectToNode(child);
+        child.parent = node;
+
+        return child
+      });
+    }
+  }
+
+  return node
+}
+
+var List = (function (Array) {
+  function List() {
+    Array.call(this);
+  }
+
+  if ( Array ) List.__proto__ = Array;
+  List.prototype = Object.create( Array && Array.prototype );
+  List.prototype.constructor = List;
+
+  List.prototype.empty = function empty () {
+    this.length = 0;
+
+    return this
+  };
+
+  List.prototype.add = function add () {
+    var ref;
+
+    var items = [], len = arguments.length;
+    while ( len-- ) items[ len ] = arguments[ len ];
+    (ref = this).push.apply(ref, items);
+
+    return this
+  };
+
+  List.prototype.remove = function remove (item) {
+    this.splice(
+      this.indexOf(item),
+      1
+    );
+
+    return this
+  };
+
+  List.prototype.removeAll = function removeAll (item) {
+    var this$1 = this;
+
+    while(this.includes(item)) {
+      this$1.remove(item);
+    }
+
+    return this
+  };
+
+  List.prototype.top = function top () {
+    return this[this.length - 1]
+  };
+
+  return List;
+}(Array));
+
+function recurseDown(obj, fn) {
+  var res;
+
+  if (Array.isArray(obj)) {
+    return obj.map(function (node) { return recurseDown(node, fn); })
+  }
+
+  res = fn(obj);
+
+  // Recurse children
+  if (res !== false && obj.hasChildren()) {
+      res = recurseDown(obj.children, fn);
+  }
+
+  return res;
+}
+
+var Tree = function Tree(vm) {
+  this.vm = vm;
+  this.options = vm.options;
+
+  this.setModel(vm.model);
+};
+
+Tree.prototype.$on = function $on (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$on.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$once = function $once (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$once.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$off = function $off (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$off.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$emit = function $emit (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$emit.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.setModel = function setModel (model) {
+    var this$1 = this;
+
+  this.model = model;
+
+  /**
+  * VueJS transform properties to reactives when constructor is running
+  * And we lose List object (extended from Array)
+  */
+  this.selectedNodes = new List;
+  this.checkedNodes = new List;
+
+  recurseDown(model, function (node) {
+    node.tree = this$1;
+
+    if (node.selected()) {
+      this$1.selectedNodes.add(node);
+    }
+
+    if (node.checked()) {
+      this$1.checkedNodes.add(node);
+
+      if (node.parent) {
+        node.parent.refreshIndeterminateState();
+      }
+    }
+  });
+
+  if (!this.options.multiple && this.selectedNodes.length) {
+    var top = this.selectedNodes.top();
+
+    this.selectedNodes.forEach(function (node) {
+      if (top !== node) {
+        node.state('selected', false);
+      }
+    });
+
+    this.selectedNodes
+      .empty()
+      .add(top);
+  }
+};
+
+Tree.prototype.recurseDown = function recurseDown$1 (node, fn) {
+  if (!fn && node) {
+    fn = node;
+    node = this.model;
+  }
+
+  return recurseDown(node, fn)
+};
+
+
+Tree.prototype.select = function select (node, extendList) {
+    var this$1 = this;
+
+  if (node.selected() || !node.selectable()) {
+    return false
+  }
+
+  var treeNode = this.findNode(node);
+
+  if (!treeNode) {
+    return false
+  }
+
+
+  if (this.options.multiple && extendList) {
+    this.selectedNodes.add(treeNode);
+  } else {
+    this.selectedNodes.forEach(function (node) { return this$1.deselect(node); });
+    this.selectedNodes
+      .empty()
+      .add(treeNode);
+  }
+
+  this.$emit(
+    'node:selected',
+    treeNode.select()
+  );
+
+  return true
+};
+
+Tree.prototype.selectAll = function selectAll () {
+    var this$1 = this;
+
+  if (!this.options.multiple) {
+    return false
+  }
+
+  this.selectedNodes.empty();
+
+  this.recurseDown(function (node) {
+    node.select();
+
+    this$1.selectedNodes.add(node);
+    this$1.$emit('node:selected', node);
+  });
+
+  return true
+};
+
+
+Tree.prototype.deselect = function deselect (node) {
+  if (!node.selected() || !node.selectable()) {
+    return false
+  }
+
+  this.$emit(
+    'node:deselected',
+    node.deselect()
+  );
+
+  return true
+};
+
+Tree.prototype.deselectAll = function deselectAll () {
+    var this$1 = this;
+
+  this.selectedNodes.forEach(function (node) {
+    this$1.deselect(node);
+  });
+
+  this.selectedNodes.empty();
+
+  return true
+};
+
+
+Tree.prototype.check = function check (node) {
+    var this$1 = this;
+
+  if (node.checked()) {
+    return false
+  }
+
+  if (node.indeterminate()) {
+    return this.uncheck(node)
+  }
+
+  node.state('indeterminate', false);
+
+  if (node.hasChildren()) {
+    this.recurseDown(node, function (child) {
+      this$1.checkedNodes.add(child);
+
+      if (!child.checked()) {
+        this$1.$emit(
+          'node:checked',
+          child.check()
+        );
+      }
+    });
+  } else {
+    this.checkedNodes.add(node);
+
+    this.$emit(
+      'node:checked',
+      node.check()
+    );
+  }
+
+  if (node.parent) {
+    node.parent.refreshIndeterminateState();
+  }
+};
+
+Tree.prototype.uncheck = function uncheck (node) {
+    var this$1 = this;
+
+  if (!node.checked() && !node.indeterminate()) {
+    return false
+  }
+
+  node.state('indeterminate', false);
+
+  if (node.hasChildren()) {
+    this.recurseDown(node, function (child) {
+      child.state('indeterminate', false);
+
+      this$1.checkedNodes.remove(child);
+
+      if (child.checked()) {
+        this$1.$emit(
+          'node:unchecked',
+          child.uncheck()
+        );
+      }
+    });
+  } else {
+    this.checkedNodes.remove(node);
+
+    this.$emit(
+      'node:unchecked',
+      node.uncheck()
+    );
+  }
+
+  if (node.parent) {
+    node.parent.refreshIndeterminateState();
+  }
+};
+
+
+Tree.prototype.expand = function expand (node) {
+  if (node.expanded()) {
+    return false
+  }
+
+  this.$emit(
+    'node:expanded',
+    node.expand()
+  );
+
+  return true
+};
+
+Tree.prototype.collapse = function collapse (node) {
+  if (!node.expanded()) {
+    return false
+  }
+
+  this.$emit(
+    'node:collapsed',
+    node.collapse()
+  );
+
+  return true
+};
+
+Tree.prototype.toggleExpand = function toggleExpand (node) {
+  if (!node.hasChildren()) {
+    return false
+  }
+
+  if (node.expanded()) {
+    this.collapse(node);
+  } else {
+    this.expand(node);
+  }
+
+  return true
+};
+
+
+Tree.prototype.addNode = function addNode (node) {
+  var index = this.model.length;
+
+  node = objectToNode(node);
+
+  this.model.splice(index, 0, node);
+  this.$emit('node:added', node);
+
+  return node
+};
+
+Tree.prototype.removeNode = function removeNode (node) {
+  if (!node.parent) {
+    this.model.splice(
+      this.model.indexOf(node),
+      1
+    );
+  } else {
+    node.parent.children.splice(
+      node.parent.children.indexOf(node),
+      1
+    );
+  }
+
+  this.selectedNodes.remove(node);
+  this.checkedNodes.remove(node);
+
+  return node
+};
+
+
+Tree.prototype.findNode = function findNode (node) {
+  if ('string' == typeof node) {
+    // find by id
+  } else if (node instanceof Node){
+    return node
+  }
+};
+
+
+Tree.parseModel = function parseModel (data) {
+  return hierarchy$1(data)
+};
+
+var TreeMixin = {
+  mounted: function mounted() {
+    this.model = Tree.parseModel(this.data);
+
+    this._provided.tree = new Tree(this, this.model);
+    this.tree = this._provided.tree;
+  },
+
+  methods: {
+    selected: function selected() {
+      if (this.options.multiple) {
+        return this.tree.selectedNodes
+      }
+
+      return this.tree.selectedNodes[0] || null
+    },
+
+    checked: function checked() {
+      if (!this.options.checkbox) {
+        return null
+      }
+
+      return this.tree.checkedNodes
+    },
+
+    addNode: function addNode(node) {
+      return this.tree.addNode(node)
+    }
+  }
+
+};
+
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; } .tree > .tree-root { padding: 0; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+var defaults$1 = {
+  multiple: true,
+  checkbox: false,
+  parentSelect: false
+};
+
+var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree",attrs:{"role":"tree"}},[_c('ul',{staticClass:"tree-root"},_vm._l((_vm.model),function(node,i){return _c('node',{key:i,attrs:{"node":node,"options":_vm.options}})}))])},staticRenderFns: [],
+  name: 'Tree',
+  components: {
+    'node': TreeNode
+  },
+
+  mixins: [TreeMixin],
+
+  provide: function (_) { return ({
+    tree: null
+  }); },
+
+  props: {
+    data: {
+      type: Array,
+      default: function (_) { return []; }
+    },
+
+    options: {
+      type: Object,
+      default: function (_) { return ({}); }
+    }
+  },
+
+  data: function data() {
+    var this$1 = this;
+
+    // we should not mutating a prop directly...
+    // that's why we add if it necessary
+    for (var prop in defaults$1) {
+      if ( false === (prop in this$1.options) ) {
+        this$1.options[prop] = defaults$1[prop];
+      }
+    }
+
+    return {
+      model: null,
+      tree: null
+    }
+  }
+}
+
+var install = function (Vue) {
+  Vue.component(TreeRoot.name, TreeRoot);
+};
+
+TreeRoot.install = install;
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(TreeRoot);
+}
+
+export default TreeRoot;
+//# sourceMappingURL=liquor-tree.esm.js.map

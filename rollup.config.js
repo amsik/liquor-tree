@@ -22,7 +22,10 @@ const config = {
     }
   ],
   plugins: [
-    alias({ resolve: ['.js', '.vue'], '@': path.resolve(__dirname, './src') }),
+    alias({
+      resolve: ['.vue', '.js'],
+      '@': path.resolve(__dirname, './src')
+    }),
     vue({ css: true }),
     buble({ objectAssign: 'Object.assign' })
   ]

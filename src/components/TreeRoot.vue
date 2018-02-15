@@ -1,14 +1,14 @@
 <template>
-    <div class="tree" role="tree">
-        <ul class="tree-root">
-            <node
-                v-for="(node, i) in model"
-                :key="i"
-                :node="node"
-                :options="options"
-            />
-        </ul>
-    </div>
+  <div class="tree" role="tree">
+    <ul class="tree-root">
+      <node
+        v-for="(node, i) in model"
+        :key="i"
+        :node="node"
+        :options="options"
+      />
+    </ul>
+  </div>
 </template>
 
 <script>
