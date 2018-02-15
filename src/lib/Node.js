@@ -1,19 +1,21 @@
 
 export default class Node {
-  constructor(data) {
-    this.id = data.id
-    this.states = data.state
+  constructor(tree, item) {
+    this.id = item.id
+    this.states = item.state
 
-    this.children = data.children || []
-    this.parent = data.parent || null
+    this.children = item.children || []
+    this.parent = item.parent || null
 
     this._data = Object.assign({}, {
-      text: data.text
-    }, data.data || {})
+      text: item.text
+    }, item.data || {})
 
-    if (data.tree) {
-      this.tree = data.tree
+    if (!tree) {
+      throw new Error('Node must has a Tree context!')
     }
+
+    this.tree = tree
   }
 
   $emit(evnt, ...args) {
@@ -53,7 +55,8 @@ export default class Node {
   }
 
   refreshIndeterminateState() {
-    this.state('indeterminate', false);
+    this.state('indeterminate', false)
+    this._ignoreCheckIndeterminate = false
 
     if (this.hasChildren()) {
       let childrenCount = this.children.length
@@ -71,9 +74,13 @@ export default class Node {
       })
 
       if (checked == childrenCount) {
-        this.check()
+        if (!this.checked()) {
+          this.check()
+        }
       } else {
-        this.uncheck()
+        if (this.checked()) {
+          this.uncheck()
+        }
       }
 
       if (!this.checked()) {
@@ -138,20 +145,20 @@ export default class Node {
     }
 
     this.state('checked', true)
-    this.refreshIndeterminateState()
     this.$emit('checked')
+    this.refreshIndeterminateState()
 
     return this
   }
 
-  uncheck() {
+  uncheck(ignoreIndeterminate) {
     if (!this.checked()) {
       return this
     }
 
     this.state('checked', false)
-    this.refreshIndeterminateState()
     this.$emit('unchecked')
+    this.refreshIndeterminateState()
 
     return this
   }

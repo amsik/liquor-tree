@@ -1,8 +1,8 @@
-import hierarchy from '@/utils/hierarchy'
 import objectToNode from '@/utils/objectToNode'
 import Node from '@/lib/Node'
 import { List } from '@/utils/stack'
 
+import { TreeParser } from '@/utils/treeParser'
 import { recurseDown } from '@/utils/recurse'
 
 
@@ -10,8 +10,6 @@ export default class Tree {
   constructor(vm) {
     this.vm = vm
     this.options = vm.options
-
-    this.setModel(vm.model)
   }
 
   $on(name, ...args) {
@@ -162,19 +160,27 @@ export default class Tree {
 
     if (node.hasChildren()) {
       this.recurseDown(node, child => {
-        this.checkedNodes.add(
-          child.check()
-        )
+        if (!child.checked()) {
+          this.$emit(
+            'node:checked',
+            child.state('checked', true)
+          )
+
+          this.checkedNodes.add(child)
+        }
       })
     } else {
-      this.checkedNodes.add(
-        node.check()
-      )
+      if (!node.checked()) {
+        this.$emit(
+          'node:checked',
+          node.state('checked', true)
+        )
+
+        this.checkedNodes.add(node)
+      }
     }
 
-    if (node.parent) {
-      node.parent.refreshIndeterminateState()
-    }
+    node.refreshIndeterminateState()
   }
 
   uncheck(node) {
@@ -188,19 +194,26 @@ export default class Tree {
       this.recurseDown(node, child => {
         child.state('indeterminate', false)
 
-        this.checkedNodes.remove(
-          child.uncheck()
-        )
+        if (child.checked()) {
+          this.$emit(
+            'node:unchecked',
+            child.state('checked', false)
+          )
+        }
+
+        this.checkedNodes.remove(child)
       })
     } else {
-      this.checkedNodes.remove(
-        node.uncheck()
-      )
+      if (node.checked()) {
+        this.$emit(
+          'node:unchecked',
+          node.state('checked', false)
+        )
+      }
+      this.checkedNodes.remove(node)
     }
 
-    if (node.parent) {
-      node.parent.refreshIndeterminateState()
-    }
+    node.refreshIndeterminateState()
   }
 
 
@@ -308,7 +321,17 @@ export default class Tree {
   }
 
 
-  static parseModel(data) {
-    return hierarchy(data)
+  parse(data, options) {
+    if (!options) {
+      options = this.options.propertyNames
+    }
+
+    try {
+      return TreeParser.parse(data, this, options)
+    } catch(e) {
+      console.error(e)
+      return []
+    }
   }
+
 }

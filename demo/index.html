@@ -115,33 +115,33 @@
 
         let data2 = _ => ([
           {
-            text: 'JS: The Right Way',
+            TE: 'JS: The Right Way',
 
             // it makes node expanded
-            state: { expanded: true },
+            MAMA: { expanded: true },
             children: [
-              { text: 'Getting Started' },
-              { text: 'JavaScript Code Style', state: { selected: true } },
-              { text: 'The Good Parts', children: [
-                { text: 'OBJECT ORIENTED' },
-                { text: 'ANONYMOUS FUNCTIONS' },
-                { text: 'FUNCTIONS AS FIRST-CLASS OBJECTS' },
-                { text: 'LOOSE TYPING' }
+              { TE: 'Getting Started' },
+              { TE: 'JavaScript Code Style', MAMA: { selected: true } },
+              { TE: 'The Good Parts', children: [
+                { TE: 'OBJECT ORIENTED' },
+                { TE: 'ANONYMOUS FUNCTIONS' },
+                { TE: 'FUNCTIONS AS FIRST-CLASS OBJECTS' },
+                { TE: 'LOOSE TYPING' }
               ]},
-              { text: 'Patterns', children: [
-                { text: 'DESIGN PATTERNS', state: { expanded: true }, children: [
-                  { text: 'Creational Design Patterns', children: [
-                    { text: 'Factory' },
-                    { text: 'Prototype' },
-                    { text: 'Mixin' },
-                    { text: 'Singleton' }
+              { TE: 'Patterns', children: [
+                { TE: 'DESIGN PATTERNS', MAMA: { expanded: true }, children: [
+                  { TE: 'Creational Design Patterns', children: [
+                    { TE: 'Factory' },
+                    { TE: 'Prototype' },
+                    { TE: 'Mixin' },
+                    { TE: 'Singleton' }
                   ]},
-                  { text: 'Structural Design Patterns'}
+                  { TE: 'Structural Design Patterns'}
                 ]},
-                { text: 'MV* PATTERNS', cildren: [
-                  { text: 'MVC Pattern' },
-                  { text: 'MVP Pattern' },
-                  { text: 'MVVM Pattern' }
+                { TE: 'MV* PATTERNS', cildren: [
+                  { TE: 'MVC Pattern' },
+                  { TE: 'MVP Pattern' },
+                  { TE: 'MVVM Pattern' }
                 ]}
               ]}
             ]
@@ -205,7 +205,8 @@
                     data: data2(),
                     options: {
                       multiple: true,
-                      parentSelect: false
+                      parentSelect: false,
+                      propertyNames: {text: 'TE', state: 'MAMA'}
                     }
                 }
             },

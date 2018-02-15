@@ -1,18 +1,16 @@
 import Tree from '@/lib/Tree'
 
-let treeEvents = [
-  'node:selected',
-  'node:deselected',
-  'node:expanded',
-  'node:collapsed',
-]
 
 export default {
   mounted() {
-    this.model = Tree.parseModel(this.data)
+    const tree = new Tree(this)
 
-    this._provided.tree = new Tree(this, this.model)
-    this.tree = this._provided.tree
+    this.model = tree.parse(this.data, this.options.modelParse)
+
+    this.tree = tree
+    this.tree.setModel(this.model)
+
+    this._provided.tree = tree
   },
 
   methods: {

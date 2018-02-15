@@ -1,12 +1,16 @@
 import Node from '@/lib/Node'
 import uuidV4 from '@/utils/uuidV4'
 
+/**
+* Default Node's states
+*/
 const nodeStates = {
   selected: false,
   selectable: true,
   checked: false,
   expanded: false,
   disabled: false,
+  visible: true,
   indeterminate: false
 }
 
@@ -14,19 +18,17 @@ function merge(state = {}) {
   return Object.assign({}, nodeStates, state)
 }
 
-export default function objectToNode(obj) {
+export default function objectToNode(tree, obj) {
   let node = null
 
   if ('string' == typeof obj) {
-    node = new Node({
+    node = new Node(tree, {
       text: obj,
       state: merge(),
       id: uuidV4()
     })
-  } else if (Array.isArray(obj)) {
-
   } else {
-    node = new Node(obj)
+    node = new Node(tree, obj)
     node.states = merge(node.states)
 
     if (!node.id) {
@@ -35,7 +37,7 @@ export default function objectToNode(obj) {
 
     if (node.children.length) {
       node.children = node.children.map(child => {
-        child = objectToNode(child)
+        child = objectToNode(tree, child)
         child.parent = node
 
         return child
