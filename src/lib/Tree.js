@@ -267,6 +267,29 @@ export default class Tree {
     return true
   }
 
+  addToModel(node, index = this.model.length) {
+    this.model.splice(index, 0, node)
+    this.recurseDown(node, n => {
+      n.tree = this
+    })
+  }
+
+
+  append(node) {
+    node = objectToNode(node)
+
+    this.addToModel(node)
+
+    return node
+  }
+
+  prepend(node) {
+    node = objectToNode(node)
+
+    this.addToModel(node, 0)
+
+    return node
+  }
 
   addNode(node) {
     const index = this.model.length

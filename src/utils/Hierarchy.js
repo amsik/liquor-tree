@@ -6,6 +6,7 @@ const defaults = {
   checked: false,
   expanded: false,
   disabled: false,
+  visible: true,
   indeterminate: false
 };
 

@@ -18,7 +18,9 @@
         class="tree-children">
           <node
             v-for="(child, i) in node.children"
-            :key="i"
+            v-if="child.visible()"
+
+            :key="child.id"
             :node="child"
             :options="options"
             >

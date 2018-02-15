@@ -3,13 +3,41 @@ export default class Node {
   constructor(data) {
     this.id = data.id
     this.states = data.state
-    this.text = data.text
+
     this.children = data.children || []
     this.parent = data.parent || null
 
-    if (data.component) {
-      this.component = data.component
+    this._data = Object.assign({}, {
+      text: data.text
+    }, data.data || {})
+
+    if (data.tree) {
+      this.tree = data.tree
     }
+  }
+
+  $emit(evnt, ...args) {
+    this.tree.$emit(`node:${evnt}`, this, ...args)
+  }
+
+  get text() {
+    return this.data('text')
+  }
+
+  set text(text) {
+    let oldText = this.text
+
+    this.data('text', text)
+    this.tree.$emit('node:text:changed', text, oldText)
+  }
+
+  data(name, value) {
+    if (undefined === value) {
+      return this._data[name]
+    }
+
+    this._data[name] = value
+    return this
   }
 
   state(name, value) {
@@ -17,7 +45,10 @@ export default class Node {
       return this.states[name]
     }
 
+    // TODO: check if it for example `selectable` state it should unselect node
+
     this.states[name] = value
+
     return this
   }
 
@@ -74,6 +105,7 @@ export default class Node {
   }
 
 
+
   selectable() {
     return this.state('selectable')
   }
@@ -83,12 +115,27 @@ export default class Node {
   }
 
   select() {
-    return this.state('selected', true)
+    if (this.selected()) {
+      return this
+    }
+
+    this.state('selected', true)
+    this.$emit('selected')
+
+    return this
   }
 
-  deselect() {
-    return this.state('selected', false)
+  unselect() {
+    if (!this.selected()) {
+      return this
+    }
+
+    this.state('selected', false)
+    this.$emit('unselected')
+
+    return this
   }
+
 
 
   checked() {
@@ -96,12 +143,93 @@ export default class Node {
   }
 
   check() {
-    return this.state('checked', true)
+    if (this.checked()) {
+      return this
+    }
+
+    this.state('checked', true)
+    this.refreshIndeterminateState()
+    this.$emit('checked')
+
+    return this
   }
 
   uncheck() {
-    return this.state('checked', false)
+    if (!this.checked()) {
+      return this
+    }
+
+    this.state('checked', false)
+    this.refreshIndeterminateState()
+    this.$emit('unchecked')
+
+    return this
   }
+
+
+
+  show() {
+    if (this.visible()) {
+      return this
+    }
+
+    this.state('visible', true)
+    this.$emit('shown')
+
+    return this
+  }
+
+  hide() {
+    if (this.hidden()) {
+      return this
+    }
+
+    this.state('visible', false)
+    this.$emit('hidden')
+
+    return this
+  }
+
+  visible() {
+    return this.state('visible')
+  }
+
+  hidden() {
+    return !this.state('visible')
+  }
+
+
+
+  enable() {
+    if (this.enabled()) {
+      return this
+    }
+
+    this.state('disabled', false)
+    this.$emit('enabled')
+
+    return this
+  }
+
+  enabled() {
+    return !this.state('disabled')
+  }
+
+  disable() {
+    if (this.disabled()) {
+      return this
+    }
+
+    this.state('disabled', true)
+    this.$emit('disabled')
+
+    return this
+  }
+
+  disabled() {
+    return this.state('disabled')
+  }
+
 
 
   expanded() {

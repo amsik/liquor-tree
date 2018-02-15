@@ -1,4 +1,5 @@
 import Node from '@/lib/Node'
+import uuidV4 from '@/utils/uuidV4'
 
 const nodeStates = {
   selected: false,
@@ -19,13 +20,18 @@ export default function objectToNode(obj) {
   if ('string' == typeof obj) {
     node = new Node({
       text: obj,
-      state: merge()
+      state: merge(),
+      id: uuidV4()
     })
   } else if (Array.isArray(obj)) {
 
   } else {
     node = new Node(obj)
     node.states = merge(node.states)
+
+    if (!node.id) {
+      node.id = uuidV4()
+    }
 
     if (node.children.length) {
       node.children = node.children.map(child => {

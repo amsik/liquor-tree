@@ -3,7 +3,9 @@
     <ul class="tree-root">
       <node
         v-for="(node, i) in model"
-        :key="i"
+        v-if="node.visible()"
+
+        :key="node.id"
         :node="node"
         :options="options"
       />
