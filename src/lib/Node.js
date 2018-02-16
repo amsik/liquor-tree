@@ -56,7 +56,6 @@ export default class Node {
 
   refreshIndeterminateState() {
     this.state('indeterminate', false)
-    this._ignoreCheckIndeterminate = false
 
     if (this.hasChildren()) {
       let childrenCount = this.children.length
@@ -202,8 +201,12 @@ export default class Node {
       return this
     }
 
-    this.state('disabled', false)
-    this.$emit('enabled')
+    this.tree.recurseDown(this, node => {
+      if (node.disabled()) {
+        node.state('disabled', false)
+        node.$emit('enabled')
+      }
+    })
 
     return this
   }
@@ -217,8 +220,12 @@ export default class Node {
       return this
     }
 
-    this.state('disabled', true)
-    this.$emit('disabled')
+    this.tree.recurseDown(this, node => {
+      if (node.enabled()) {
+        node.state('disabled', true)
+        node.$emit('disabled')
+      }
+    })
 
     return this
   }

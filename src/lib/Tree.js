@@ -136,9 +136,9 @@ export default class Tree {
     return true
   }
 
-  deselectAll() {
+  unselectAll() {
     this.selectedNodes.forEach(node => {
-      this.deselect(node)
+      this.unselect(node)
     })
 
     this.selectedNodes.empty()

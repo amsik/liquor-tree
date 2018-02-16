@@ -1,16 +1,14 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-node__content">
-      <i class="tree-arrow" @click="toggleExpand"></i>
-      <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
+    <i class="tree-arrow" @click="toggleExpand"></i>
+    <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
 
-      <a
-        href="javascript:void(0)"
-        class="tree-anchor"
-        @click="select">
-          <node-content :node="node" />
-      </a>
-    </div>
+    <a
+      href="javascript:void(0)"
+      class="tree-anchor"
+      @click="select">
+        <node-content :node="node" />
+    </a>
 
     <transition name="l-fade">
       <ul
@@ -67,7 +65,8 @@
         let classes = {
           'tree--has-child': hasChildren,
           'tree--expanded': hasChildren && state.expanded,
-          'tree--selected': state.selected
+          'tree--selected': state.selected,
+          'tree--disabled': state.disabled
         }
 
         if (this.options.checkbox) {
@@ -82,6 +81,10 @@
 
     methods: {
       check() {
+        if (this.node.disabled()) {
+          return
+        }
+
         if (this.node.checked()) {
           this.tree.uncheck(this.node)
         } else {
@@ -90,6 +93,10 @@
       },
 
       select(evnt) {
+        if (this.node.disabled()) {
+          return
+        }
+
         if (!this.options.parentSelect && this.hasChildren()) {
           return this.toggleExpand()
         }
@@ -100,9 +107,9 @@
           )
         } else {
           if (evnt.ctrlKey) {
-            this.tree.deselect(this.node)
+            this.tree.unselect(this.node)
           } else {
-            this.tree.deselectAll()
+            this.tree.unselectAll()
 
             if (this.options.multiple) {
               this.tree.select(this.node)
@@ -112,6 +119,10 @@
       },
 
       toggleExpand() {
+        if (this.node.disabled()) {
+          return
+        }
+
         if (this.hasChildren()) {
           this.tree.toggleExpand(
             this.node
@@ -129,32 +140,16 @@
 </script>
 
 <style>
-  li.tree-node {
+  .tree-node {
     white-space: nowrap;
-    display: flex;
-    flex-direction: column;
   }
 
-  a.tree-anchor {
+  .tree-arrow {
     display: inline-block;
-    text-decoration: none;
-    color: #343434;
-    vertical-align: top;
-    height: 24px;
-    line-height: 24px;
-    padding: 3px 6px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  a.tree-anchor:hover {
-    background-color: #fafafa;
-  }
-
-  .tree--selected > .tree-node__content > .tree-anchor {
-    background: #f0f0f0;
+    height: 30px;
+    cursor: pointer;
+    margin-left: 30px;
+    width: 0;
   }
 
   .tree-checkbox {
@@ -168,27 +163,42 @@
     background-position-y: -30px;
   }
 
-  .tree--checked > .tree-node__content > .tree-checkbox {
+  .tree-anchor {
+    display: inline-block;
+    text-decoration: none;
+    color: #343434;
+    vertical-align: top;
+    height: 24px;
+    line-height: 24px;
+    padding: 3px 6px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    flex-grow: 2;
+  }
+
+  .tree-anchor:hover {
+    background-color: #fafafa;
+  }
+
+  .tree--selected > .tree-anchor {
+    background: #f0f0f0;
+  }
+
+  .tree--checked > .tree-checkbox {
     background-position-y: 0;
   }
 
-  .tree--indeterminate > .tree-node__content > .tree-checkbox {
+  .tree--indeterminate > .tree-checkbox {
     background-position-y: -60px;
   }
 
-  .tree--checked > .tree-node__content > .tree-anchor {
+  .tree--checked > .tree-anchor {
     background: #dadada;
   }
 
-  .tree-arrow {
-    display: inline-block;
-    height: 30px;
-    cursor: pointer;
-    margin-left: 30px;
-    width: 0;
-  }
-
-  .tree--has-child > .tree-node__content > .tree-arrow {
+  .tree--has-child > .tree-arrow {
     margin-left: 0;
     width: 30px;
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAQAAACROWYpAAAACXBIWXMAAA3XAAAN1wFCKJt4AAADGGlDQ1BQaG90b3Nob3AgSUNDIHByb2ZpbGUAAHjaY2BgnuDo4uTKJMDAUFBUUuQe5BgZERmlwH6egY2BmYGBgYGBITG5uMAxIMCHgYGBIS8/L5UBFTAyMHy7xsDIwMDAcFnX0cXJlYE0wJpcUFTCwMBwgIGBwSgltTiZgYHhCwMDQ3p5SUEJAwNjDAMDg0hSdkEJAwNjAQMDg0h2SJAzAwNjCwMDE09JakUJAwMDg3N+QWVRZnpGiYKhpaWlgmNKflKqQnBlcUlqbrGCZ15yflFBflFiSWoKAwMD1A4GBgYGXpf8EgX3xMw8BSMDVQYqg4jIKAUICxE+CDEESC4tKoMHJQODAIMCgwGDA0MAQyJDPcMChqMMbxjFGV0YSxlXMN5jEmMKYprAdIFZmDmSeSHzGxZLlg6WW6x6rK2s99gs2aaxfWMPZ9/NocTRxfGFM5HzApcj1xZuTe4FPFI8U3mFeCfxCfNN45fhXyygI7BD0FXwilCq0A/hXhEVkb2i4aJfxCaJG4lfkaiQlJM8JpUvLS19QqZMVl32llyfvIv8H4WtioVKekpvldeqFKiaqP5UO6jepRGqqaT5QeuA9iSdVF0rPUG9V/pHDBYY1hrFGNuayJsym740u2C+02KJ5QSrOutcmzjbQDtXe2sHY0cdJzVnJRcFV3k3BXdlD3VPXS8Tbxsfd99gvwT//ID6wIlBS4N3hVwMfRnOFCEXaRUVEV0RMzN2T9yDBLZE3aSw5IaUNak30zkyLDIzs+ZmX8xlz7PPryjYVPiuWLskq3RV2ZsK/cqSql01jLVedVPrHzbqNdU0n22VaytsP9op3VXUfbpXta+x/+5Em0mzJ/+dGj/t8AyNmf2zvs9JmHt6vvmCpYtEFrcu+bYsc/m9lSGrTq9xWbtvveWGbZtMNm/ZarJt+w6rnft3u+45uy9s/4ODOYd+Hmk/Jn58xUnrU+fOJJ/9dX7SRe1LR68kXv13fc5Nm1t379TfU75/4mHeY7En+59lvhB5efB1/lv5dxc+NH0y/fzq64Lv4T8Ffp360/rP8f9/AA0ADzT6lvFdAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACCSURBVHja7JSxDkBQDEVPzYIVg/gAETaL//8NFonJKiRMwlAR78UgtOs9uU1vU1kwL4cffjcsrkTC3vecUxq8S+tFbSBnJNxMT1SnMFT0JKYw1AwEpjCUzASmMBR0xLrKKucHx7ZYmEVUFkeSMR3PU1eJ/gDFx6c9wqrq/56fgNcBAInl7e4ANk/XAAAAAElFTkSuQmCC');
@@ -196,8 +206,21 @@
     transition: transform .3s;
   }
 
-  .tree--expanded > .tree-node__content > .tree-arrow {
+  .tree--expanded > .tree-arrow {
     transform: rotate(90deg);
+  }
+
+  .tree--disabled {
+    color: #fff;
+    background: #fff;
+    opacity: .6;
+    cursor: default;
+  }
+
+  .tree--disabled > .tree-anchor,
+  .tree--disabled > .tree-anchor span {
+    background: #fff;
+    cursor: default;
   }
 
   .l-fade-enter-active, .l-fade-leave-active {
