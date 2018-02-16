@@ -61,10 +61,15 @@ export default class Node {
       let childrenCount = this.children.length
       let checked = 0
       let indeterminate = 0
+      let disabled = 0
 
       this.children.forEach(child => {
         if (child.checked()) {
           checked++
+        }
+
+        if (child.disabled()) {
+          disabled++
         }
 
         if (child.indeterminate()) {
@@ -72,7 +77,7 @@ export default class Node {
         }
       })
 
-      if (checked == childrenCount) {
+      if (checked == childrenCount - disabled) {
         if (!this.checked()) {
           this.check()
         }

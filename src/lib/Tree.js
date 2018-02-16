@@ -160,17 +160,19 @@ export default class Tree {
 
     if (node.hasChildren()) {
       this.recurseDown(node, child => {
-        if (!child.checked()) {
-          this.$emit(
-            'node:checked',
-            child.state('checked', true)
-          )
+        if (child.enabled()) {
+          if (!child.checked()) {
+            this.$emit(
+              'node:checked',
+              child.state('checked', true)
+            )
 
-          this.checkedNodes.add(child)
+            this.checkedNodes.add(child)
+          }
         }
       })
     } else {
-      if (!node.checked()) {
+      if (!node.checked() && node.enabled()) {
         this.$emit(
           'node:checked',
           node.state('checked', true)
