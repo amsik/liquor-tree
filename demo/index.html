@@ -51,7 +51,7 @@
             <h3>Tree checkbox</h3>
             <tree
                 :data="data"
-                :options="{checkbox: true, parentSelect: true}"
+                :options="options"
                 ref="tree"
             />
         </div>
@@ -212,8 +212,8 @@
             },
 
             mounted() {
-              window.n = this.$refs.tree.selected()[0]
               addEvents.call(this)
+              window.tree = this.$refs.tree
             }
         });
 
@@ -222,13 +222,17 @@
             template: '#demo2',
             data() {
                 return {
-                    data: data()
+                    data: data(),
+                    options: {
+                      // {checkbox: true, parentSelect: true}
+                      checkbox: true
+                    }
                 }
             },
 
             mounted() {
-              window.c = this.$refs.tree.checked()[0]
               addEvents.call(this)
+              window.tree1 = this.$refs.tree
             }
         });
 

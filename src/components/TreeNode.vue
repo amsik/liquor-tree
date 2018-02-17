@@ -9,7 +9,6 @@
       tabindex="1"
       ref="anchor"
       @focus="onNodeFocus"
-
       @click="select">
         <node-content :node="node" />
     </a>
@@ -95,54 +94,46 @@
       },
 
       check() {
-        if (this.node.disabled()) {
-          return
-        }
-
         if (this.node.checked()) {
-          this.tree.uncheck(this.node)
+          this.node.uncheck()
         } else {
-          this.tree.check(this.node)
+          this.node.check()
         }
       },
 
-      select(evnt) {
-        if (this.node.disabled()) {
-          return
-        }
-
+      select({ctrlKey} = evnt) {
+        // 'parentSelect' behaviour.
+        // For nodes which has a children list we have to expand/collapse
         if (!this.options.parentSelect && this.hasChildren()) {
           return this.toggleExpand()
         }
 
-        if (!this.node.selected()) {
-          this.tree.select(
-            this.node, evnt.ctrlKey
-          )
-        } else {
-          if (evnt.ctrlKey) {
-            this.tree.unselect(this.node)
+        let tree = this.tree
+        let node = this.node
+
+        if (this.options.multiple) {
+          if (!node.selected()) {
+            node.select(ctrlKey)
           } else {
-            let selectedLength = this.tree.selectedNodes.length
-
-            this.tree.unselectAll()
-
-            if (this.options.multiple && selectedLength > 1) {
-              this.tree.select(this.node)
+            if (ctrlKey) {
+              node.unselect()
+            } else {
+              tree.unselectAll()
+              node.select()
             }
+          }
+        } else {
+          if (node.selected()) {
+            node.unselect()
+          } else {
+            node.select()
           }
         }
       },
 
       toggleExpand() {
-        if (this.node.disabled()) {
-          return
-        }
-
         if (this.hasChildren()) {
-          this.tree.toggleExpand(
-            this.node
-          )
+          this.node.toggleExpand()
         }
       },
 

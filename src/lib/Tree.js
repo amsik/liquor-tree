@@ -1,7 +1,7 @@
-import objectToNode from '@/utils/objectToNode'
 import Node from '@/lib/Node'
-import { List } from '@/utils/stack'
 
+import objectToNode from '@/utils/objectToNode'
+import { List } from '@/utils/stack'
 import { TreeParser } from '@/utils/treeParser'
 import { recurseDown } from '@/utils/recurse'
 
@@ -86,27 +86,20 @@ export default class Tree {
 
 
   select(node, extendList) {
-    if (node.selected() || !node.selectable()) {
-      return false
-    }
-
     const treeNode = this.findNode(node)
 
     if (!treeNode) {
       return false
     }
 
-
     if (this.options.multiple && extendList) {
       this.selectedNodes.add(treeNode)
     } else {
-      this.selectedNodes.forEach(node => this.unselect(node))
+      this.unselectAll()
       this.selectedNodes
         .empty()
         .add(treeNode)
     }
-
-    treeNode.select()
 
     return true
   }
@@ -120,104 +113,42 @@ export default class Tree {
 
     this.recurseDown(node => {
       this.selectedNodes.add(
-        node.select()
+        node.select(true)
       )
     })
 
     return true
   }
 
-
   unselect(node) {
-    if (!node.selected() || !node.selectable()) {
+    const treeNode = this.findNode(node)
+
+    if (!treeNode) {
       return false
     }
 
-    node.unselect()
+    this.selectedNodes.remove(treeNode)
 
     return true
   }
 
   unselectAll() {
-    this.selectedNodes.forEach(node => {
-      this.unselect(node)
-    })
+    let node
 
-    this.selectedNodes.empty()
+    while (node = this.selectedNodes.pop()) {
+      node.unselect()
+    }
 
     return true
   }
 
 
   check(node) {
-    if (node.checked()) {
-      return false
-    }
-
-    if (node.indeterminate()) {
-      return this.uncheck(node)
-    }
-
-    node.state('indeterminate', false)
-
-    if (node.hasChildren()) {
-      this.recurseDown(node, child => {
-        if (child.enabled()) {
-          if (!child.checked()) {
-            this.$emit(
-              'node:checked',
-              child.state('checked', true)
-            )
-
-            this.checkedNodes.add(child)
-          }
-        }
-      })
-    } else {
-      if (!node.checked() && node.enabled()) {
-        this.$emit(
-          'node:checked',
-          node.state('checked', true)
-        )
-
-        this.checkedNodes.add(node)
-      }
-    }
-
-    node.refreshIndeterminateState()
+    this.checkedNodes.add(node)
   }
 
   uncheck(node) {
-    if (!node.checked() && !node.indeterminate()) {
-      return false
-    }
-
-    node.state('indeterminate', false)
-
-    if (node.hasChildren()) {
-      this.recurseDown(node, child => {
-        child.state('indeterminate', false)
-
-        if (child.checked()) {
-          this.$emit(
-            'node:unchecked',
-            child.state('checked', false)
-          )
-        }
-
-        this.checkedNodes.remove(child)
-      })
-    } else {
-      if (node.checked()) {
-        this.$emit(
-          'node:unchecked',
-          node.state('checked', false)
-        )
-      }
-      this.checkedNodes.remove(node)
-    }
-
-    node.refreshIndeterminateState()
+    this.checkedNodes.remove(node)
   }
 
 

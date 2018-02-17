@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>API</title>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <div id="app">
+    <tree
+      :data="treeData"
+      :options="treeOptions"
+    />
+  </div>
+</body>
+  <!-- first import Vue -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="/liquor-tree.umd.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          treeData: getTreeData(),
+          treeOptions: {
+          }
+        }
+      }
+    })
+
+
+    function getTreeData() {
+      return [
+          { text: 'JS: The Right Way' },
+          { text: 'Getting Started' },
+          { text: 'OBJECT ORIENTED' },
+          { text: 'LOOSE TYPING' }
+        ]
+    }
+  </script>
+</html>

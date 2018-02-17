@@ -1,3 +1,4 @@
+import { recurseDown } from '@/utils/recurse'
 
 export default class Node {
   constructor(tree, item) {
@@ -22,17 +23,6 @@ export default class Node {
     this.tree.$emit(`node:${evnt}`, this, ...args)
   }
 
-  get text() {
-    return this.data('text')
-  }
-
-  set text(text) {
-    let oldText = this.text
-
-    this.data('text', text)
-    this.tree.$emit('node:text:changed', text, oldText)
-  }
-
   get depth() {
     let depth = 0
     let parent = this.parent
@@ -46,6 +36,17 @@ export default class Node {
     } while(parent = parent.parent)
 
     return depth
+  }
+
+  get text() {
+    return this.data('text')
+  }
+
+  set text(text) {
+    let oldText = this.text
+
+    this.data('text', text)
+    this.tree.$emit('node:text:changed', text, oldText)
   }
 
   data(name, value) {
@@ -79,6 +80,16 @@ export default class Node {
     }
   }
 
+  recurseDown(fn, ignoreThis) {
+    if (true !== ignoreThis) {
+      fn(this)
+    }
+
+    if (this.hasChildren()) {
+      recurseDown(this.children, fn)
+    }
+  }
+
   refreshIndeterminateState() {
     this.state('indeterminate', false)
 
@@ -104,15 +115,15 @@ export default class Node {
 
       if (checked == childrenCount - disabled) {
         if (!this.checked()) {
-          this.check()
+          this.state('checked', true)
+          this.$emit('checked')
         }
       } else {
         if (this.checked()) {
-          this.uncheck()
+          this.state('checked', false)
+          this.$emit('unchecked')
         }
-      }
 
-      if (!this.checked()) {
         this.state(
           'indeterminate',
           indeterminate > 0 || (checked > 0 && checked < childrenCount)
@@ -133,17 +144,19 @@ export default class Node {
 
 
   selectable() {
-    return this.state('selectable')
+    return !this.state('disabled') && this.state('selectable')
   }
 
   selected() {
     return this.state('selected')
   }
 
-  select() {
-    if (this.selected()) {
+  select(extendList) {
+    if (!this.selectable() || this.selected()) {
       return this
     }
+
+    this.tree.select(this, extendList)
 
     this.state('selected', true)
     this.$emit('selected')
@@ -152,9 +165,11 @@ export default class Node {
   }
 
   unselect() {
-    if (!this.selected()) {
+    if (!this.selectable() || !this.selected()) {
       return this
     }
+
+    this.tree.unselect(this)
 
     this.state('selected', false)
     this.$emit('unselected')
@@ -169,25 +184,45 @@ export default class Node {
   }
 
   check() {
-    if (this.checked()) {
+    if (this.checked() || this.disabled()) {
       return this
     }
 
-    this.state('checked', true)
-    this.$emit('checked')
-    this.refreshIndeterminateState()
+    if (this.indeterminate()) {
+      return this.uncheck()
+    }
+
+    this.recurseDown(node => {
+      node.state('checked', true)
+      node.$emit('checked')
+
+      this.tree.check(node)
+    })
+
+    if (this.parent) {
+      this.parent.refreshIndeterminateState()
+    }
 
     return this
   }
 
-  uncheck(ignoreIndeterminate) {
-    if (!this.checked()) {
+  uncheck() {
+    if (!this.indeterminate() && !this.checked() || this.disabled()) {
       return this
     }
 
-    this.state('checked', false)
-    this.$emit('unchecked')
-    this.refreshIndeterminateState()
+    this.recurseDown(node => {
+      node.state('checked', false)
+      node.state('indeterminate', false)
+
+      node.$emit('unchecked')
+
+      this.tree.check(node)
+    })
+
+    if (this.parent) {
+      this.parent.refreshIndeterminateState()
+    }
 
     return this
   }
@@ -231,7 +266,7 @@ export default class Node {
       return this
     }
 
-    this.tree.recurseDown(this, node => {
+    this.recurseDown(node => {
       if (node.disabled()) {
         node.state('disabled', false)
         node.$emit('enabled')
@@ -250,7 +285,7 @@ export default class Node {
       return this
     }
 
-    this.tree.recurseDown(this, node => {
+    this.recurseDown(node => {
       if (node.enabled()) {
         node.state('disabled', true)
         node.$emit('disabled')
@@ -266,7 +301,7 @@ export default class Node {
 
 
   expand() {
-    if (!this.hasChildren() || this.expanded()) {
+    if (!this.hasChildren() || this.expanded() || this.disabled()) {
       return this
     }
 
@@ -281,7 +316,7 @@ export default class Node {
   }
 
   collapse() {
-    if (!this.hasChildren() || this.collapsed()) {
+    if (!this.hasChildren() || this.collapsed() || this.disabled()) {
       return this
     }
 
@@ -305,6 +340,10 @@ export default class Node {
 
 
   _toggleOpenedState() {
+    if (this.disabled() || !this.hasChildren()) {
+      return this
+    }
+
     if (this.expanded()) {
       return this.collapse()
     }

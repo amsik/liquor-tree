@@ -5,7 +5,7 @@ export class List extends Array {
   }
 
   empty() {
-    this.length = 0
+    this.splice(0, this.length)
 
     return this
   }
@@ -17,10 +17,13 @@ export class List extends Array {
   }
 
   remove(item) {
-    this.splice(
-      this.indexOf(item),
-      1
-    )
+    let index = this.indexOf(item)
+
+    if (-1 == index) {
+      return this
+    }
+
+    this.splice(index, 1)
 
     return this
   }
