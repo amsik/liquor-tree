@@ -303,6 +303,18 @@ export default class Node {
     return this.expand()
   }
 
+  index() {
+    return this.tree.index(this, verbose)
+  }
+
+
+  next() {
+    return this.tree.nextNode(this)
+  }
+
+  prev() {
+    return this.tree.prevNode(this)
+  }
 
 
   remove() {

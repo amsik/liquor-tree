@@ -313,6 +313,39 @@ export default class Tree {
     return node
   }
 
+  index(node, verbose) {
+    let target = node.parent
+
+    if (target) {
+      target = target.children
+    } else {
+      target = this.model
+    }
+
+    if (verbose) {
+      return {
+        index: target.indexOf(node),
+        target
+      }
+    }
+
+    return target.indexOf(node)
+  }
+
+
+  nextNode(node) {
+    let { target, index } = this.index(node, true)
+
+    return target[index + 1] || null
+  }
+
+  prevNode(node) {
+    let { target, index } = this.index(node, true)
+
+    return target[index - 1] || null
+  }
+
+
 
   findNode(node) {
     if ('string' == typeof node) {
