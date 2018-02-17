@@ -33,6 +33,21 @@ export default class Node {
     this.tree.$emit('node:text:changed', text, oldText)
   }
 
+  get depth() {
+    let depth = 0
+    let parent = this.parent
+
+    if (!parent) {
+      return depth
+    }
+
+    do {
+      depth++
+    } while(parent = parent.parent)
+
+    return depth
+  }
+
   data(name, value) {
     if (undefined === value) {
       return this._data[name]
