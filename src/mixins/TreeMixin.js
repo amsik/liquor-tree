@@ -1,4 +1,5 @@
 import Tree from '@/lib/Tree'
+import initKeyboardNavigation from '@/utils/keyboardNavigation'
 
 
 export default {
@@ -11,6 +12,8 @@ export default {
     this.tree.setModel(this.model)
 
     this._provided.tree = tree
+
+    initKeyboardNavigation(tree)
   },
 
   methods: {

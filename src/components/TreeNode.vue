@@ -6,6 +6,10 @@
     <a
       href="javascript:void(0)"
       class="tree-anchor"
+      tabindex="1"
+      ref="anchor"
+      @focus="onNodeFocus"
+
       @click="select">
         <node-content :node="node" />
     </a>
@@ -53,6 +57,8 @@
     },
 
     data() {
+      this.node.vm = this
+
       return {
         state: this.node.states
       }
@@ -80,6 +86,14 @@
 
 
     methods: {
+      onNodeFocus() {
+        this.tree.activeElement = this.node
+      },
+
+      focus() {
+        this.$refs.anchor.focus()
+      },
+
       check() {
         if (this.node.disabled()) {
           return
@@ -109,9 +123,11 @@
           if (evnt.ctrlKey) {
             this.tree.unselect(this.node)
           } else {
+            let selectedLength = this.tree.selectedNodes.length
+
             this.tree.unselectAll()
 
-            if (this.options.multiple) {
+            if (this.options.multiple && selectedLength > 1) {
               this.tree.select(this.node)
             }
           }
@@ -164,6 +180,8 @@
   }
 
   .tree-anchor {
+    outline-color: #eee;
+    outline-width: 1px;
     display: inline-block;
     text-decoration: none;
     color: #343434;
@@ -175,7 +193,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    flex-grow: 2;
   }
 
   .tree-anchor:hover {
@@ -221,6 +238,10 @@
   .tree--disabled > .tree-anchor span {
     background: #fff;
     cursor: default;
+  }
+
+  .tree--disabled > .tree-anchor:focus {
+    outline: none
   }
 
   .l-fade-enter-active, .l-fade-leave-active {

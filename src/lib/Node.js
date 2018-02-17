@@ -69,6 +69,16 @@ export default class Node {
     return this
   }
 
+  recurseUp(fn, node = this) {
+    if (!node.parent) {
+      return
+    }
+
+    if (false !== fn(node.parent)) {
+      return this.recurseUp(fn, node.parent)
+    }
+  }
+
   refreshIndeterminateState() {
     this.state('indeterminate', false)
 
@@ -255,9 +265,8 @@ export default class Node {
   }
 
 
-
   expand() {
-    if (this.expanded()) {
+    if (!this.hasChildren() || this.expanded()) {
       return this
     }
 
@@ -272,7 +281,7 @@ export default class Node {
   }
 
   collapse() {
-    if (this.collapsed()) {
+    if (!this.hasChildren() || this.collapsed()) {
       return this
     }
 
@@ -308,6 +317,23 @@ export default class Node {
   }
 
 
+  first() {
+    if (!this.hasChildren()) {
+      return null
+    }
+
+    return this.children[0]
+  }
+
+  last() {
+    if (!this.hasChildren()) {
+      return null
+    }
+
+    return this.children[this.children.length - 1]
+  }
+
+
   next() {
     return this.tree.nextNode(this)
   }
@@ -316,6 +342,12 @@ export default class Node {
     return this.tree.prevNode(this)
   }
 
+
+  focus() {
+    if (this.vm) {
+      this.vm.focus()
+    }
+  }
 
   remove() {
     this.tree.removeNode(this)

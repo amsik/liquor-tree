@@ -10,6 +10,8 @@ export default class Tree {
   constructor(vm) {
     this.vm = vm
     this.options = vm.options
+
+    this.activeElement = null
   }
 
   $on(name, ...args) {
@@ -339,12 +341,47 @@ export default class Tree {
     return target[index + 1] || null
   }
 
+
+  nextVisibleNode(node) {
+    if (node.hasChildren() && node.expanded()) {
+      return node.first()
+    }
+
+    let nextNode = this.nextNode(node)
+
+    if (!nextNode && node.parent) {
+      return node.parent.next()
+    }
+
+    return nextNode
+  }
+
+
   prevNode(node) {
     let { target, index } = this.index(node, true)
 
     return target[index - 1] || null
   }
 
+  prevVisibleNode(node) {
+    let prevNode = this.prevNode(node)
+
+    if (!prevNode) {
+      return node.parent
+    }
+
+    if (prevNode.hasChildren() && prevNode.expanded()) {
+      return prevNode.last()
+    }
+
+    return prevNode
+  }
+
+
+
+  isNode(node) {
+    return node instanceof Node
+  }
 
 
   findNode(node) {
