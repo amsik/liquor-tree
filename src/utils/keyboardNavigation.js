@@ -46,12 +46,30 @@ function checkNode(tree, node) {
   }
 }
 
+function leftArrow(tree, node) {
+  if (node.expanded()) {
+    node.collapse()
+  } else {
+    let parent = node.parent
 
-console.log(`навигация КАК в сайдбаре винды.
-  Для чуваков, которые имеют детей:
-    Стрелка вправо - открываем. Если открыто, то делаем имитацию СТРЕЛКИ ВНИЗ
-    Стрелка влево - для закрытого элемента выделяем РОДИТЕЛЯ
-`)
+    if (parent) {
+      parent.focus()
+    }
+  }
+}
+
+function rightArrow(tree, node) {
+  if (node.collapsed()) {
+    node.expand()
+  } else {
+    let first = node.first()
+
+    if (first) {
+      first.focus()
+    }
+  }
+}
+
 
 
 export default function(tree) {
@@ -72,8 +90,8 @@ export default function(tree) {
     }
 
     switch(code) {
-      case keyCodes.ARROW_LEFT: return node.collapse()
-      case keyCodes.ARROW_RIGHT: return node.expand()
+      case keyCodes.ARROW_LEFT: return leftArrow(tree, node)
+      case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
       case keyCodes.ARROW_TOP: return focusUp(tree, node)
       case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
       case keyCodes.SPACE: return checkNode(tree, node)

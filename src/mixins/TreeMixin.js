@@ -13,7 +13,9 @@ export default {
 
     this._provided.tree = tree
 
-    initKeyboardNavigation(tree)
+    if (false !== this.options.keyboardNavigation) {
+      initKeyboardNavigation(tree)
+    }
   },
 
   methods: {

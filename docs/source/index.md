@@ -12,11 +12,13 @@ There are lots of libraries but always something was missing (in my humble opini
 
 
 ### Features
-- events for every action
-- flexible configuration
-- any number of instances per page
-- multi selection (use Ctrl + Click or API) | optional
-- ready for touch devices
+* mobile friendly
+* events for every action
+* flexible configuration
+* any number of instances per page
+* multi selection
+* keyboard navigation
+* ready for touch devices
 
 ## Getting Started
 
@@ -172,3 +174,66 @@ It was a default mode. You can switch it to `checkbox` mode. To do it you have t
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/3/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 > States of node like **checked** and **selected** are not interchangeable. They can be uses together.
+
+
+### Redefine Structure
+
+Tree has its own structure for every node:
+
+``` javascript
+{
+  "id": Int,
+  "text": String,
+  "state": Object,
+  "data": Object,
+  "children": Array
+}
+```
+
+
+* `id`: By default if node didn't have an id it will be generated randomly
+* `text`: Label for Node
+* `state`: Allows user to set Node's state (disabled, checked, selected and so on)
+* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive. 
+* `children`: List of children nodes.
+
+This formar is default for tree. By you can easily **redefine** this format. Yeah... Sometimes you don't want to change your server-side code and you have very different format for tree. To do this you just need to send the object:
+
+For instance you have data:
+
+``` javascript
+[
+ { 'SOME-AWESOME-PROPERTY-FOR-TEXT': 'Item 1' },
+ { 'SOME-AWESOME-PROPERTY-FOR-TEXT': 'Item 2' },
+ { 'SOME-AWESOME-PROPERTY-FOR-TEXT': 'Item 3', 'kids': [
+  { 'SOME-AWESOME-PROPERTY-FOR-TEXT': 'Item 3.1' },
+  { 'SOME-AWESOME-PROPERTY-FOR-TEXT': 'Item 3.2' }
+ ]}
+]
+
+```
+
+You just need to add `propertyNames` options:
+
+
+``` javascript
+ {
+  'text': 'SOME-AWESOME-PROPERTY-FOR-TEXT',
+  'children': 'kids'
+ }
+```
+
+Then your data will be transformed to readable tree format. Awesome!
+
+## API
+
+### Tree Options
+
+| Name                   | Type         |  Default  | Description |
+|------------------------|:------------:|:---------:|-------------|
+| **multiple**           | Boolean   | true    | Allows to select more that one node. Ignored in `checkbox` mode. In `checkbox` mode it always possible to select multiple nodes   |
+| **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
+| **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
+| **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
+| **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
+| **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |

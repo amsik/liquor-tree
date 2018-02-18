@@ -69,6 +69,11 @@ export default class Tree {
         .empty()
         .add(top)
     }
+
+    // Nodes can't be selected on init. By it's possible to select through API
+    if (this.options.checkOnSelect && this.options.checkbox) {
+      this.unselectAll()
+    }
   }
 
   recurseDown(node, fn) {
@@ -151,6 +156,15 @@ export default class Tree {
     this.checkedNodes.remove(node)
   }
 
+  uncheckAll() {
+    let node
+
+    while (node = this.checkedNodes.pop()) {
+      node.uncheck()
+    }
+
+    return true
+  }
 
   expand(node) {
     if (node.expanded()) {

@@ -19,11 +19,22 @@
       href: "#Checkboxes"
       title: Checkboxes
 
+    - id: redefine-structure
+      href: "#Redefine-Structure"
+      title: Redefine Structure
+
+
 - title: API
   items:
-  - id: props
-    href: \#props
-    title: Props
+  - id: tree-options
+    href: "#Tree-Options"
+    title: Tree Options
+  - id: tree-api
+    href: "#Tree-API"
+    title: Tree API
+  - id: node-api
+    href: "#Node-API"
+    title: Node API
   - id: events
-    href: \#events
+    href: "#Events"
     title: Events

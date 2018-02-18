@@ -21,7 +21,9 @@
   const defaults = {
     multiple: true,
     checkbox: false,
-    parentSelect: false
+    checkOnSelect: false,
+    parentSelect: false,
+    keyboardNavigation: true
   }
 
   export default {

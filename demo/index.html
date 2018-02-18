@@ -50,6 +50,7 @@
         <div class="app2">
             <h3>Tree checkbox</h3>
             <tree
+                class="tree--small"
                 :data="data"
                 :options="options"
                 ref="tree"
@@ -225,7 +226,9 @@
                     data: data(),
                     options: {
                       // {checkbox: true, parentSelect: true}
-                      checkbox: true
+                      checkbox: true,
+                      checkOnSelect: true,
+                      parentSelect: true
                     }
                 }
             },

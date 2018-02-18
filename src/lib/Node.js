@@ -193,10 +193,14 @@ export default class Node {
     }
 
     this.recurseDown(node => {
-      node.state('checked', true)
-      node.$emit('checked')
+      node.state('indeterminate', false)
 
-      this.tree.check(node)
+      if (!node.checked()) {
+        node.state('checked', true)
+        node.$emit('checked')
+
+        this.tree.check(node)
+      }
     })
 
     if (this.parent) {
@@ -212,12 +216,14 @@ export default class Node {
     }
 
     this.recurseDown(node => {
-      node.state('checked', false)
       node.state('indeterminate', false)
 
-      node.$emit('unchecked')
+      if (node.checked()) {
+        node.state('checked', false)
+        node.$emit('unchecked')
 
-      this.tree.check(node)
+        this.tree.check(node)
+      }
     })
 
     if (this.parent) {
