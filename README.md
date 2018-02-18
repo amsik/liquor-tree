@@ -5,24 +5,32 @@ A Vue tree component that allows you to present hierarchically organized data in
 [documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/)
 
 ## Features
+* mobile friendly
 * events for every action
 * flexible configuration
 * any number of instances per page
-* multi selection (use Ctrl + Click or API) | optional
+* multi selection
+* keyboard navigation
 * ready for touch devices
 
 ## Installation
-**Install liquor-tree using npm:**
+**Npm:**
 
 ```shell
-$ npm install --save liquor-tree
+$ npm install liquor-tree
+```
+
+**Yarn:**
+
+``` shell
+$ yarn add liquor-tree
 ```
 
 ## Usage
 
-**YouComponent.vue**
-
 ```html
+  <!-- Vue Component -->
+  <template>
     <tree
         :data="items"
         :options="options"
@@ -30,35 +38,41 @@ $ npm install --save liquor-tree
         @node:checked="onChecked"
         ref="tree"
     />
-```
-```javascript
-  import Vue from 'Vue'
-  import VueTree from 'vue-tree'
+  </template>
+  
+  <script>
+    import Vue from 'Vue'
+    import VueTree from 'vue-tree'
 
-  Vue.use(VueTree)
+    Vue.use(VueTree)
 
-  export default {
-    ...
-    data() {
-      return {
-        items: [
-          {text: 'Item 1'},
-          {text: 'Item 2'},
-          {text: 'Item 3', children: [
-            {text: Item 3.1},
-            {text: Item 3.2}
-          ]}
-        ]
-      }
-    },
-    
-    methods: {
-      onSelected(node) {
+    export default {
+      ...
+      data() {
+        return {
+          items: [
+            {text: 'Item 1'},
+            {text: 'Item 2'},
+            {text: 'Item 3', children: [
+              {text: Item 3.1},
+              {text: Item 3.2}
+            ]}
+          ]
+        }
       },
-      
-      onChecked(node) {
+
+      methods: {
+        onSelected(node) {
+        },
+
+        onChecked(node) {
+        }
       }
+      ...
     }
-    ...
-  }
+  </script>
 ```
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)
