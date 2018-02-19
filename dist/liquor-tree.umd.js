@@ -192,8 +192,6 @@ function finder(criteria) {
         val = $div.innerText;
       }
 
-      console.log(val, c.test(val));
-
       return c.test(val)
     })
   }
@@ -1005,7 +1003,7 @@ Tree.prototype.recurseDown = function recurseDown$1 (node, fn) {
 
 
 Tree.prototype.select = function select (node, extendList) {
-  var treeNode = this.findNode(node);
+  var treeNode = this.getNode(node);
 
   if (!treeNode) {
     return false
@@ -1042,7 +1040,7 @@ Tree.prototype.selectAll = function selectAll () {
 };
 
 Tree.prototype.unselect = function unselect (node) {
-  var treeNode = this.findNode(node);
+  var treeNode = this.getNode(node);
 
   if (!treeNode) {
     return false
@@ -1217,11 +1215,11 @@ Tree.prototype.prevVisibleNode = function prevVisibleNode (node) {
 
 
 
-
-
 Tree.prototype.addToModel = function addToModel (node, index) {
     var this$1 = this;
     if ( index === void 0 ) index = this.model.length;
+
+  node = this.objectToNode(node);
 
   this.model.splice(index, 0, node);
   this.recurseDown(node, function (n) {
@@ -1230,20 +1228,24 @@ Tree.prototype.addToModel = function addToModel (node, index) {
 };
 
 
-Tree.prototype.append = function append (node) {
-  node = objectToNode(node);
+Tree.prototype.append = function append (criteria, node) {
+  var targetNode = this.find(criteria);
 
-  this.addToModel(node);
+  if (targetNode) {
+    return targetNode.append(node)
+  }
 
-  return node
+  return false
 };
 
-Tree.prototype.prepend = function prepend (node) {
-  node = objectToNode(node);
+Tree.prototype.prepend = function prepend (criteria, node) {
+  var targetNode = this.find(criteria);
 
-  this.addToModel(node, 0);
+  if (targetNode) {
+    return targetNode.prepend(node)
+  }
 
-  return node
+  return false
 };
 
 Tree.prototype.addNode = function addNode (node) {
@@ -1292,12 +1294,23 @@ Tree.prototype.isNode = function isNode (node) {
 };
 
 
-Tree.prototype.findNode = function findNode (node) {
-  if ('string' == typeof node) {
-    // find by id
-  } else if (node instanceof Node){
+Tree.prototype.find = function find$1 (criteria) {
+  if (criteria instanceof Node) {
+    return criteria
+  }
+
+  return find(
+    this.model,
+    criteria
+  )
+};
+
+Tree.prototype.getNode = function getNode (node) {
+  if (node instanceof Node) {
     return node
   }
+
+  return null
 };
 
 Tree.prototype.objectToNode = function objectToNode$1 (obj) {
@@ -1451,16 +1464,25 @@ var TreeMixin = {
       return this.tree.checkedNodes
     },
 
-    append: function append(node) {
-      return this.tree.append(node)
+    append: function append(criteria, node) {
+      // append to model
+      if (!node) {
+        return this.tree.addToModel(criteria, this.tree.model.length)
+      }
+
+      return this.tree.append(criteria, node)
     },
 
-    prepend: function prepend(node) {
-      return this.tree.prepend(node)
+    prepend: function prepend(criteria, node) {
+      if (!node) {
+        return this.tree.addToModel(criteria, 0)
+      }
+
+      return this.tree.prepend(criteria, node)
     },
 
-    addNode: function addNode(node) {
-      return this.tree.addNode(node)
+    addChild: function addChild(criteria, node) {
+      return this.tree.addChild(node)
     }
   }
 

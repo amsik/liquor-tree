@@ -11,8 +11,6 @@ function finder(criteria) {
         val = $div.innerText
       }
 
-      console.log(val, c.test(val))
-
       return c.test(val)
     })
   }

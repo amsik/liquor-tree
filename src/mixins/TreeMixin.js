@@ -35,16 +35,25 @@ export default {
       return this.tree.checkedNodes
     },
 
-    append(node) {
-      return this.tree.append(node)
+    append(criteria, node) {
+      // append to model
+      if (!node) {
+        return this.tree.addToModel(criteria, this.tree.model.length)
+      }
+
+      return this.tree.append(criteria, node)
     },
 
-    prepend(node) {
-      return this.tree.prepend(node)
+    prepend(criteria, node) {
+      if (!node) {
+        return this.tree.addToModel(criteria, 0)
+      }
+
+      return this.tree.prepend(criteria, node)
     },
 
-    addNode(node) {
-      return this.tree.addNode(node)
+    addChild(criteria, node) {
+      return this.tree.addChild(node)
     }
   }
 

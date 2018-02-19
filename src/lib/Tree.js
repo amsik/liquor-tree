@@ -1,5 +1,6 @@
 import Node from '@/lib/Node'
 
+import find from '@/utils/find'
 import objectToNode from '@/utils/objectToNode'
 import { List } from '@/utils/stack'
 import { TreeParser } from '@/utils/treeParser'
@@ -92,7 +93,7 @@ export default class Tree {
 
 
   select(node, extendList) {
-    const treeNode = this.findNode(node)
+    const treeNode = this.getNode(node)
 
     if (!treeNode) {
       return false
@@ -127,7 +128,7 @@ export default class Tree {
   }
 
   unselect(node) {
-    const treeNode = this.findNode(node)
+    const treeNode = this.getNode(node)
 
     if (!treeNode) {
       return false
@@ -298,9 +299,9 @@ export default class Tree {
 
 
 
-
-
   addToModel(node, index = this.model.length) {
+    node = this.objectToNode(node)
+
     this.model.splice(index, 0, node)
     this.recurseDown(node, n => {
       n.tree = this
@@ -308,20 +309,24 @@ export default class Tree {
   }
 
 
-  append(node) {
-    node = objectToNode(node)
+  append(criteria, node) {
+    let targetNode = this.find(criteria)
 
-    this.addToModel(node)
+    if (targetNode) {
+      return targetNode.append(node)
+    }
 
-    return node
+    return false
   }
 
-  prepend(node) {
-    node = objectToNode(node)
+  prepend(criteria, node) {
+    let targetNode = this.find(criteria)
 
-    this.addToModel(node, 0)
+    if (targetNode) {
+      return targetNode.prepend(node)
+    }
 
-    return node
+    return false
   }
 
   addNode(node) {
@@ -370,12 +375,23 @@ export default class Tree {
   }
 
 
-  findNode(node) {
-    if ('string' == typeof node) {
-      // find by id
-    } else if (node instanceof Node)  {
+  find(criteria) {
+    if (criteria instanceof Node) {
+      return criteria
+    }
+
+    return find(
+      this.model,
+      criteria
+    )
+  }
+
+  getNode(node) {
+    if (node instanceof Node) {
       return node
     }
+
+    return null
   }
 
   objectToNode(obj) {
