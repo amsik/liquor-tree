@@ -11,6 +11,8 @@ function finder(criteria) {
         val = $div.innerText
       }
 
+      console.log(val, c.test(val))
+
       return c.test(val)
     })
   }
@@ -21,7 +23,7 @@ function getRegExp(val) {
     return val
   }
 
-  return new RegExp(val, 'g')
+  return new RegExp(`^${val}$`, 'g')
 }
 
 function getAllChildren(source) {
@@ -53,7 +55,7 @@ export default function find(source, criteria, deep = true) {
     return source[criteria] || null
   }
 
-  if ('string' == typeof criteria) {
+  if ('string' == typeof criteria || criteria instanceof RegExp) {
     criteria = {
       text: criteria
     }

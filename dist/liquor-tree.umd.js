@@ -179,72 +179,6 @@ function recurseDown(obj, fn) {
   return res;
 }
 
-// it is not genuine GUIDs
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
-}
-
-function uuidV4() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4()
-}
-
-/**
-* Default Node's states
-*/
-var nodeStates = {
-  selected: false,
-  selectable: true,
-  checked: false,
-  expanded: false,
-  disabled: false,
-  visible: true,
-  indeterminate: false
-};
-
-function merge(state) {
-  if ( state === void 0 ) state = {};
-
-  return Object.assign({}, nodeStates, state)
-}
-
-function objectToNode(tree, obj) {
-  var node = null;
-
-  if (obj instanceof Node) {
-    return obj
-  }
-
-  if ('string' == typeof obj) {
-    node = new Node(tree, {
-      text: obj,
-      state: merge(),
-      id: uuidV4()
-    });
-  } else {
-    node = new Node(tree, obj);
-    node.states = merge(node.states);
-
-    if (!node.id) {
-      node.id = uuidV4();
-    }
-
-    if (node.children.length) {
-      node.children = node.children.map(function (child) {
-        child = objectToNode(tree, child);
-        child.parent = node;
-
-        return child
-      });
-    }
-  }
-
-  return node
-}
-
 var $div = document.createElement('div');
 
 function finder(criteria) {
@@ -258,6 +192,8 @@ function finder(criteria) {
         val = $div.innerText;
       }
 
+      console.log(val, c.test(val));
+
       return c.test(val)
     })
   }
@@ -268,7 +204,7 @@ function getRegExp(val) {
     return val
   }
 
-  return new RegExp(val, 'g')
+  return new RegExp(("^" + val + "$"), 'g')
 }
 
 function getAllChildren(source) {
@@ -302,7 +238,7 @@ function find(source, criteria, deep) {
     return source[criteria] || null
   }
 
-  if ('string' == typeof criteria) {
+  if ('string' == typeof criteria || criteria instanceof RegExp) {
     criteria = {
       text: criteria
     };
@@ -738,7 +674,9 @@ Node.prototype.prev = function prev () {
 Node.prototype.insertAt = function insertAt (node, index) {
     if ( index === void 0 ) index = this.children.length;
 
-  node = objectToNode(this.tree, node);
+  node = this.tree.objectToNode(node);
+  node.parent = this;
+
   this.children.splice(
     index, 0, node
   );
@@ -762,33 +700,13 @@ Node.prototype.removeChild = function removeChild (criteria) {
   return null
 };
 
-Node.prototype.append = function append () {};
+Node.prototype.append = function append (node) {
+  return this.addChild(node)
+};
 
-Node.prototype.prepend = function prepend () {};
-//
-// remove() {
-//
-// }
-//
-//
-// add(node) {
-// node = objectToNode(this.tree, node)
-//
-// this.tree.addChildren(this, node)
-// this.tree.$emit('node:added', node)
-//
-// return node
-// }
-//
-// remove() {
-// this.tree.removeNode(this)
-// this.$emit('removed')
-//
-// return this
-// }
-
-
-
+Node.prototype.prepend = function prepend (node) {
+  return this.insertAt(node, 0)
+};
 
 Node.prototype.find = function find$1 (criteria, deep) {
   return find(this.children, criteria, deep)
@@ -812,6 +730,69 @@ Node.prototype.isRoot = function isRoot () {
 };
 
 Object.defineProperties( Node.prototype, prototypeAccessors );
+
+// it is not genuine GUIDs
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
+
+function uuidV4() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4()
+}
+
+var nodeStates = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  visible: true,
+  indeterminate: false
+};
+
+function merge(state) {
+  if ( state === void 0 ) state = {};
+
+  return Object.assign({}, nodeStates, state)
+}
+
+function objectToNode(tree, obj) {
+  var node = null;
+
+  if (obj instanceof Node) {
+    return obj
+  }
+
+  if ('string' == typeof obj) {
+    node = new Node(tree, {
+      text: obj,
+      state: merge(),
+      id: uuidV4()
+    });
+  } else {
+    node = new Node(tree, obj);
+    node.states = merge(node.states);
+
+    if (!node.id) {
+      node.id = uuidV4();
+    }
+
+    if (node.children.length) {
+      node.children = node.children.map(function (child) {
+        child = objectToNode(tree, child);
+        child.parent = node;
+
+        return child
+      });
+    }
+  }
+
+  return node
+}
 
 var List = (function (Array) {
   function List() {
@@ -866,20 +847,6 @@ var List = (function (Array) {
 
   return List;
 }(Array));
-
-/**
-  Every Node has certain format:
-  {
-    id,           // Unique Node id. By default it generates using uuidV4
-    text,         // Node text
-    children,     // List of children. Each children has the same format
-    parent,       // Parent Node or null. The tree is able to have more than 1 root node
-    state,        // States of Node. Ex.: selected, checked and so on
-    data          // Any types of data. It is similar to `storage`.
-                  // Ex.: data: {myAwesomeProperty: 10}. To get this property you need: Node.data('myAwesomeProperty')
-  }
-*/
-
 
 var defaultPropertyNames = {
   id: 'id',
@@ -1279,8 +1246,6 @@ Tree.prototype.prepend = function prepend (node) {
   return node
 };
 
-// addChildren()
-
 Tree.prototype.addNode = function addNode (node) {
   var index = this.model.length;
 
@@ -1335,6 +1300,9 @@ Tree.prototype.findNode = function findNode (node) {
   }
 };
 
+Tree.prototype.objectToNode = function objectToNode$1 (obj) {
+  return objectToNode(this, obj)
+};
 
 Tree.prototype.parse = function parse (data, options) {
   if (!options) {

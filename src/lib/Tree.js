@@ -324,8 +324,6 @@ export default class Tree {
     return node
   }
 
-  // addChildren()
-
   addNode(node) {
     const index = this.model.length
 
@@ -380,6 +378,9 @@ export default class Tree {
     }
   }
 
+  objectToNode(obj) {
+    return objectToNode(this, obj)
+  }
 
   parse(data, options) {
     if (!options) {

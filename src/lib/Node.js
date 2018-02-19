@@ -1,5 +1,4 @@
 import { recurseDown } from '@/utils/recurse'
-import objectToNode from '@/utils/objectToNode'
 import find from '@/utils/find'
 
 export default class Node {
@@ -406,7 +405,9 @@ export default class Node {
 
 
   insertAt(node, index = this.children.length) {
-    node = objectToNode(this.tree, node)
+    node = this.tree.objectToNode(node)
+    node.parent = this
+
     this.children.splice(
       index, 0, node
     )
@@ -430,33 +431,13 @@ export default class Node {
     return null
   }
 
-  append() {}
+  append(node) {
+    return this.addChild(node)
+  }
 
-  prepend() {}
-  //
-  // remove() {
-  //
-  // }
-  //
-  //
-  // add(node) {
-  //   node = objectToNode(this.tree, node)
-  //
-  //   this.tree.addChildren(this, node)
-  //   this.tree.$emit('node:added', node)
-  //
-  //   return node
-  // }
-  //
-  // remove() {
-  //   this.tree.removeNode(this)
-  //   this.$emit('removed')
-  //
-  //   return this
-  // }
-
-
-
+  prepend(node) {
+    return this.insertAt(node, 0)
+  }
 
   find(criteria, deep) {
     return find(this.children, criteria, deep)
