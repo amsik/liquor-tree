@@ -179,6 +179,145 @@ function recurseDown(obj, fn) {
   return res;
 }
 
+// it is not genuine GUIDs
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
+
+function uuidV4() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4()
+}
+
+var nodeStates = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  visible: true,
+  indeterminate: false
+};
+
+function merge(state) {
+  if ( state === void 0 ) state = {};
+
+  return Object.assign({}, nodeStates, state)
+}
+
+function objectToNode(tree, obj) {
+  var node = null;
+
+  if (obj instanceof Node) {
+    return obj
+  }
+
+  if ('string' == typeof obj) {
+    node = new Node(tree, {
+      text: obj,
+      state: merge(),
+      id: uuidV4()
+    });
+  } else {
+    node = new Node(tree, obj);
+    node.states = merge(node.states);
+
+    if (!node.id) {
+      node.id = uuidV4();
+    }
+
+    if (node.children.length) {
+      node.children = node.children.map(function (child) {
+        child = objectToNode(tree, child);
+        child.parent = node;
+
+        return child
+      });
+    }
+  }
+
+  return node
+}
+
+var $div = document.createElement('div');
+
+function finder(criteria) {
+  return function(node) {
+    return Object.keys(criteria).some(function (key) {
+      var val = node[key];
+      var c = getRegExp(criteria[key]);
+
+      if ('text' == key) {
+        $div.innerHTML = val;
+        val = $div.innerText;
+      }
+
+      return c.test(val)
+    })
+  }
+}
+
+function getRegExp(val) {
+  if (val instanceof RegExp) {
+    return val
+  }
+
+  return new RegExp(val, 'g')
+}
+
+function getAllChildren(source) {
+  var result = [];
+
+  source.forEach(function collect(node) {
+    result.push(node);
+
+    if (node.children) {
+      node.children.forEach(collect);
+    }
+  });
+
+  return result
+}
+
+
+function find(source, criteria, deep) {
+  if ( deep === void 0 ) deep = true;
+
+  if (!source || !source.length) {
+    return null
+  }
+
+  if (deep) {
+    source = getAllChildren(source);
+  }
+
+  // find by index
+  if ('number' == typeof criteria) {
+    return source[criteria] || null
+  }
+
+  if ('string' == typeof criteria) {
+    criteria = {
+      text: criteria
+    };
+  }
+
+  if ('function' != typeof criteria) {
+    criteria = finder(criteria);
+  }
+
+  var result = source.filter(criteria);
+
+  if (result.length) {
+    return result[0]
+  }
+
+  return null
+}
+
 var Node = function Node(tree, item) {
   this.id = item.id;
   this.states = item.state;
@@ -326,7 +465,6 @@ Node.prototype.refreshIndeterminateState = function refreshIndeterminateState ()
 Node.prototype.indeterminate = function indeterminate () {
   return this.state('indeterminate')
 };
-
 
 
 Node.prototype.selectable = function selectable () {
@@ -534,7 +672,6 @@ Node.prototype.toggleCollapse = function toggleCollapse () {
   return this._toggleOpenedState()
 };
 
-
 Node.prototype._toggleOpenedState = function _toggleOpenedState () {
   if (this.disabled() || !this.hasChildren()) {
     return this
@@ -547,10 +684,10 @@ Node.prototype._toggleOpenedState = function _toggleOpenedState () {
   return this.expand()
 };
 
-Node.prototype.index = function index () {
-  return this.tree.index(this, verbose)
-};
 
+Node.prototype.index = function index () {
+  return this.tree.index(this)
+};
 
 Node.prototype.first = function first () {
   if (!this.hasChildren()) {
@@ -568,7 +705,6 @@ Node.prototype.last = function last () {
   return this.children[this.children.length - 1]
 };
 
-
 Node.prototype.next = function next () {
   return this.tree.nextNode(this)
 };
@@ -578,19 +714,70 @@ Node.prototype.prev = function prev () {
 };
 
 
+Node.prototype.insertAt = function insertAt (node, index) {
+    if ( index === void 0 ) index = this.children.length;
+
+  node = objectToNode(this.tree, node);
+  this.children.splice(
+    index, 0, node
+  );
+
+  this.$emit('node:added', node);
+
+  return node
+};
+
+Node.prototype.addChild = function addChild (node) {
+  return this.insertAt(node)
+};
+
+Node.prototype.removeChild = function removeChild (criteria) {
+  var node = this.find(criteria);
+
+  if (node) {
+    return this.tree.removeNode(node)
+  }
+
+  return null
+};
+
+Node.prototype.append = function append () {};
+
+Node.prototype.prepend = function prepend () {};
+//
+// remove() {
+//
+// }
+//
+//
+// add(node) {
+// node = objectToNode(this.tree, node)
+//
+// this.tree.addChildren(this, node)
+// this.tree.$emit('node:added', node)
+//
+// return node
+// }
+//
+// remove() {
+// this.tree.removeNode(this)
+// this.$emit('removed')
+//
+// return this
+// }
+
+
+
+
+Node.prototype.find = function find$1 (criteria, deep) {
+  return find(this.children, criteria, deep)
+};
+
 Node.prototype.focus = function focus () {
   if (this.vm) {
     this.vm.focus();
   }
 };
-
-Node.prototype.remove = function remove () {
-  this.tree.removeNode(this);
-  this.$emit('removed');
-
-  return this
-};
-
 
 Node.prototype.hasChildren = function hasChildren () {
   return this.children.length > 0
@@ -604,68 +791,6 @@ Node.prototype.isRoot = function isRoot () {
 };
 
 Object.defineProperties( Node.prototype, prototypeAccessors );
-
-// it is not genuine GUIDs
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
-}
-
-function uuidV4() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4()
-}
-
-/**
-* Default Node's states
-*/
-var nodeStates = {
-  selected: false,
-  selectable: true,
-  checked: false,
-  expanded: false,
-  disabled: false,
-  visible: true,
-  indeterminate: false
-};
-
-function merge(state) {
-  if ( state === void 0 ) state = {};
-
-  return Object.assign({}, nodeStates, state)
-}
-
-function objectToNode(tree, obj) {
-  var node = null;
-
-  if ('string' == typeof obj) {
-    node = new Node(tree, {
-      text: obj,
-      state: merge(),
-      id: uuidV4()
-    });
-  } else {
-    node = new Node(tree, obj);
-    node.states = merge(node.states);
-
-    if (!node.id) {
-      node.id = uuidV4();
-    }
-
-    if (node.children.length) {
-      node.children = node.children.map(function (child) {
-        child = objectToNode(tree, child);
-        child.parent = node;
-
-        return child
-      });
-    }
-  }
-
-  return node
-}
 
 var List = (function (Array) {
   function List() {
@@ -720,20 +845,6 @@ var List = (function (Array) {
 
   return List;
 }(Array));
-
-/**
-  Every Node has certain format:
-  {
-    id,           // Unique Node id. By default it generates using uuidV4
-    text,         // Node text
-    children,     // List of children. Each children has the same format
-    parent,       // Parent Node or null. The tree is able to have more than 1 root node
-    state,        // States of Node. Ex.: selected, checked and so on
-    data          // Any types of data. It is similar to `storage`.
-                  // Ex.: data: {myAwesomeProperty: 10}. To get this property you need: Node.data('myAwesomeProperty')
-  }
-*/
-
 
 var defaultPropertyNames = {
   id: 'id',
@@ -825,6 +936,7 @@ Tree.prototype.$emit = function $emit (name) {
     while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
   (ref = this.vm).$emit.apply(ref, [ name ].concat( args ));
 };
+
 
 Tree.prototype.setModel = function setModel (model) {
     var this$1 = this;
@@ -952,6 +1064,18 @@ Tree.prototype.uncheck = function uncheck (node) {
   this.checkedNodes.remove(node);
 };
 
+Tree.prototype.checkAll = function checkAll () {
+  this.recurseDown(function (node) {
+    if (0 == node.depth) {
+      if (node.indeterminate()) {
+        node.state('indeterminate', false);
+      }
+
+      node.check();
+    }
+  });
+};
+
 Tree.prototype.uncheckAll = function uncheckAll () {
   var node;
 
@@ -961,6 +1085,7 @@ Tree.prototype.uncheckAll = function uncheckAll () {
 
   return true
 };
+
 
 Tree.prototype.expand = function expand (node) {
   if (node.expanded()) {
@@ -1002,6 +1127,90 @@ Tree.prototype.toggleCollapse = function toggleCollapse (node) {
   return true
 };
 
+Tree.prototype.expandAll = function expandAll () {
+  this.recurseDown(function (node) {
+    if (node.hasChildren() && node.collapsed()) {
+      node.expand();
+    }
+  });
+};
+
+Tree.prototype.collapseAll = function collapseAll () {
+  this.recurseDown(function (node) {
+    if (node.hasChildren() && node.expanded()) {
+      node.collapse();
+    }
+  });
+};
+
+
+Tree.prototype.index = function index (node, verbose) {
+  var target = node.parent;
+
+  if (target) {
+    target = target.children;
+  } else {
+    target = this.model;
+  }
+
+  if (verbose) {
+    return {
+      index: target.indexOf(node),
+      target: target
+    }
+  }
+
+  return target.indexOf(node)
+};
+
+Tree.prototype.nextNode = function nextNode (node) {
+  var ref = this.index(node, true);
+    var target = ref.target;
+    var index = ref.index;
+
+  return target[index + 1] || null
+};
+
+Tree.prototype.nextVisibleNode = function nextVisibleNode (node) {
+  if (node.hasChildren() && node.expanded()) {
+    return node.first()
+  }
+
+  var nextNode = this.nextNode(node);
+
+  if (!nextNode && node.parent) {
+    return node.parent.next()
+  }
+
+  return nextNode
+};
+
+Tree.prototype.prevNode = function prevNode (node) {
+  var ref = this.index(node, true);
+    var target = ref.target;
+    var index = ref.index;
+
+  return target[index - 1] || null
+};
+
+Tree.prototype.prevVisibleNode = function prevVisibleNode (node) {
+  var prevNode = this.prevNode(node);
+
+  if (!prevNode) {
+    return node.parent
+  }
+
+  if (prevNode.hasChildren() && prevNode.expanded()) {
+    return prevNode.last()
+  }
+
+  return prevNode
+};
+
+
+
+
+
 Tree.prototype.addToModel = function addToModel (node, index) {
     var this$1 = this;
     if ( index === void 0 ) index = this.model.length;
@@ -1029,6 +1238,8 @@ Tree.prototype.prepend = function prepend (node) {
   return node
 };
 
+// addChildren()
+
 Tree.prototype.addNode = function addNode (node) {
   var index = this.model.length;
 
@@ -1053,77 +1264,20 @@ Tree.prototype.removeNode = function removeNode (node) {
     );
   }
 
+  if (node.parent) {
+    if (node.parent.indeterminate() && !node.parent.hasChildren()) {
+      node.parent.state('indeterminate', false);
+    }
+  }
+
+  this.$emit('node:removed', node);
+
   this.selectedNodes.remove(node);
   this.checkedNodes.remove(node);
 
   return node
 };
 
-Tree.prototype.index = function index (node, verbose) {
-  var target = node.parent;
-
-  if (target) {
-    target = target.children;
-  } else {
-    target = this.model;
-  }
-
-  if (verbose) {
-    return {
-      index: target.indexOf(node),
-      target: target
-    }
-  }
-
-  return target.indexOf(node)
-};
-
-
-Tree.prototype.nextNode = function nextNode (node) {
-  var ref = this.index(node, true);
-    var target = ref.target;
-    var index = ref.index;
-
-  return target[index + 1] || null
-};
-
-
-Tree.prototype.nextVisibleNode = function nextVisibleNode (node) {
-  if (node.hasChildren() && node.expanded()) {
-    return node.first()
-  }
-
-  var nextNode = this.nextNode(node);
-
-  if (!nextNode && node.parent) {
-    return node.parent.next()
-  }
-
-  return nextNode
-};
-
-
-Tree.prototype.prevNode = function prevNode (node) {
-  var ref = this.index(node, true);
-    var target = ref.target;
-    var index = ref.index;
-
-  return target[index - 1] || null
-};
-
-Tree.prototype.prevVisibleNode = function prevVisibleNode (node) {
-  var prevNode = this.prevNode(node);
-
-  if (!prevNode) {
-    return node.parent
-  }
-
-  if (prevNode.hasChildren() && prevNode.expanded()) {
-    return prevNode.last()
-  }
-
-  return prevNode
-};
 
 
 

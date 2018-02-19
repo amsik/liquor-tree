@@ -1,4 +1,6 @@
 import { recurseDown } from '@/utils/recurse'
+import objectToNode from '@/utils/objectToNode'
+import find from '@/utils/find'
 
 export default class Node {
   constructor(tree, item) {
@@ -140,7 +142,6 @@ export default class Node {
   indeterminate() {
     return this.state('indeterminate')
   }
-
 
 
   selectable() {
@@ -344,7 +345,6 @@ export default class Node {
     return this._toggleOpenedState()
   }
 
-
   _toggleOpenedState() {
     if (this.disabled() || !this.hasChildren()) {
       return this
@@ -357,10 +357,10 @@ export default class Node {
     return this.expand()
   }
 
-  index() {
-    return this.tree.index(this, verbose)
-  }
 
+  index() {
+    return this.tree.index(this)
+  }
 
   first() {
     if (!this.hasChildren()) {
@@ -378,7 +378,6 @@ export default class Node {
     return this.children[this.children.length - 1]
   }
 
-
   next() {
     return this.tree.nextNode(this)
   }
@@ -388,19 +387,68 @@ export default class Node {
   }
 
 
+  insertAt(node, index = this.children.length) {
+    node = objectToNode(this.tree, node)
+    this.children.splice(
+      index, 0, node
+    )
+
+    this.$emit('node:added', node)
+
+    return node
+  }
+
+  addChild(node) {
+    return this.insertAt(node)
+  }
+
+  removeChild(criteria) {
+    let node = this.find(criteria)
+
+    if (node) {
+      return this.tree.removeNode(node)
+    }
+
+    return null
+  }
+
+  append() {}
+
+  prepend() {}
+  //
+  // remove() {
+  //
+  // }
+  //
+  //
+  // add(node) {
+  //   node = objectToNode(this.tree, node)
+  //
+  //   this.tree.addChildren(this, node)
+  //   this.tree.$emit('node:added', node)
+  //
+  //   return node
+  // }
+  //
+  // remove() {
+  //   this.tree.removeNode(this)
+  //   this.$emit('removed')
+  //
+  //   return this
+  // }
+
+
+
+
+  find(criteria, deep) {
+    return find(this.children, criteria, deep)
+  }
+
   focus() {
     if (this.vm) {
       this.vm.focus()
     }
   }
-
-  remove() {
-    this.tree.removeNode(this)
-    this.$emit('removed')
-
-    return this
-  }
-
 
   hasChildren() {
     return this.children.length > 0

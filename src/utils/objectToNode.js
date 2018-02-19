@@ -21,6 +21,10 @@ function merge(state = {}) {
 export default function objectToNode(tree, obj) {
   let node = null
 
+  if (obj instanceof Node) {
+    return obj
+  }
+
   if ('string' == typeof obj) {
     node = new Node(tree, {
       text: obj,

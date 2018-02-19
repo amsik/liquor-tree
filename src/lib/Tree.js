@@ -30,6 +30,7 @@ export default class Tree {
     this.vm.$emit(name, ...args)
   }
 
+
   setModel(model) {
     this.model = model
 
@@ -156,6 +157,18 @@ export default class Tree {
     this.checkedNodes.remove(node)
   }
 
+  checkAll() {
+    this.recurseDown(node => {
+      if (0 == node.depth) {
+        if (node.indeterminate()) {
+          node.state('indeterminate', false)
+        }
+
+        node.check()
+      }
+    })
+  }
+
   uncheckAll() {
     let node
 
@@ -165,6 +178,7 @@ export default class Tree {
 
     return true
   }
+
 
   expand(node) {
     if (node.expanded()) {
@@ -206,6 +220,86 @@ export default class Tree {
     return true
   }
 
+  expandAll() {
+    this.recurseDown(node => {
+      if (node.hasChildren() && node.collapsed()) {
+        node.expand()
+      }
+    })
+  }
+
+  collapseAll() {
+    this.recurseDown(node => {
+      if (node.hasChildren() && node.expanded()) {
+        node.collapse()
+      }
+    })
+  }
+
+
+  index(node, verbose) {
+    let target = node.parent
+
+    if (target) {
+      target = target.children
+    } else {
+      target = this.model
+    }
+
+    if (verbose) {
+      return {
+        index: target.indexOf(node),
+        target
+      }
+    }
+
+    return target.indexOf(node)
+  }
+
+  nextNode(node) {
+    let { target, index } = this.index(node, true)
+
+    return target[index + 1] || null
+  }
+
+  nextVisibleNode(node) {
+    if (node.hasChildren() && node.expanded()) {
+      return node.first()
+    }
+
+    let nextNode = this.nextNode(node)
+
+    if (!nextNode && node.parent) {
+      return node.parent.next()
+    }
+
+    return nextNode
+  }
+
+  prevNode(node) {
+    let { target, index } = this.index(node, true)
+
+    return target[index - 1] || null
+  }
+
+  prevVisibleNode(node) {
+    let prevNode = this.prevNode(node)
+
+    if (!prevNode) {
+      return node.parent
+    }
+
+    if (prevNode.hasChildren() && prevNode.expanded()) {
+      return prevNode.last()
+    }
+
+    return prevNode
+  }
+
+
+
+
+
   addToModel(node, index = this.model.length) {
     this.model.splice(index, 0, node)
     this.recurseDown(node, n => {
@@ -229,6 +323,8 @@ export default class Tree {
 
     return node
   }
+
+  // addChildren()
 
   addNode(node) {
     const index = this.model.length
@@ -254,73 +350,20 @@ export default class Tree {
       )
     }
 
+    if (node.parent) {
+      if (node.parent.indeterminate() && !node.parent.hasChildren()) {
+        node.parent.state('indeterminate', false)
+      }
+    }
+
+    this.$emit('node:removed', node)
+
     this.selectedNodes.remove(node)
     this.checkedNodes.remove(node)
 
     return node
   }
 
-  index(node, verbose) {
-    let target = node.parent
-
-    if (target) {
-      target = target.children
-    } else {
-      target = this.model
-    }
-
-    if (verbose) {
-      return {
-        index: target.indexOf(node),
-        target
-      }
-    }
-
-    return target.indexOf(node)
-  }
-
-
-  nextNode(node) {
-    let { target, index } = this.index(node, true)
-
-    return target[index + 1] || null
-  }
-
-
-  nextVisibleNode(node) {
-    if (node.hasChildren() && node.expanded()) {
-      return node.first()
-    }
-
-    let nextNode = this.nextNode(node)
-
-    if (!nextNode && node.parent) {
-      return node.parent.next()
-    }
-
-    return nextNode
-  }
-
-
-  prevNode(node) {
-    let { target, index } = this.index(node, true)
-
-    return target[index - 1] || null
-  }
-
-  prevVisibleNode(node) {
-    let prevNode = this.prevNode(node)
-
-    if (!prevNode) {
-      return node.parent
-    }
-
-    if (prevNode.hasChildren() && prevNode.expanded()) {
-      return prevNode.last()
-    }
-
-    return prevNode
-  }
 
 
 
@@ -350,5 +393,4 @@ export default class Tree {
       return []
     }
   }
-
 }
