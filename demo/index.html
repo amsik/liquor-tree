@@ -215,6 +215,10 @@
             mounted() {
               addEvents.call(this)
               window.tree = this.$refs.tree
+
+              this.$refs.tree.$on('node:selected', _ => {
+                console.log(tree.selected());
+              })
             }
         });
 
@@ -237,6 +241,10 @@
             mounted() {
               addEvents.call(this)
               window.tree1 = this.$refs.tree
+
+              this.$refs.tree.$on('node:checked', _ => {
+                console.log(tree1.checked());
+              })
             }
         });
 

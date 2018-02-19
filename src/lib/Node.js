@@ -202,10 +202,10 @@ export default class Node {
         node.state('indeterminate', false)
 
         if (!node.checked()) {
+          this.tree.check(node)
+
           node.state('checked', true)
           node.$emit('checked')
-
-          this.tree.check(node)
         }
       })
 
@@ -213,10 +213,10 @@ export default class Node {
         this.parent.refreshIndeterminateState()
       }
     } else {
+      this.tree.check(this)
+
       this.state('checked', true)
       this.$emit('checked')
-
-      this.tree.check(this)
     }
 
     return this
@@ -232,10 +232,10 @@ export default class Node {
         node.state('indeterminate', false)
 
         if (node.checked()) {
+          this.tree.uncheck(node)
+
           node.state('checked', false)
           node.$emit('unchecked')
-
-          this.tree.check(node)
         }
       })
 
@@ -243,10 +243,10 @@ export default class Node {
         this.parent.refreshIndeterminateState()
       }
     } else {
+      this.tree.uncheck(this)
+
       this.state('checked', false)
       this.$emit('unchecked')
-
-      this.tree.check(this)
     }
 
     return this

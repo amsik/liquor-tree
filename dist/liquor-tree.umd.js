@@ -530,10 +530,10 @@ Node.prototype.check = function check () {
       node.state('indeterminate', false);
 
       if (!node.checked()) {
+        this$1.tree.check(node);
+
         node.state('checked', true);
         node.$emit('checked');
-
-        this$1.tree.check(node);
       }
     });
 
@@ -541,10 +541,10 @@ Node.prototype.check = function check () {
       this.parent.refreshIndeterminateState();
     }
   } else {
+    this.tree.check(this);
+
     this.state('checked', true);
     this.$emit('checked');
-
-    this.tree.check(this);
   }
 
   return this
@@ -562,10 +562,10 @@ Node.prototype.uncheck = function uncheck () {
       node.state('indeterminate', false);
 
       if (node.checked()) {
+        this$1.tree.uncheck(node);
+
         node.state('checked', false);
         node.$emit('unchecked');
-
-        this$1.tree.check(node);
       }
     });
 
@@ -573,10 +573,10 @@ Node.prototype.uncheck = function uncheck () {
       this.parent.refreshIndeterminateState();
     }
   } else {
+    this.tree.uncheck(this);
+
     this.state('checked', false);
     this.$emit('unchecked');
-
-    this.tree.check(this);
   }
 
   return this
