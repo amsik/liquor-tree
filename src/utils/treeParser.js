@@ -53,6 +53,12 @@ const TreeParser = {
     let preparedItems = data.map(function converter(item) {
       let convertedItem = convertNames(item, p)
 
+      // Possible to receive 1 child like a simple object. It must be converted to an array
+      // We do not have checks on the correctness of the format. A developer should pass correct format
+      if (convertedItem.children && !Array.isArray(convertedItem.children)) {
+        convertedItem.children = [convertedItem.children]
+      }
+
       if (convertedItem.children) {
         convertedItem.children = convertedItem.children.map(converter)
       }

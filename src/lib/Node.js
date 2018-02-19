@@ -93,6 +93,10 @@ export default class Node {
   }
 
   refreshIndeterminateState() {
+    if (!this.tree.options.autoCheckChildren) {
+      return this
+    }
+
     this.state('indeterminate', false)
 
     if (this.hasChildren()) {
@@ -193,19 +197,26 @@ export default class Node {
       return this.uncheck()
     }
 
-    this.recurseDown(node => {
-      node.state('indeterminate', false)
+    if (this.tree.options.autoCheckChildren) {
+      this.recurseDown(node => {
+        node.state('indeterminate', false)
 
-      if (!node.checked()) {
-        node.state('checked', true)
-        node.$emit('checked')
+        if (!node.checked()) {
+          node.state('checked', true)
+          node.$emit('checked')
 
-        this.tree.check(node)
+          this.tree.check(node)
+        }
+      })
+
+      if (this.parent) {
+        this.parent.refreshIndeterminateState()
       }
-    })
+    } else {
+      this.state('checked', true)
+      this.$emit('checked')
 
-    if (this.parent) {
-      this.parent.refreshIndeterminateState()
+      this.tree.check(this)
     }
 
     return this
@@ -216,19 +227,26 @@ export default class Node {
       return this
     }
 
-    this.recurseDown(node => {
-      node.state('indeterminate', false)
+    if (this.tree.options.autoCheckChildren) {
+      this.recurseDown(node => {
+        node.state('indeterminate', false)
 
-      if (node.checked()) {
-        node.state('checked', false)
-        node.$emit('unchecked')
+        if (node.checked()) {
+          node.state('checked', false)
+          node.$emit('unchecked')
 
-        this.tree.check(node)
+          this.tree.check(node)
+        }
+      })
+
+      if (this.parent) {
+        this.parent.refreshIndeterminateState()
       }
-    })
+    } else {
+      this.state('checked', false)
+      this.$emit('unchecked')
 
-    if (this.parent) {
-      this.parent.refreshIndeterminateState()
+      this.tree.check(this)
     }
 
     return this

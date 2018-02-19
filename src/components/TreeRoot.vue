@@ -22,6 +22,7 @@
     multiple: true,
     checkbox: false,
     checkOnSelect: false,
+    autoCheckChildren: true,
     parentSelect: false,
     keyboardNavigation: true
   }
