@@ -76,6 +76,7 @@
   .tree-root,
   .tree-children {
     list-style: none;
+    padding: 0;
   }
 
   .tree > .tree-root {

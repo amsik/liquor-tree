@@ -161,6 +161,10 @@
     white-space: nowrap;
   }
 
+  .tree-node .tree-node {
+    padding-left: 30px;
+  }
+
   .tree-arrow {
     display: inline-block;
     height: 30px;

@@ -6,28 +6,28 @@
 
   <style type="text/css">
     .viewer-item__key {
-      font-weight: bold;
+      color: #303030;
     }
 
-    .viewer-item__key:before {
-      content: '"';
-    }
-
-    .viewer-item__key:after {
-      content: '": ';
-    }
-
-    .viewer-type--string .viewer-item__value:before,
-    .viewer-type--string .viewer-item__value:after {
-      content: '"';
+    .viewer-item__key,
+    .viewer-item__value {
+      padding: 0 3px;
     }
 
     .viewer-type--boolean .viewer-item__value {
-      color: #07a;
+      color: #ff9b21;
     }
 
     .viewer-type--number .viewer-item__value {
-      color: #905;
+      color: #f85441;
+    }
+
+    .viewer-type--null .viewer-item__value {
+      color: #acabab;
+    }
+
+    .viewer-type--string .viewer-item__value {
+      color: green;
     }
 
 
@@ -42,9 +42,20 @@
     <div class="json-viewer">
       <tree :data="treeData" :options="treeOptions">
         <span slot-scope="{ node }" class="viewer-item" :class="[node.data('type')]">
-          <span v-if="node.hasChildren()" class="viewer-item__key">{{ node.text }}</span>
+          <span v-if="node.hasChildren()" class="viewer-item__key">
+            {{ node.text }}
+            <span v-if="node.collapsed()">
+              <template v-if="node.data('type') == 'array'">
+                [ {{ node.children.length }} ]
+              </template>
+              <template v-else>
+                { {{ node.children.length }} }
+              </template>
+            </span>
+          </span>
           <span v-else class="viewer-item__prop">
             <span class="viewer-item__key">{{ node.text }}</span>
+            :
             <span class="viewer-item__value">{{ node.data('objectKey') }}</span>
           </span>
         </span>
@@ -75,6 +86,10 @@
       methods: {
         isString(value) {
           return 'string' == typeof value
+        },
+
+        isNaN(value) {
+          return value !== value
         },
 
         isBoolean(value) {
@@ -122,9 +137,12 @@
 
           if (this.isIterable(prop)) {
             obj.children = this.map(prop, this.transformObject)
+            obj.data = {
+              'type': this.isArray(prop) ? 'array' : this.isPlainObject(prop) ? 'object' : 'unknown'
+            }
           } else {
             obj.data = {
-              'objectKey': prop,
+              'objectKey': prop || `${prop}`,
               'type': this.getType(prop)
             }
           }
@@ -133,6 +151,9 @@
         },
 
         getType(value) {
+          if (this.isNaN(value)) {
+            return 'viewer-type--nan'
+          }
 
           if (this.isString(value)) {
             return 'viewer-type--string'
@@ -145,15 +166,19 @@
           if (this.isBoolean(value)) {
             return 'viewer-type--boolean'
           }
+
+          if (null === value) {
+            return 'viewer-type--null'
+          }
         },
 
         parser(obj) {
-
-          console.log(
-            JSON.stringify(obj, null, 2)
-          )
-
-          return this.map(obj, this.transformObject)
+          return [{
+            text: 'JSONObject',
+            state: { expanded: true },
+            data: {type: 'root'},
+            children: this.map(obj, this.transformObject)
+          }]
         }
       }
     })
@@ -164,7 +189,28 @@
       el: '#app',
       data: function() {
         return {
-          json: {"glossary":{"title":124,"GlossDiv":{"title":true,"GlossList":{"GlossEntry":{"ID":"SGML","SortAs":"SGML","GlossTerm":"Standard Generalized Markup Language","Acronym":"SGML","Abbrev":"ISO 8879:1986","GlossDef":{"para":"A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso":["GML","XML"]},"GlossSee":"markup"}}}}}
+          json: {
+            "object": {
+              "a": "String",
+              "b": [
+                1, 2, 3
+              ],
+              "c": 55,
+              "e": false
+            },
+            "array": [
+              1,
+              2,
+              3,
+              -4,
+              -3,
+              -2
+            ],
+            "boolean": false,
+            "null": null,
+            "number": 21,
+            "string": "Hi liquor-tree user!"
+          }
         }
       }
     })
