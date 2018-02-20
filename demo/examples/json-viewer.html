@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON Viewer</title>
+  <meta charset="UTF-8">
+
+  <style type="text/css">
+    .viewer-item__key {
+      font-weight: bold;
+    }
+
+    .viewer-item__key:before {
+      content: '"';
+    }
+
+    .viewer-item__key:after {
+      content: '": ';
+    }
+
+    .viewer-type--string .viewer-item__value:before,
+    .viewer-type--string .viewer-item__value:after {
+      content: '"';
+    }
+
+    .viewer-type--boolean .viewer-item__value {
+      color: #07a;
+    }
+
+    .viewer-type--number .viewer-item__value {
+      color: #905;
+    }
+
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <liquor-json-viewer :json="json" />
+  </div>
+
+  <template id="liquor-json-viewer">
+    <div class="json-viewer">
+      <tree :data="treeData" :options="treeOptions">
+        <span slot-scope="{ node }" class="viewer-item" :class="[node.data('type')]">
+          <span v-if="node.hasChildren()" class="viewer-item__key">{{ node.text }}</span>
+          <span v-else class="viewer-item__prop">
+            <span class="viewer-item__key">{{ node.text }}</span>
+            <span class="viewer-item__value">{{ node.data('objectKey') }}</span>
+          </span>
+        </span>
+      </tree>
+
+    </div>
+  </template>
+
+</body>
+  <!-- first import Vue -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="/liquor-tree.umd.js"></script>
+  <script>
+    Vue.component('liquor-json-viewer', {
+      template: '#liquor-json-viewer',
+
+      props: ['json'],
+
+      data() {
+        return {
+          treeData: this.parser(this.json),
+          treeOptions: {
+
+          }
+        }
+      },
+
+      methods: {
+        isString(value) {
+          return 'string' == typeof value
+        },
+
+        isBoolean(value) {
+          return 'boolean' == typeof value
+        },
+
+        isNumber(value) {
+          return 'number' == typeof value
+        },
+
+        isArray(value) {
+          return Array.isArray(value)
+        },
+
+        isValue(value) {
+          return !this.isArray(value) && !this.isPlainObject(value)
+        },
+
+        isPlainObject(value) {
+          function isObject(obj) {
+            return obj != null && typeof obj === 'object' && Array.isArray(obj) === false
+          }
+
+          if (!isObject(value) || !value.constructor || !value.constructor.prototype) {
+            return false
+          }
+
+          return value.constructor.prototype.hasOwnProperty('isPrototypeOf') === true
+        },
+
+        isIterable(value) {
+          return this.isArray(value) || this.isPlainObject(value)
+        },
+
+        map(obj, fn) {
+          return Object.keys(obj).map((key) => {
+            return fn(obj[key], key)
+          })
+        },
+
+        transformObject(prop, key) {
+          let obj = {
+            text: key
+          }
+
+          if (this.isIterable(prop)) {
+            obj.children = this.map(prop, this.transformObject)
+          } else {
+            obj.data = {
+              'objectKey': prop,
+              'type': this.getType(prop)
+            }
+          }
+
+          return obj
+        },
+
+        getType(value) {
+
+          if (this.isString(value)) {
+            return 'viewer-type--string'
+          }
+
+          if (this.isNumber(value)) {
+            return 'viewer-type--number'
+          }
+
+          if (this.isBoolean(value)) {
+            return 'viewer-type--boolean'
+          }
+        },
+
+        parser(obj) {
+
+          console.log(
+            JSON.stringify(obj, null, 2)
+          )
+
+          return this.map(obj, this.transformObject)
+        }
+      }
+    })
+
+
+
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          json: {"glossary":{"title":124,"GlossDiv":{"title":true,"GlossList":{"GlossEntry":{"ID":"SGML","SortAs":"SGML","GlossTerm":"Standard Generalized Markup Language","Acronym":"SGML","Abbrev":"ISO 8879:1986","GlossDef":{"para":"A meta-markup language, used to create markup languages such as DocBook.","GlossSeeAlso":["GML","XML"]},"GlossSee":"markup"}}}}}
+        }
+      }
+    })
+
+
+    function getTreeData() {
+      return [
+          { text: 'JS: The Right Way' },
+          { text: 'Getting Started' },
+          { text: 'OBJECT ORIENTED' },
+          { text: 'LOOSE TYPING' }
+        ]
+    }
+  </script>
+</html>

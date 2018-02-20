@@ -375,8 +375,8 @@ export default class Node {
   }
 
 
-  index() {
-    return this.tree.index(this)
+  index(verbose) {
+    return this.tree.index(this, verbose)
   }
 
   first() {
@@ -412,13 +412,43 @@ export default class Node {
       index, 0, node
     )
 
-    this.$emit('node:added', node)
+    this.$emit('added', node)
 
     return node
   }
 
   addChild(node) {
     return this.insertAt(node)
+  }
+
+  append(node) {
+    return this.addChild(node)
+  }
+
+  prepend(node) {
+    return this.insertAt(node, 0)
+  }
+
+  before(node) {
+    return this.tree.before(this, node)
+  }
+
+  after(node) {
+    return this.tree.after(this, node)
+  }
+
+  empty() {
+    let node
+
+    while( node = this.children.pop() ) {
+      node.remove()
+    }
+
+    return this
+  }
+
+  remove() {
+    return this.tree.removeNode(this)
   }
 
   removeChild(criteria) {
@@ -431,15 +461,13 @@ export default class Node {
     return null
   }
 
-  append(node) {
-    return this.addChild(node)
-  }
 
-  prepend(node) {
-    return this.insertAt(node, 0)
-  }
 
   find(criteria, deep) {
+    if (criteria instanceof Node) {
+      return criteria
+    }
+
     return find(this.children, criteria, deep)
   }
 

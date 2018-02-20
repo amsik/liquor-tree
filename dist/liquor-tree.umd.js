@@ -640,8 +640,8 @@ Node.prototype._toggleOpenedState = function _toggleOpenedState () {
 };
 
 
-Node.prototype.index = function index () {
-  return this.tree.index(this)
+Node.prototype.index = function index (verbose) {
+  return this.tree.index(this, verbose)
 };
 
 Node.prototype.first = function first () {
@@ -679,13 +679,43 @@ Node.prototype.insertAt = function insertAt (node, index) {
     index, 0, node
   );
 
-  this.$emit('node:added', node);
+  this.$emit('added', node);
 
   return node
 };
 
 Node.prototype.addChild = function addChild (node) {
   return this.insertAt(node)
+};
+
+Node.prototype.append = function append (node) {
+  return this.addChild(node)
+};
+
+Node.prototype.prepend = function prepend (node) {
+  return this.insertAt(node, 0)
+};
+
+Node.prototype.before = function before (node) {
+  return this.tree.before(this, node)
+};
+
+Node.prototype.after = function after (node) {
+  return this.tree.after(this, node)
+};
+
+Node.prototype.empty = function empty () {
+  var node;
+
+  while( node = this.children.pop() ) {
+    node.remove();
+  }
+
+  return this
+};
+
+Node.prototype.remove = function remove () {
+  return this.tree.removeNode(this)
 };
 
 Node.prototype.removeChild = function removeChild (criteria) {
@@ -698,15 +728,13 @@ Node.prototype.removeChild = function removeChild (criteria) {
   return null
 };
 
-Node.prototype.append = function append (node) {
-  return this.addChild(node)
-};
 
-Node.prototype.prepend = function prepend (node) {
-  return this.insertAt(node, 0)
-};
 
 Node.prototype.find = function find$1 (criteria, deep) {
+  if (criteria instanceof Node) {
+    return criteria
+  }
+
   return find(this.children, criteria, deep)
 };
 
@@ -742,6 +770,9 @@ function uuidV4() {
     s4() + '-' + s4() + s4() + s4()
 }
 
+/**
+* Default Node's states
+*/
 var nodeStates = {
   selected: false,
   selectable: true,
@@ -845,6 +876,20 @@ var List = (function (Array) {
 
   return List;
 }(Array));
+
+/**
+  Every Node has certain format:
+  {
+    id,           // Unique Node id. By default it generates using uuidV4
+    text,         // Node text
+    children,     // List of children. Each children has the same format
+    parent,       // Parent Node or null. The tree is able to have more than 1 root node
+    state,        // States of Node. Ex.: selected, checked and so on
+    data          // Any types of data. It is similar to `storage`.
+                  // Ex.: data: {myAwesomeProperty: 10}. To get this property you need: Node.data('myAwesomeProperty')
+  }
+*/
+
 
 var defaultPropertyNames = {
   id: 'id',
@@ -1159,14 +1204,17 @@ Tree.prototype.index = function index (node, verbose) {
     target = this.model;
   }
 
+  var index = target.indexOf(node);
+
   if (verbose) {
     return {
-      index: target.indexOf(node),
-      target: target
+      index: index,
+      target: target,
+      node: target[index]
     }
   }
 
-  return target.indexOf(node)
+  return index
 };
 
 Tree.prototype.nextNode = function nextNode (node) {
@@ -1225,6 +1273,8 @@ Tree.prototype.addToModel = function addToModel (node, index) {
   this.recurseDown(node, function (n) {
     n.tree = this$1;
   });
+
+  this.$emit('node:added', node);
 };
 
 
@@ -1248,6 +1298,50 @@ Tree.prototype.prepend = function prepend (criteria, node) {
   return false
 };
 
+Tree.prototype.before = function before (targetNode, sourceNode) {
+  targetNode = this.find(targetNode);
+
+  var position = this.index(targetNode, true);
+  var node = this.objectToNode(sourceNode);
+
+  if (!~position.index) {
+    return false
+  }
+
+  position.target.splice(
+    position.index,
+    0,
+    node
+  );
+
+  this.$emit('node:added', node);
+
+  return sourceNode
+};
+
+Tree.prototype.after = function after (targetNode, sourceNode) {
+  targetNode = this.find(targetNode);
+
+  var position = this.index(targetNode, true);
+  var node = this.objectToNode(sourceNode);
+
+  if (!~position.index) {
+    return false
+  }
+
+  position.target.splice(
+    position.index + 1,
+    0,
+    node
+  );
+
+  this.$emit('node:added', node);
+
+  return sourceNode
+};
+
+
+
 Tree.prototype.addNode = function addNode (node) {
   var index = this.model.length;
 
@@ -1257,6 +1351,12 @@ Tree.prototype.addNode = function addNode (node) {
   this.$emit('node:added', node);
 
   return node
+};
+
+Tree.prototype.remove = function remove (criteria) {
+  return this.removeNode(
+    this.find(criteria)
+  )
 };
 
 Tree.prototype.removeNode = function removeNode (node) {
@@ -1482,7 +1582,31 @@ var TreeMixin = {
     },
 
     addChild: function addChild(criteria, node) {
-      return this.tree.addChild(node)
+      return this.append(criteria, node)
+    },
+
+    remove: function remove(criteria) {
+      return this.tree.remove()
+    },
+
+    before: function before(criteria, node) {
+      if (!node) {
+        return this.prepend(criteria)
+      }
+
+      return this.tree.before(criteria, node)
+    },
+
+    after: function after(criteria, node) {
+      if (!node) {
+        return this.append(criteria)
+      }
+
+      return this.tree.after(criteria, node)
+    },
+
+    find: function find(criteria) {
+      return this.tree.find(criteria)
     }
   }
 

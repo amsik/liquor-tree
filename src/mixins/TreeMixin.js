@@ -53,7 +53,31 @@ export default {
     },
 
     addChild(criteria, node) {
-      return this.tree.addChild(node)
+      return this.append(criteria, node)
+    },
+
+    remove(criteria) {
+      return this.tree.remove()
+    },
+
+    before(criteria, node) {
+      if (!node) {
+        return this.prepend(criteria)
+      }
+
+      return this.tree.before(criteria, node)
+    },
+
+    after(criteria, node) {
+      if (!node) {
+        return this.append(criteria)
+      }
+
+      return this.tree.after(criteria, node)
+    },
+
+    find(criteria) {
+      return this.tree.find(criteria)
     }
   }
 

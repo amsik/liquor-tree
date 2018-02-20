@@ -247,14 +247,17 @@ export default class Tree {
       target = this.model
     }
 
+    let index = target.indexOf(node)
+
     if (verbose) {
       return {
-        index: target.indexOf(node),
-        target
+        index: index,
+        target,
+        node: target[index]
       }
     }
 
-    return target.indexOf(node)
+    return index
   }
 
   nextNode(node) {
@@ -306,6 +309,8 @@ export default class Tree {
     this.recurseDown(node, n => {
       n.tree = this
     })
+
+    this.$emit('node:added', node)
   }
 
 
@@ -329,6 +334,50 @@ export default class Tree {
     return false
   }
 
+  before(targetNode, sourceNode) {
+    targetNode = this.find(targetNode)
+
+    let position = this.index(targetNode, true)
+    let node = this.objectToNode(sourceNode)
+
+    if (!~position.index) {
+      return false
+    }
+
+    position.target.splice(
+      position.index,
+      0,
+      node
+    )
+
+    this.$emit('node:added', node)
+
+    return sourceNode
+  }
+
+  after(targetNode, sourceNode) {
+    targetNode = this.find(targetNode)
+
+    let position = this.index(targetNode, true)
+    let node = this.objectToNode(sourceNode)
+
+    if (!~position.index) {
+      return false
+    }
+
+    position.target.splice(
+      position.index + 1,
+      0,
+      node
+    )
+
+    this.$emit('node:added', node)
+
+    return sourceNode
+  }
+
+
+
   addNode(node) {
     const index = this.model.length
 
@@ -338,6 +387,12 @@ export default class Tree {
     this.$emit('node:added', node)
 
     return node
+  }
+
+  remove(criteria) {
+    return this.removeNode(
+      this.find(criteria)
+    )
   }
 
   removeNode(node) {
