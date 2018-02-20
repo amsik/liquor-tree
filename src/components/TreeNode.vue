@@ -1,17 +1,30 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <i class="tree-arrow" @click="toggleExpand"></i>
-    <i class="tree-checkbox" v-if="options.checkbox" @click="check"></i>
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @click="select">
 
-    <a
-      href="javascript:void(0)"
-      class="tree-anchor"
-      tabindex="1"
-      ref="anchor"
-      @focus="onNodeFocus"
-      @click="select">
-        <node-content :node="node" />
-    </a>
+      <i
+        class="tree-arrow"
+        :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
+        @click.stop="toggleExpand">
+      </i>
+
+      <i
+        v-if="options.checkbox"
+        class="tree-checkbox"
+        :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
+        @click.stop="check">
+      </i>
+
+      <a
+        href="javascript:void(0)"
+        tabindex="1"
+        ref="anchor"
+        class="tree-anchor"
+        :class="{'selected': node.states.selected, 'disabled': node.states.disabled}"
+        @focus="onNodeFocus">
+          <node-content :node="node" />
+      </a>
+    </div>
 
     <transition name="l-fade">
       <ul
@@ -64,19 +77,23 @@
     },
 
     computed: {
+      paddingLeft() {
+        return this.node.depth * this.options.paddingLeft + 'px'
+      },
+
       nodeClass() {
         let state = this.state
         let hasChildren = this.hasChildren()
         let classes = {
-          'tree--has-child': hasChildren,
-          'tree--expanded': hasChildren && state.expanded,
-          'tree--selected': state.selected,
-          'tree--disabled': state.disabled
+          'has-child': hasChildren,
+          'expanded': hasChildren && state.expanded,
+          'selected': state.selected,
+          'disabled': state.disabled
         }
 
         if (this.options.checkbox) {
-          classes['tree--checked'] = state.checked
-          classes['tree--indeterminate'] = state.indeterminate
+          classes['checked'] = state.checked
+          classes['indeterminate'] = state.indeterminate
         }
 
         return classes
@@ -159,10 +176,24 @@
 <style>
   .tree-node {
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
 
-  .tree-node .tree-node {
-    padding-left: 30px;
+  .tree-content {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    cursor: pointer;
+  }
+
+  .tree-node:not(.selected) > .tree-content:hover {
+    background: #f1f5fb;
+  }
+
+  .tree-node.disabled > .tree-content:hover {
+    background: inherit;
   }
 
   .tree-arrow {
@@ -171,6 +202,30 @@
     cursor: pointer;
     margin-left: 30px;
     width: 0;
+  }
+
+  .tree-arrow.has-child {
+    margin-left: 0;
+    width: 30px;
+    position: relative;
+  }
+
+  .tree-arrow.has-child:after {
+    border: 1.5px solid #494646;
+    position: absolute;
+    border-left: 0;
+    border-top: 0;
+    left: 9px;
+    top: 50%;
+    height: 9px;
+    width: 9px;
+    transform: rotate(-45deg) translateY(-50%) translateX(0);
+    transition: transform .25s;
+    transform-origin: center;
+  }
+
+  .tree-arrow.expanded.has-child:after {
+    transform: rotate(45deg) translateY(-50%) translateX(-5px);
   }
 
   .tree-checkbox {
@@ -192,13 +247,13 @@
     content: "";
   }
 
-  .tree--checked > .tree-checkbox,
-  .tree--indeterminate > .tree-checkbox {
+  .tree-checkbox.checked,
+  .tree-checkbox.indeterminate {
     background-color: #3a99fc;
     border-color: #218eff;
   }
 
-  .tree--checked > .tree-checkbox:after {
+  .tree-checkbox.checked:after {
     box-sizing: content-box;
     border: 1.5px solid #fff; /* probably width would be rounded in most cases */
     border-left: 0;
@@ -212,11 +267,11 @@
     transform-origin: center;
   }
 
-  .tree--checked > .tree-checkbox:after {
+  .tree-checkbox.checked:after {
     transform: rotate(45deg) scaleY(1);
   }
 
-  .tree--indeterminate > .tree-checkbox:after {
+  .tree-checkbox.indeterminate:after {
     background-color: #fff;
     top: 50%;
     left: 20%;
@@ -225,13 +280,14 @@
   }
 
   .tree-anchor {
-    outline-color: #eee;
+    flex-grow: 2;
+    outline-color: #d0e0f5;
     outline-width: 1px;
     display: inline-block;
     text-decoration: none;
     color: #343434;
     vertical-align: top;
-    height: 24px;
+    margin-left: 3px;
     line-height: 24px;
     padding: 3px 6px;
     -webkit-user-select: none;
@@ -240,52 +296,15 @@
     user-select: none;
   }
 
-  .tree-anchor:hover {
-    background-color: #fafafa;
+  .tree-anchor.selected {
+    background-color: #e7eef7;
   }
 
-  .tree--selected > .tree-anchor {
-    background: #f0f0f0;
-  }
-
-  .tree--has-child > .tree-arrow {
-    margin-left: 0;
-    width: 30px;
-    position: relative;
-  }
-
-  .tree--has-child > .tree-arrow:after {
-    border: 1.5px solid #494646;
-    position: absolute;
-    border-left: 0;
-    border-top: 0;
-    left: 9px;
-    top: 50%;
-    height: 9px;
-    width: 9px;
-    transform: rotate(-45deg) translateY(-50%) translateX(0);
-    transition: transform .25s;
-    transform-origin: center;
-  }
-
-  .tree--expanded > .tree-arrow:after {
-    transform: rotate(45deg) translateY(-50%) translateX(-5px);
-  }
-
-  .tree--disabled {
-    color: #fff;
+  .tree-anchor.disabled {
+    color: #989191;
     background: #fff;
     opacity: .6;
     cursor: default;
-  }
-
-  .tree--disabled > .tree-anchor,
-  .tree--disabled > .tree-anchor span {
-    background: #fff;
-    cursor: default;
-  }
-
-  .tree--disabled > .tree-anchor:focus {
     outline: none;
   }
 
@@ -297,6 +316,27 @@
   .l-fade-enter, .l-fade-leave-to {
     opacity: 0;
     transform: translateX(-2em);
+  }
+
+
+  .tree--small .tree-anchor {
+    line-height: 19px;
+  }
+
+  .tree--small .tree-checkbox {
+    width: 23px;
+    height: 23px;
+  }
+
+  .tree--small .tree-arrow {
+    height: 23px;
+  }
+
+  .tree--small .tree-checkbox.checked:after {
+    left: 7px;
+    top: 3px;
+    height: 11px;
+    width: 5px;
   }
 
 </style>

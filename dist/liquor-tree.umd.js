@@ -4,7 +4,7 @@
 	(global.LiquorTree = factory());
 }(this, (function () { 'use strict';
 
-(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree-node { white-space: nowrap; } .tree-node .tree-node { padding-left: 30px; } .tree-arrow { display: inline-block; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree-checkbox { display: inline-block; position: relative; width: 30px; height: 30px; box-sizing: border-box; border: 1px solid #dadada; border-radius: 2px; background: #fff; transition: border-color .25s, background-color .25s; } .tree-checkbox:after, .tree-arrow:after { position: absolute; display: block; content: \"\"; } .tree--checked > .tree-checkbox, .tree--indeterminate > .tree-checkbox { background-color: #3a99fc; border-color: #218eff; } .tree--checked > .tree-checkbox:after { box-sizing: content-box; border: 1.5px solid #fff; /* probably width would be rounded in most cases */ border-left: 0; border-top: 0; left: 9px; top: 3px; height: 15px; width: 8px; transform: rotate(45deg) scaleY(0); transition: transform .25s; transform-origin: center; } .tree--checked > .tree-checkbox:after { transform: rotate(45deg) scaleY(1); } .tree--indeterminate > .tree-checkbox:after { background-color: #fff; top: 50%; left: 20%; right: 20%; height: 2px; } .tree-anchor { outline-color: #eee; outline-width: 1px; display: inline-block; text-decoration: none; color: #343434; vertical-align: top; height: 24px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .tree-anchor:hover { background-color: #fafafa; } .tree--selected > .tree-anchor { background: #f0f0f0; } .tree--has-child > .tree-arrow { margin-left: 0; width: 30px; position: relative; } .tree--has-child > .tree-arrow:after { border: 1.5px solid #494646; position: absolute; border-left: 0; border-top: 0; left: 9px; top: 50%; height: 9px; width: 9px; transform: rotate(-45deg) translateY(-50%) translateX(0); transition: transform .25s; transform-origin: center; } .tree--expanded > .tree-arrow:after { transform: rotate(45deg) translateY(-50%) translateX(-5px); } .tree--disabled { color: #fff; background: #fff; opacity: .6; cursor: default; } .tree--disabled > .tree-anchor, .tree--disabled > .tree-anchor span { background: #fff; cursor: default; } .tree--disabled > .tree-anchor:focus { outline: none; } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree-node { white-space: nowrap; display: flex; flex-direction: column; position: relative; } .tree-content { display: flex; align-items: center; padding: 4px; cursor: pointer; } .tree-node:not(.selected) > .tree-content:hover { background: #f1f5fb; } .tree-node.disabled > .tree-content:hover { background: inherit; } .tree-arrow { display: inline-block; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree-arrow.has-child { margin-left: 0; width: 30px; position: relative; } .tree-arrow.has-child:after { border: 1.5px solid #494646; position: absolute; border-left: 0; border-top: 0; left: 9px; top: 50%; height: 9px; width: 9px; transform: rotate(-45deg) translateY(-50%) translateX(0); transition: transform .25s; transform-origin: center; } .tree-arrow.expanded.has-child:after { transform: rotate(45deg) translateY(-50%) translateX(-5px); } .tree-checkbox { display: inline-block; position: relative; width: 30px; height: 30px; box-sizing: border-box; border: 1px solid #dadada; border-radius: 2px; background: #fff; transition: border-color .25s, background-color .25s; } .tree-checkbox:after, .tree-arrow:after { position: absolute; display: block; content: \"\"; } .tree-checkbox.checked, .tree-checkbox.indeterminate { background-color: #3a99fc; border-color: #218eff; } .tree-checkbox.checked:after { box-sizing: content-box; border: 1.5px solid #fff; /* probably width would be rounded in most cases */ border-left: 0; border-top: 0; left: 9px; top: 3px; height: 15px; width: 8px; transform: rotate(45deg) scaleY(0); transition: transform .25s; transform-origin: center; } .tree-checkbox.checked:after { transform: rotate(45deg) scaleY(1); } .tree-checkbox.indeterminate:after { background-color: #fff; top: 50%; left: 20%; right: 20%; height: 2px; } .tree-anchor { flex-grow: 2; outline-color: #d0e0f5; outline-width: 1px; display: inline-block; text-decoration: none; color: #343434; vertical-align: top; margin-left: 3px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .tree-anchor.selected { background-color: #e7eef7; } .tree-anchor.disabled { color: #989191; background: #fff; opacity: .6; cursor: default; outline: none; } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } .tree--small .tree-anchor { line-height: 19px; } .tree--small .tree-checkbox { width: 23px; height: 23px; } .tree--small .tree-arrow { height: 23px; } .tree--small .tree-checkbox.checked:after { left: 7px; top: 3px; height: 11px; width: 5px; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 
 
 
@@ -38,7 +38,20 @@
 
 
 
-var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('i',{staticClass:"tree-arrow",on:{"click":_vm.toggleExpand}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",on:{"click":_vm.check}}):_vm._e(),_vm._v(" "),_c('a',{ref:"anchor",staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)","tabindex":"1"},on:{"focus":_vm.onNodeFocus,"click":_vm.select}},[_c('node-content',{attrs:{"node":_vm.node}})],1),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.expanded)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.node.children),function(child,i){return (child.visible())?_c('node',{key:child.id,attrs:{"node":child,"options":_vm.options}}):_vm._e()})):_vm._e()])],1)},staticRenderFns: [],
+
+
+
+
+
+
+
+
+
+
+
+
+
+var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('div',{staticClass:"tree-content",style:({'padding-left': _vm.paddingLeft}),on:{"click":_vm.select}},[_c('i',{staticClass:"tree-arrow",class:{'expanded': _vm.node.states.expanded, 'has-child': _vm.node.children.length},on:{"click":function($event){$event.stopPropagation();_vm.toggleExpand($event);}}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",class:{'checked': _vm.node.states.checked, 'indeterminate': _vm.node.states.indeterminate},on:{"click":function($event){$event.stopPropagation();_vm.check($event);}}}):_vm._e(),_vm._v(" "),_c('a',{ref:"anchor",staticClass:"tree-anchor",class:{'selected': _vm.node.states.selected, 'disabled': _vm.node.states.disabled},attrs:{"href":"javascript:void(0)","tabindex":"1"},on:{"focus":_vm.onNodeFocus}},[_c('node-content',{attrs:{"node":_vm.node}})],1)]),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.expanded)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.node.children),function(child,i){return (child.visible())?_c('node',{key:child.id,attrs:{"node":child,"options":_vm.options}}):_vm._e()})):_vm._e()])],1)},staticRenderFns: [],
   name: 'Node',
   inject: ['tree'],
   props: ['node', 'options'],
@@ -70,19 +83,23 @@ var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c
   },
 
   computed: {
+    paddingLeft: function paddingLeft() {
+      return this.node.depth * this.options.paddingLeft + 'px'
+    },
+
     nodeClass: function nodeClass() {
       var state = this.state;
       var hasChildren = this.hasChildren();
       var classes = {
-        'tree--has-child': hasChildren,
-        'tree--expanded': hasChildren && state.expanded,
-        'tree--selected': state.selected,
-        'tree--disabled': state.disabled
+        'has-child': hasChildren,
+        'expanded': hasChildren && state.expanded,
+        'selected': state.selected,
+        'disabled': state.disabled
       };
 
       if (this.options.checkbox) {
-        classes['tree--checked'] = state.checked;
-        classes['tree--indeterminate'] = state.indeterminate;
+        classes['checked'] = state.checked;
+        classes['indeterminate'] = state.indeterminate;
       }
 
       return classes
@@ -770,9 +787,6 @@ function uuidV4() {
     s4() + '-' + s4() + s4() + s4()
 }
 
-/**
-* Default Node's states
-*/
 var nodeStates = {
   selected: false,
   selectable: true,
@@ -876,20 +890,6 @@ var List = (function (Array) {
 
   return List;
 }(Array));
-
-/**
-  Every Node has certain format:
-  {
-    id,           // Unique Node id. By default it generates using uuidV4
-    text,         // Node text
-    children,     // List of children. Each children has the same format
-    parent,       // Parent Node or null. The tree is able to have more than 1 root node
-    state,        // States of Node. Ex.: selected, checked and so on
-    data          // Any types of data. It is similar to `storage`.
-                  // Ex.: data: {myAwesomeProperty: 10}. To get this property you need: Node.data('myAwesomeProperty')
-  }
-*/
-
 
 var defaultPropertyNames = {
   id: 'id',
@@ -1612,7 +1612,7 @@ var TreeMixin = {
 
 };
 
-(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; padding: 0; } .tree > .tree-root { padding: 0; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; padding: 0; } .tree > .tree-root { padding: 3px; box-sizing: border-box; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
 
 
 
@@ -1634,7 +1634,8 @@ var defaults = {
   checkOnSelect: false,
   autoCheckChildren: true,
   parentSelect: false,
-  keyboardNavigation: true
+  keyboardNavigation: true,
+  paddingLeft: 24
 };
 
 var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree",attrs:{"role":"tree"}},[_c('ul',{staticClass:"tree-root"},_vm._l((_vm.model),function(node,i){return (node.visible())?_c('node',{key:node.id,attrs:{"node":node,"options":_vm.options}}):_vm._e()}))])},staticRenderFns: [],

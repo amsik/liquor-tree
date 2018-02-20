@@ -24,7 +24,8 @@
     checkOnSelect: false,
     autoCheckChildren: true,
     parentSelect: false,
-    keyboardNavigation: true
+    keyboardNavigation: true,
+    paddingLeft: 24
   }
 
   export default {
@@ -80,6 +81,7 @@
   }
 
   .tree > .tree-root {
-    padding: 0;
+    padding: 3px;
+    box-sizing: border-box;
   }
 </style>

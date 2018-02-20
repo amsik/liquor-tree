@@ -59,6 +59,9 @@
     </template>
 
     <script type="text/javascript">
+      console.log('Add to DEMOS .tree--small')
+
+
         let data = _ => ([
             {
                 text: 'Item 1',
@@ -123,7 +126,7 @@
             children: [
               { TE: 'Getting Started', MAMA: { disabled: 1 } },
               { TE: 'JavaScript Code Style', MAMA: { selected: true } },
-              { TE: 'The Good Parts', children: [
+              { TE: 'The Good Parts', MAMA: { expanded: true}, children: [
                 { TE: 'OBJECT ORIENTED' },
                 { TE: 'ANONYMOUS FUNCTIONS' },
                 { TE: 'FUNCTIONS AS FIRST-CLASS OBJECTS' },
@@ -232,9 +235,10 @@
                     options: {
                       // {checkbox: true, parentSelect: true}
                       checkbox: true,
-                      checkOnSelect: true,
-                      parentSelect: false,
-                      autoCheckChildren: false
+                      multiple: false,
+                      checkOnSelect: false,
+                      parentSelect: true,
+                      autoCheckChildren: true
                     }
                 }
             },
