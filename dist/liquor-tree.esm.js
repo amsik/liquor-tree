@@ -781,6 +781,9 @@ function uuidV4() {
     s4() + '-' + s4() + s4() + s4()
 }
 
+/**
+* Default Node's states
+*/
 var nodeStates = {
   selected: false,
   selectable: true,
@@ -884,6 +887,20 @@ var List = (function (Array) {
 
   return List;
 }(Array));
+
+/**
+  Every Node has certain format:
+  {
+    id,           // Unique Node id. By default it generates using uuidV4
+    text,         // Node text
+    children,     // List of children. Each children has the same format
+    parent,       // Parent Node or null. The tree is able to have more than 1 root node
+    state,        // States of Node. Ex.: selected, checked and so on
+    data          // Any types of data. It is similar to `storage`.
+                  // Ex.: data: {myAwesomeProperty: 10}. To get this property you need: Node.data('myAwesomeProperty')
+  }
+*/
+
 
 var defaultPropertyNames = {
   id: 'id',

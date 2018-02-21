@@ -194,7 +194,7 @@ Tree has its own structure for every node:
 * `id`: By default if node didn't have an id it will be generated randomly
 * `text`: Label for Node
 * `state`: Allows user to set Node's state (disabled, checked, selected and so on)
-* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive. 
+* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive.
 * `children`: List of children nodes.
 
 This formar is default for tree. By you can easily **redefine** this format. Yeah... Sometimes you don't want to change your server-side code and you have very different format for tree. To do this you just need to send the object:
@@ -225,6 +225,18 @@ You just need to add `propertyNames` options:
 
 Then your data will be transformed to readable tree format. Awesome!
 
+## Examples
+
+### JSON Viewer
+
+I did this in 40 min ... do not judge me strictly :)
+In plans:
+- online editor
+- to reveal all the possibilities of slots
+- process in real time
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/tjkqcp2m/3/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
 ## API
 
 ### Tree Options
@@ -234,6 +246,7 @@ Then your data will be transformed to readable tree format. Awesome!
 | **multiple**           | Boolean   | true    | Allows to select more that one node. Ignored in `checkbox` mode. In `checkbox` mode it always possible to select multiple nodes   |
 | **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
 | **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
+| **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same 'checked' state as their parent. |
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |

@@ -2,7 +2,7 @@
 
 A Vue tree component that allows you to present hierarchically organized data in a nice and logical manner.
 
-[documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/)
+[documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/#Examples)
 
 ## Features
 * mobile friendly
@@ -38,7 +38,7 @@ $ yarn add liquor-tree
         ref="tree"
     />
   </template>
-  
+
   <script>
     import Vue from 'Vue'
     import VueTree from 'vue-tree'

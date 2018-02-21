@@ -24,6 +24,13 @@
       title: Redefine Structure
 
 
+- title: Examples
+  items:
+    - id: json-viewer
+      href: "#JSON-Viewer"
+      title: JSON Viewer
+
+
 - title: API
   items:
   - id: tree-options
