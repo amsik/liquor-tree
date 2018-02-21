@@ -1,7 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
     <div class="tree-content" :style="{'padding-left': paddingLeft}" @click="select">
-
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
@@ -17,10 +16,9 @@
 
       <a
         href="javascript:void(0)"
+        class="tree-anchor"
         tabindex="1"
         ref="anchor"
-        class="tree-anchor"
-        :class="{'selected': node.states.selected, 'disabled': node.states.disabled}"
         @focus="onNodeFocus">
           <node-content :node="node" />
       </a>
@@ -179,6 +177,7 @@
     display: flex;
     flex-direction: column;
     position: relative;
+    box-sizing: border-box;
   }
 
   .tree-content {
@@ -186,10 +185,16 @@
     align-items: center;
     padding: 4px;
     cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .tree-node:not(.selected) > .tree-content:hover {
-    background: #f1f5fb;
+    background: #f6f8fb;
+  }
+
+  .tree-node.selected > .tree-content {
+    background-color: #e7eef7;
   }
 
   .tree-node.disabled > .tree-content:hover {
@@ -296,11 +301,11 @@
     user-select: none;
   }
 
-  .tree-anchor.selected {
-    background-color: #e7eef7;
+  .tree-node.selected .tree-anchor {
+    outline: none;
   }
 
-  .tree-anchor.disabled {
+  .tree-node.disabled .tree-anchor {
     color: #989191;
     background: #fff;
     opacity: .6;

@@ -40,9 +40,9 @@ function focusdDown(tree, node) {
 
 function checkNode(tree, node) {
   if (node.checked()) {
-    tree.uncheck(node)
+    node.uncheck()
   } else {
-    tree.check(node)
+    node.check()
   }
 }
 
