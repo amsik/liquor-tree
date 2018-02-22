@@ -57,7 +57,7 @@ export default {
     },
 
     remove(criteria) {
-      return this.tree.remove()
+      return this.tree.remove(criteria)
     },
 
     before(criteria, node) {

@@ -33,12 +33,13 @@
 
 - title: API
   items:
-  - id: tree-options
-    href: "#Tree-Options"
-    title: Tree Options
+  - id: component-options
+    href: "#Component-Options"
+    title: Component Options
   - id: tree-api
     href: "#Tree-API"
     title: Tree API
+
   - id: node-api
     href: "#Node-API"
     title: Node API

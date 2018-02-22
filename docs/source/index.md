@@ -239,7 +239,7 @@ In plans:
 
 ## API
 
-### Tree Options
+### Component Options
 
 | Name                   | Type         |  Default  | Description |
 |------------------------|:------------:|:---------:|-------------|
@@ -250,3 +250,116 @@ In plans:
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
+
+
+
+### Tree API
+
+To have directly access to the Tree API you have to use `ref` property of component. See more [Child-Component-Refs](https://vuejs.org/v2/guide/components.html#Child-Component-Refs).
+
+#### Tree.find(criteria)
+
+- **Arguments:**
+  - { Object | String } criteria
+
+- **Returns:**
+  - Node
+
+- **Usage:**
+
+  This method uses in every methods where you can find node by criteria. If `criteria` is passed as string it will be transformed like `{ text: criteria }`.
+  Examples:
+```javascript
+  this.$refs.tree.find('Node Text') // It will find Node that has text 'Node Text'
+  this.$refs.tree.find(/Node Text/) // Using RegExp. It will find: Node Text ATAT, ATATA Node Text and so on...
+  this.$refs.tree.find({
+    text: /^Item 2/,
+    state: { checked: true, selected: true }
+  })
+```
+
+
+#### Tree.selected()
+
+- **Returns:**
+  - The list of selected nodes (`multiple` component options)
+  - Node
+  - null
+
+- **Usage:**
+
+  You can get access to `selected` nodes and do everything you want with NodeAPI
+
+
+#### Tree.checked()
+
+- **Returns:**
+  - The list of checked nodes
+  - null
+
+- **Usage:**
+
+  You can get access to `checked` nodes and do everything you want with NodeAPI
+
+
+#### Tree.append(criteria, node)
+
+- **Arguments:**
+  - { Object | Node } criteria  (see `find` method)
+  - { Object | String } node
+
+- **Returns:**
+  - Appended Node
+  - null
+
+- **Usage:**
+
+  This method allows you to append (add to the end of the list) new Node to the Tree.
+  There are **2 types of insertion:**
+    - Set criteria and new Node. It will try to find Node (using criteria) and append as children of this Node. Example:
+```javascript
+  this.$refs.tree.append(
+    { text: 'My super Text' },              // search criteria
+    'New CHILD Node for "My super Text"'    // this string will be converted to Node object with default state parameters
+  )
+```
+    - Set only one argument (Node). In this way it will add new Node as `root` element. (Yeah, we are able to have more than one root element)
+```javascript
+  this.$refs.tree.append({
+    text: 'My NEW Node',
+    state: { selected: true }
+  })
+```
+
+#### Tree.prepend(criteria, node)
+
+- **Usage:**
+
+  This method has behaviour the same as `Tree.append`. But insertion place will be different (**in the start** of the list)
+
+
+#### Tree.before(criteria, node)
+
+- **Usage:**
+
+  This method has behaviour the same as `Tree.append`. But insertion place will be different (**before** founded node or the start of the list (as root))
+
+
+#### Tree.after(criteria, node)
+
+- **Usage:**
+
+  This method has behaviour the same as `Tree.append`. But insertion place will be different (**after** founded node or the end of the list (as root))
+
+
+#### Tree.remove(criteria)
+
+- **Arguments:**
+  - { Object | String } criteria (see `find` method)
+
+- **Returns:**
+  - { Node } removed node
+
+- **Usage:**
+
+  Remove Node by criteria.

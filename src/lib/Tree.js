@@ -419,6 +419,8 @@ export default class Tree {
     this.selectedNodes.remove(node)
     this.checkedNodes.remove(node)
 
+    node.parent = null
+
     return node
   }
 

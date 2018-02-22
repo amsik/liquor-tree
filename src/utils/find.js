@@ -2,16 +2,22 @@ const $div = document.createElement('div')
 
 function finder(criteria) {
   return function(node) {
-    return Object.keys(criteria).some(key => {
+    return Object.keys(criteria).every(key => {
       let val = node[key]
       let c = getRegExp(criteria[key])
 
-      if ('text' == key) {
-        $div.innerHTML = val
-        val = $div.innerText
-      }
+      if ('states' == key) {
+        let states = criteria[key]
 
-      return c.test(val)
+        return Object.keys(states).every(s => node[key][s] === states[s])
+      } else {
+        if ('text' == key) {
+          $div.innerHTML = val
+          val = $div.innerText
+        }
+
+        return c.test(val)
+      }
     })
   }
 }

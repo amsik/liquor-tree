@@ -198,16 +198,22 @@ var $div = document.createElement('div');
 
 function finder(criteria) {
   return function(node) {
-    return Object.keys(criteria).some(function (key) {
+    return Object.keys(criteria).every(function (key) {
       var val = node[key];
       var c = getRegExp(criteria[key]);
 
-      if ('text' == key) {
-        $div.innerHTML = val;
-        val = $div.innerText;
-      }
+      if ('states' == key) {
+        var states = criteria[key];
 
-      return c.test(val)
+        return Object.keys(states).every(function (s) { return node[key][s] === states[s]; })
+      } else {
+        if ('text' == key) {
+          $div.innerHTML = val;
+          val = $div.innerText;
+        }
+
+        return c.test(val)
+      }
     })
   }
 }
@@ -1381,6 +1387,8 @@ Tree.prototype.removeNode = function removeNode (node) {
   this.selectedNodes.remove(node);
   this.checkedNodes.remove(node);
 
+  node.parent = null;
+
   return node
 };
 
@@ -1584,7 +1592,7 @@ var TreeMixin = {
     },
 
     remove: function remove(criteria) {
-      return this.tree.remove()
+      return this.tree.remove(criteria)
     },
 
     before: function before(criteria, node) {
