@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @click="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup="select" @touchend="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
@@ -29,7 +29,7 @@
         v-if="hasChildren() && state.expanded"
         class="tree-children">
           <node
-            v-for="(child, i) in node.children"
+            v-for="child in node.children"
             v-if="child.visible()"
 
             :key="child.id"
@@ -98,7 +98,6 @@
       }
     },
 
-
     methods: {
       onNodeFocus() {
         this.tree.activeElement = this.node
@@ -106,6 +105,7 @@
 
       focus() {
         this.$refs.anchor.focus()
+        this.node.select()
       },
 
       check() {
@@ -286,9 +286,8 @@
 
   .tree-anchor {
     flex-grow: 2;
-    outline-color: #d0e0f5;
-    outline-width: 1px;
-    display: inline-block;
+    outline: none;
+    display: flex;
     text-decoration: none;
     color: #343434;
     vertical-align: top;

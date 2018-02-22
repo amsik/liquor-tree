@@ -21,7 +21,6 @@
       <label class="tree-text vehicle-label" slot-scope="{ node }">
         <template v-if="!node.hasChildren()">
           <input type="radio"
-            v-model="vehicles[node.parent.data('vehicleGroup')]"
             :name="node.parent.data('vehicleGroup')"
             :value="node.text">
 
@@ -33,24 +32,6 @@
         </template>
       </label>
     </tree>
-
-    <div>
-      <h4>Selected Vehicles:</h4>
-
-      <div v-if="vehicles['alfa-romeo']">
-        <b>ALFA ROMEO:</b> {{ vehicles['alfa-romeo'] }}
-      </div>
-
-      <div v-if="vehicles['audi']">
-        <b>Audi:</b> {{ vehicles['audi'] }}
-      </div>
-
-      <div v-if="vehicles['bmw']">
-        <b>BMW:</b> {{ vehicles['bmw'] }}
-      </div>
-    </div>
-
-    </div>
   </div>
 </body>
   <!-- first import Vue -->
@@ -61,35 +42,13 @@
       el: '#app',
       data: function() {
         return {
-          treeData: getTreeData(),
-          vehicles: {}
+          treeData: getTreeData()
         }
-      },
-
-      mounted() {
-        // Just for effect oO
-        // if (Math.random() > .5) {
-        //   setTimeout(_ => {
-        //     this.$refs.tree.expandAll()
-        //   }, 1000)
-        // } else {
-        //   let i = 0
-
-        //   this.$refs.tree.recurseDown(node => {
-        //     if (node.hasChildren()) {
-        //       setTimeout(_ => {
-        //         node.expand()
-        //       }, 450 * ++i)
-        //     }
-        //   })
-        // }
       },
 
       methods: {
         onNodeSelected(node) {
-          // console.log(node.parent.data('vehicleGroup'))
-          console.log(node.text)
-          // this.vehicles[node.data('vehicleGroup')] = node.text
+          console.log(node.text, node)
         }
       }
     })
@@ -99,7 +58,7 @@
       return [
           {
             text: 'Vehicles', state: { expanded: true }, children: [
-              { text: 'ALFA ROMEO', data: {vehicleGroup: 'alfa-romeo'}, children: [
+              { text: 'ALFA ROMEO', state: { expanded: true }, data: {vehicleGroup: 'alfa-romeo'}, children: [
                 { text: '155' },
                 { text: '159' },
                 { text: '164' },

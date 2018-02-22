@@ -237,6 +237,13 @@ In plans:
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/tjkqcp2m/3/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
+### Radio
+
+This example shows how to replace default content. It's allows you to control a content in any way. It possible thanks to VueJS scoped slots.
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/7Lckj2sb/1/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
 ## API
 
 ### Component Options

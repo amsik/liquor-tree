@@ -2,7 +2,7 @@
   <div class="tree" role="tree">
     <ul class="tree-root">
       <node
-        v-for="(node, i) in model"
+        v-for="node in model"
         v-if="node.visible()"
 
         :key="node.id"
