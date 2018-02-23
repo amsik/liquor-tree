@@ -1,15 +1,21 @@
 - title: Introduction
+  href: "#Introduction"
 
 - title: Getting Started
+  href: "#Getting-Started"
   items:
   - id: installation
     href: "#Installation"
     title: Installation
-  - id: Events
+  - id: Structure
+    href: "#Structure"
+    title: Structure
+  - id: Basic Usage
     href: "#Basic-Usage"
     title: Basic Usage
 
-- title: GUIDES
+- title: Guides
+  href: "#Guides"
   items:
     - id: basic-features
       href: "#Basic-Features"
@@ -25,6 +31,7 @@
 
 
 - title: Examples
+  href: "#Examples"
   items:
     - id: json-viewer
       href: "#JSON-Viewer"
@@ -32,8 +39,12 @@
     - id: radio
       href: "#Radio"
       title: Radio
+    - id: exmlp-redefine-structure
+      href: "#Redefine-Structure-Example"
+      title: Redefine Structure Example
 
 - title: API
+  href: "#API"
   items:
   - id: component-options
     href: "#Component-Options"

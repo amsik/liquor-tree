@@ -21,6 +21,12 @@
 
 .menu-nav {
   padding: 20px 25px;
+  position: absolute;
+  top: 140px;
+  overflow-y: auto;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
 
   span {
     color: #666666;

@@ -14,9 +14,20 @@ h2 {
   font-size: 25px;
   font-weight: 600;
   color: $highlightColor;
-  margin-bottom: 20px;
-  margin-top: 30px;
+  margin-top: 4em;
 }
+
+h2#Introduction {
+  margin: 0;
+}
+
+h3 {
+  padding-bottom: 0.7em;
+  margin: 45px 0 0.8em;
+  border-bottom: 1px solid #ddd;
+}
+
+
 
 p, ul li {
   color: $subColor;

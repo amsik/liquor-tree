@@ -18,27 +18,21 @@ There are lots of libraries but always something was missing (in my humble opini
 * any number of instances per page
 * multi selection
 * keyboard navigation
-* ready for touch devices
+
+
+
 
 ## Getting Started
 
 ### Installation
 
-To install `liquor-tree` using npm:
+- npm: `$ npm install --save liquor-tree`
+- Yarn: `$ yarn add liquor-tree`
 
-``` bash
-$ npm install --save liquor-tree
-```
+It has to be installed to VueJS instance. Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if it needs of course).
 
-#### CDN:
+You no need to care about styles, they are automatically appended to the document.
 
-``` html
-<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
-```
-
-
-It has to be installed to VueJS instance. You no need to care about styles, they are automatically appended to the document.
-Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if it needs of course).
 
 **When used with a module system there are 3 ways to registrate the component (maybe more... I don't know).
 Okay. It's our ways:**
@@ -73,7 +67,70 @@ export default {
 ```
 
 To registrate the library you can choose between 3 ways I mentioned before.
-Okey, `LiquorTree` is installed. Let's go use it
+
+**When used directly in browser you are able to include `liquor-tree` via CND:**
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
+```
+
+### Structure
+
+The component has only two props: **data** and **options**. More about props read [VueJS documentation](https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props)
+
+- property **options** - This property defines tree behavior. See [Component Options](#Component-Options)
+- property **data** - Array-like object that defines tree nodes
+
+Property **data** has its own structure for every node:
+
+``` javascript
+{
+  "id": Int,
+  "text": String,
+  "data": Object,
+  "children": Array,
+  "state": Object
+}
+```
+
+
+* `id`: By default if node didn't have an id it will be generated randomly
+* `text`: Label for Node
+* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive.
+* `children`: List of children nodes.
+* `state`: Allows user to set Node's state.
+
+  By default Node has states: 
+    ```javascript
+    {
+      selected: false,
+      selectable: true,
+      checked: false,
+      expanded: false,
+      disabled: false,
+      visible: true,
+      indeterminate: false
+    }
+    ```
+  It is not necessary to pass all the states for every Node. It will automatically merged with default states object
+
+Initial **data** example:
+
+``` javascript
+  const treeData = [
+    { text: 'Item 1', state: { visible: false } },
+    { text: 'Item 2' },
+    { text: 'Item 3', state: { selected: true } },
+    { text: 'Item 4' },
+    { text: 'Item 5', children: [
+      { text: 'Item 5.1', state: { disabled: true } },
+      { text: 'Item 5.2', state: { selectable: false } }
+    ]}
+    // and so on ...
+  ]
+```
+
+
 
 ### Basic Usage
 
@@ -131,7 +188,7 @@ In this way you no need to registrate the library as a component.
   <!-- first import Vue -->
   <script src="https://unpkg.com/vue/dist/vue.js"></script>
   <!-- import JavaScript -->
-  <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/vue-tree.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
   <script>
     new Vue({
       el: '#app',
@@ -156,7 +213,7 @@ In this way you no need to registrate the library as a component.
 
 This example demonstrates default behaviour of tree without any configurations. Each node from received data has its **own states properties** ([view full list](#node-atata))
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/5/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;)
 
@@ -171,33 +228,13 @@ It was a default mode. You can switch it to `checkbox` mode. To do it you have t
     />
 ```
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/3/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 > States of node like **checked** and **selected** are not interchangeable. They can be uses together.
 
 
 ### Redefine Structure
-
-Tree has its own structure for every node:
-
-``` javascript
-{
-  "id": Int,
-  "text": String,
-  "state": Object,
-  "data": Object,
-  "children": Array
-}
-```
-
-
-* `id`: By default if node didn't have an id it will be generated randomly
-* `text`: Label for Node
-* `state`: Allows user to set Node's state (disabled, checked, selected and so on)
-* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive.
-* `children`: List of children nodes.
-
-This formar is default for tree. By you can easily **redefine** this format. Yeah... Sometimes you don't want to change your server-side code and you have very different format for tree. To do this you just need to send the object:
+  This component has `strict` structure. But! You can easily **redefine** this format. Yeah... Sometimes you don't want to change your server-side code and you have very different format for tree. To do this you just need to send the object:
 
 For instance you have data:
 
@@ -213,7 +250,7 @@ For instance you have data:
 
 ```
 
-You just need to add `propertyNames` options:
+You just need to add `propertyNames` options to **Component Options**:
 
 
 ``` javascript
@@ -223,7 +260,7 @@ You just need to add `propertyNames` options:
  }
 ```
 
-Then your data will be transformed to readable tree format. Awesome!
+Then your data will be transformed to readable tree format. Awesome! See [example](#Redefine-Structure-Example) below
 
 ## Examples
 
@@ -235,13 +272,29 @@ In plans:
 - to reveal all the possibilities of slots
 - process in real time
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/tjkqcp2m/3/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/mknwyqjc/embedded/html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Radio
 
 This example shows how to replace default content. It's allows you to control a content in any way. It possible thanks to VueJS scoped slots.
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/7Lckj2sb/1/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/6jm2b1dq/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+### Redefine Structure Example
+
+For instance: we had a super-tree-component with its own structure (never mind, just for test). And we have a lot of dependencies to that component. This example shows how to apply data from server without a headache.
+
+In this example we have structure:
+```javascript
+[
+  MY_TEXT: 'some text', KIDS: []
+]
+```
+
+A library doesn't know this format. But we can add `propertyNames` options and redefine structure. See example
+
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/y7190jkd/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 ## API
@@ -257,6 +310,7 @@ This example shows how to replace default content. It's allows you to control a 
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
+
 
 
 

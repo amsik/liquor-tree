@@ -16,11 +16,12 @@
     <nav class='menu-nav'>
       {% for section in site.data.nav %}
         <ul class='nav'>
-          <span>{{ section.title }}</span>
+          <a href='{{ section.href }}'><span>{{ section.title }}</span></a>
+          
           <ul class='nav'>
             {% for item in section.items %}
               <li>
-                <a href='{{ item.href }}'{% if item.id == page.id %} class='active'{% endif %}>{{item.title}}</a>
+                <a href='{{ item.href }}'>{{item.title}}</a>
 
                 {% if item.items %}
                   <ul class='nav'>
