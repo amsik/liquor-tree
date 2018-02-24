@@ -20,19 +20,11 @@ export default {
 
   methods: {
     selected() {
-      if (this.options.multiple) {
-        return this.tree.selectedNodes
-      }
-
-      return this.tree.selectedNodes[0] || null
+      return this.tree.selected()
     },
 
     checked() {
-      if (!this.options.checkbox) {
-        return null
-      }
-
-      return this.tree.checkedNodes
+      return this.tree.checked()
     },
 
     append(criteria, node) {
@@ -76,8 +68,20 @@ export default {
       return this.tree.after(criteria, node)
     },
 
-    find(criteria) {
-      return this.tree.find(criteria)
+    find(criteria, multiple) {
+      return this.tree.find(criteria, multiple)
+    },
+
+    findAll(criteria) {
+      return this.tree.find(criteria, true)
+    },
+
+    recursiveDown() {
+
+    },
+
+    expandReqursice() {
+
     }
   }
 

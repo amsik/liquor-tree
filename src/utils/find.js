@@ -72,7 +72,7 @@ export default function find(source, criteria, deep = true) {
   let result = source.filter(criteria)
 
   if (result.length) {
-    return result[0]
+    return result
   }
 
   return null

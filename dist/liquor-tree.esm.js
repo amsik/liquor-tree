@@ -264,7 +264,7 @@ function find(source, criteria, deep) {
   var result = source.filter(criteria);
 
   if (result.length) {
-    return result[0]
+    return result
   }
 
   return null
@@ -772,6 +772,71 @@ Node.prototype.isRoot = function isRoot () {
 
 Object.defineProperties( Node.prototype, prototypeAccessors );
 
+function nodeIterator(context, method) {
+  var args = [], len = arguments.length - 2;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 2 ];
+
+  context.forEach(function (node) { return node[method].apply(node, args); });
+}
+
+var Selection = (function (Array) {
+  function Selection(tree, items) {
+    var ref;
+
+    Array.call(this);
+
+    this.tree = tree;
+    (ref = this).push.apply(ref, items);
+  }
+
+  if ( Array ) Selection.__proto__ = Array;
+  Selection.prototype = Object.create( Array && Array.prototype );
+  Selection.prototype.constructor = Selection;
+
+  Selection.prototype.remove = function remove () {
+    nodeIterator(this, 'remove');
+    return this
+  };
+
+  Selection.prototype.expand = function expand () {
+    nodeIterator(this, 'expand');
+    return this
+  };
+  
+  Selection.prototype.collapse = function collapse () {
+    nodeIterator(this, 'collapse');
+    return this
+  };
+
+  Selection.prototype.select = function select (extendList) {
+    nodeIterator(this, 'select', extendList);
+    return this
+  };
+
+  Selection.prototype.unselect = function unselect () {
+    nodeIterator(this, 'unselect');
+    return this
+  };
+
+  Selection.prototype.check = function check () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'check');
+    }
+    
+    return this
+  };
+
+  Selection.prototype.uncheck = function uncheck () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'uncheck');
+    }
+    
+    return this   
+  };
+
+  return Selection;
+}(Array));
+
 // it is not genuine GUIDs
 
 function s4() {
@@ -836,8 +901,8 @@ function objectToNode(tree, obj) {
 }
 
 var List = (function (Array) {
-  function List() {
-    Array.call(this);
+  function List () {
+    Array.apply(this, arguments);
   }
 
   if ( Array ) List.__proto__ = Array;
@@ -984,6 +1049,18 @@ Tree.prototype.$emit = function $emit (name) {
     var args = [], len = arguments.length - 1;
     while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
   (ref = this.vm).$emit.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.selected = function selected () {
+  return new (Function.prototype.bind.apply( Selection, [ null ].concat( [this], this.selectedNodes) ))
+};
+
+Tree.prototype.checked = function checked () {
+  if (!this.options.checkbox) {
+    return null
+  }
+
+  return new (Function.prototype.bind.apply( Selection, [ null ].concat( [this], this.checkedNodes) ))
 };
 
 
@@ -1394,15 +1471,22 @@ Tree.prototype.isNode = function isNode (node) {
 };
 
 
-Tree.prototype.find = function find$1 (criteria) {
+Tree.prototype.find = function find$1 (criteria, multiple) {
   if (criteria instanceof Node) {
     return criteria
   }
 
-  return find(
-    this.model,
-    criteria
-  )
+  var result = find(this.model, criteria);
+
+  if (!result || !result.length) {
+    return null
+  }
+
+  if (true === multiple) {
+    return new Selection(this, result)
+  }
+
+  return new Selection(this, [result[0]])
 };
 
 Tree.prototype.getNode = function getNode (node) {
@@ -1549,19 +1633,11 @@ var TreeMixin = {
 
   methods: {
     selected: function selected() {
-      if (this.options.multiple) {
-        return this.tree.selectedNodes
-      }
-
-      return this.tree.selectedNodes[0] || null
+      return this.tree.selected()
     },
 
     checked: function checked() {
-      if (!this.options.checkbox) {
-        return null
-      }
-
-      return this.tree.checkedNodes
+      return this.tree.checked()
     },
 
     append: function append(criteria, node) {
@@ -1605,8 +1681,20 @@ var TreeMixin = {
       return this.tree.after(criteria, node)
     },
 
-    find: function find(criteria) {
-      return this.tree.find(criteria)
+    find: function find(criteria, multiple) {
+      return this.tree.find(criteria, multiple)
+    },
+
+    findAll: function findAll(criteria) {
+      return this.tree.find(criteria, true)
+    },
+
+    recursiveDown: function recursiveDown() {
+
+    },
+
+    expandReqursice: function expandReqursice() {
+
     }
   }
 

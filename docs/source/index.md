@@ -74,6 +74,21 @@ To registrate the library you can choose between 3 ways I mentioned before.
 <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
 ```
 
+### Component Options
+
+| Name                   | Type         |  Default  | Description |
+|------------------------|:------------:|:---------:|-------------|
+| **multiple**           | Boolean   | true    | Allows to select more that one node. Ignored in `checkbox` mode. In `checkbox` mode it always possible to select multiple nodes   |
+| **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
+| **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
+| **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same 'checked' state as their parent. |
+| **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
+| **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
+| **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
+
+
+
+
 ### Structure
 
 The component has only two props: **data** and **options**. More about props read [VueJS documentation](https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props)
@@ -195,7 +210,7 @@ In this way you no need to registrate the library as a component.
       data: function() {
         return {
           treeData: [
-            // see below the format of data
+            // see above the format of data
           ],
           treeOptions: {
             miltiple: false
@@ -298,19 +313,6 @@ A library doesn't know this format. But we can add `propertyNames` options and r
 
 
 ## API
-
-### Component Options
-
-| Name                   | Type         |  Default  | Description |
-|------------------------|:------------:|:---------:|-------------|
-| **multiple**           | Boolean   | true    | Allows to select more that one node. Ignored in `checkbox` mode. In `checkbox` mode it always possible to select multiple nodes   |
-| **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
-| **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
-| **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same 'checked' state as their parent. |
-| **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
-| **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
-| **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
-
 
 
 

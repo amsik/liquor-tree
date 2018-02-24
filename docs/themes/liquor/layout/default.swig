@@ -17,24 +17,25 @@
       {% for section in site.data.nav %}
         <ul class='nav'>
           <a href='{{ section.href }}'><span>{{ section.title }}</span></a>
-          
-          <ul class='nav'>
-            {% for item in section.items %}
-              <li>
-                <a href='{{ item.href }}'>{{item.title}}</a>
+          {% if section.items %}
+            <ul class='nav'>
+              {% for item in section.items %}
+                <li>
+                  <a href='{{ item.href }}'>{{item.title}}</a>
 
-                {% if item.items %}
-                  <ul class='nav'>
-                    {% for item in item.items %}
-                      <li>
-                        <a href='{{ item.href }}'>{{item.title}}</a>
-                      </li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-              </li>
-            {% endfor %}
-          </ul>
+                  {% if item.items %}
+                    <ul class='nav'>
+                      {% for item in item.items %}
+                        <li>
+                          <a href='{{ item.href }}'>{{item.title}}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
         </ul>
       {% endfor %}
     </nav>

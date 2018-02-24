@@ -1,9 +1,5 @@
 
 export class List extends Array {
-  constructor() {
-    super()
-  }
-
   empty() {
     this.splice(0, this.length)
 

@@ -1,4 +1,5 @@
 import Node from '@/lib/Node'
+import Selection from '@/lib/Selection'
 
 import find from '@/utils/find'
 import objectToNode from '@/utils/objectToNode'
@@ -29,6 +30,18 @@ export default class Tree {
 
   $emit(name, ...args) {
     this.vm.$emit(name, ...args)
+  }
+
+  selected() {
+    return new Selection(this, ...this.selectedNodes)
+  }
+
+  checked() {
+    if (!this.options.checkbox) {
+      return null
+    }
+
+    return new Selection(this, ...this.checkedNodes)
   }
 
 
@@ -432,15 +445,22 @@ export default class Tree {
   }
 
 
-  find(criteria) {
+  find(criteria, multiple) {
     if (criteria instanceof Node) {
       return criteria
     }
 
-    return find(
-      this.model,
-      criteria
-    )
+    let result = find(this.model, criteria)
+
+    if (!result || !result.length) {
+      return null
+    }
+
+    if (true === multiple) {
+      return new Selection(this, result)
+    }
+
+    return new Selection(this, [result[0]])
   }
 
   getNode(node) {
