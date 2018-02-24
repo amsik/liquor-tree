@@ -85,6 +85,7 @@ To registrate the library you can choose between 3 ways I mentioned before.
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
+| **deletion**           | Boolean	&#124; Function | false | If **keyboardNavigation** is false - this property is ignoring. This property defined deletion behaviour. [See example](#Keyboard-Navigation) |
 
 
 
@@ -276,6 +277,39 @@ You just need to add `propertyNames` options to **Component Options**:
 ```
 
 Then your data will be transformed to readable tree format. Awesome! See [example](#Redefine-Structure-Example) below
+
+
+### Keyboard Navigation
+
+By default **keyboardNavigation** options is true. It allows user to navigate tree using keyboard. Navigation is implemented in the usual way (i.e Windows Navigation pane). Disabled Nodes are ignoring.
+
+Also you have abillity to define condition to remove Node. To do this, determine the **deletion** component option.
+It receives Boolean object (default is false) or Function.
+
+  - If this property received a `true` it will remove selected Node
+  - If this property revieved a `function` it will remove Node **IF** the `function` return `true`
+
+Ohh, too hard. See example:
+
+- In this case Node will be removed
+
+```javascript
+    <tree
+      :data="treeData"
+      :options="{ deletion: true }"
+    />
+```
+
+- In this case if Node doesn't has a children it will be removed
+
+```javascript
+    <tree
+      :data="treeData"
+      :options="{ deletion: node => !node.hasChildren() }"
+    />
+```
+Try [Checkboxes](#Checkboxes) to remove ONLY nodes that has `checked` state 
+
 
 ## Examples
 

@@ -18,7 +18,8 @@
     "vue",
     "tree",
     "component",
-    "vue-tree"
+    "vue-tree",
+    "treeview"
   ],
   "dependencies": {
     "vue": "^2.5.13"

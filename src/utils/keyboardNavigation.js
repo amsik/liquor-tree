@@ -4,7 +4,8 @@ const keyCodes = {
   'ARROW_TOP': 38,
   'ARROW_RIGHT': 39,
   'ARROW_BOTTOM': 40,
-  'SPACE': 32
+  'SPACE': 32,
+  'DELETE': 46
 }
 
 const codesArr = [37, 38, 39, 40, 32]
@@ -70,6 +71,19 @@ function rightArrow(tree, node) {
   }
 }
 
+function deleteNode(tree, node) {
+  const deletion = tree.options.deletion
+
+  if (deletion) {
+    if ('function' == typeof deletion) {
+      if (true === deletion(node)) {
+        node.remove()
+      }
+    } else if (true === deletion) {
+      node.remove()
+    }
+  }
+}
 
 
 export default function(tree) {
@@ -95,6 +109,7 @@ export default function(tree) {
       case keyCodes.ARROW_TOP: return focusUp(tree, node)
       case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
       case keyCodes.SPACE: return checkNode(tree, node)
+      case keyCodes.DELETE: return deleteNode(tree, node)
     }
   }, true)
 
