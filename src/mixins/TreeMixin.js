@@ -48,8 +48,8 @@ export default {
       return this.append(criteria, node)
     },
 
-    remove(criteria) {
-      return this.tree.remove(criteria)
+    remove(criteria, multiple) {
+      return this.tree.remove(criteria, multiple)
     },
 
     before(criteria, node) {

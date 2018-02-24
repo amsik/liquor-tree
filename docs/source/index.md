@@ -354,13 +354,14 @@ A library doesn't know this format. But we can add `propertyNames` options and r
 
 To have directly access to the Tree API you have to use `ref` property of component. See more [Child-Component-Refs](https://vuejs.org/v2/guide/components.html#Child-Component-Refs).
 
-#### Tree.find(criteria)
+#### [Tree.find(criteria, [multiple = false])](#Tree-find-criteria-multiple-false)
 
 - **Arguments:**
-  - { Object | String } criteria
+  - `{ Object | String } criteria`
+  - `{ Boolean } multiple`
 
 - **Returns:**
-  - Node
+  - [Selection](#Selection-API)
 
 - **Usage:**
 
@@ -374,36 +375,48 @@ To have directly access to the Tree API you have to use `ref` property of compon
     state: { checked: true, selected: true }
   })
 ```
+By default this method finding the first found node. You can add the second parameter and this function will return all found nodes. 
 
 
-#### Tree.selected()
+#### [Tree.findAll(criteria)](#Tree-findAll-criteria)
+
+- **Arguments:**
+  - `{ Object | String } criteria`
 
 - **Returns:**
-  - The list of selected nodes (`multiple` component options)
-  - Node
-  - null
+  - [Selection](#Selection-API)
+
+- **Usage:**
+
+This method "syntactic sugar" of `Tree.find(criteria, true)`
+
+
+
+#### [Tree.selected()](#Tree-selected)
+
+- **Returns:**
+  - [Selection](#Selection-API)
 
 - **Usage:**
 
   You can get access to `selected` nodes and do everything you want with NodeAPI
 
 
-#### Tree.checked()
+#### [Tree.checked()](#Tree-checked)
 
 - **Returns:**
-  - The list of checked nodes
-  - null
+  - [Selection](#Selection-API)
 
 - **Usage:**
 
   You can get access to `checked` nodes and do everything you want with NodeAPI
 
 
-#### Tree.append(criteria, node)
+#### [Tree.append(criteria, node)](#Tree-append-criteria-node)
 
 - **Arguments:**
-  - { Object | Node } criteria  (see `find` method)
-  - { Object | String } node
+  - `{ Object | Node } criteria`  (see [find method](#Tree-find-criteria-multiple-false))
+  - `{ Object | String } node`
 
 - **Returns:**
   - Appended Node
@@ -428,35 +441,49 @@ To have directly access to the Tree API you have to use `ref` property of compon
   })
 ```
 
-#### Tree.prepend(criteria, node)
+#### [Tree.prepend(criteria, node)](#Tree-prepend-criteria-node)
 
 - **Usage:**
 
   This method has behaviour the same as `Tree.append`. But insertion place will be different (**in the start** of the list)
 
 
-#### Tree.before(criteria, node)
+#### [Tree.before(criteria, node)](#Tree-before-criteria-node)
 
 - **Usage:**
 
-  This method has behaviour the same as `Tree.append`. But insertion place will be different (**before** founded node or the start of the list (as root))
+  This method has behaviour the same as `Tree.append`. But insertion place will be different (**before** found node or the start of the list (as root))
 
 
-#### Tree.after(criteria, node)
+#### [Tree.after(criteria, node)](#Tree-after-criteria-node)
 
 - **Usage:**
 
-  This method has behaviour the same as `Tree.append`. But insertion place will be different (**after** founded node or the end of the list (as root))
+  This method has behaviour the same as `Tree.append`. But insertion place will be different (**after** found node or the end of the list (as root))
 
 
-#### Tree.remove(criteria)
+#### [Tree.remove(criteria, multiple = false)](#Tree-remove-criteria-multiple)
 
 - **Arguments:**
-  - { Object | String } criteria (see `find` method)
+  - `{ Object | String } criteria` (see [find method](#Tree-find-criteria-multiple-false))
+  - `{ Boolean } multiple`
 
 - **Returns:**
-  - { Node } removed node
+  - [Selection](#Selection-API)
 
 - **Usage:**
 
   Remove Node by criteria.
+
+
+### Selection API
+
+In progress...
+
+### Node API
+
+In progress...
+
+### Events
+
+In progress...

@@ -9,7 +9,7 @@
     title: Installation
   - id: component-options
     href: "#Component-Options"
-    title: Component Options    
+    title: Component Options
   - id: Structure
     href: "#Structure"
     title: Structure
@@ -56,6 +56,9 @@
   - id: tree-api
     href: "#Tree-API"
     title: Tree API
+  - id: selection-api
+    href: "#Selection-API"
+    title: Selection API
   - id: node-api
     href: "#Node-API"
     title: Node API

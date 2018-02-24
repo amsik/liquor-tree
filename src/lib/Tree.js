@@ -402,23 +402,37 @@ export default class Tree {
     return node
   }
 
-  remove(criteria) {
+  remove(criteria, multiple) {
     return this.removeNode(
-      this.find(criteria)
+      this.find(criteria, multiple)
     )
   }
 
   removeNode(node) {
+    if (node instanceof Selection) {
+      return node.remove()
+    }
+
+    if (!node) {
+      return false
+    }
+
     if (!node.parent) {
-      this.model.splice(
-        this.model.indexOf(node),
-        1
-      )
+      if (~this.model.indexOf(node)) {
+        this.model.splice(
+          this.model.indexOf(node),
+          1
+        )
+      }
     } else {
-      node.parent.children.splice(
-        node.parent.children.indexOf(node),
-        1
-      )
+      let children = node.parent.children
+
+      if (~children.indexOf(node)) {
+        children.splice(
+          children.indexOf(node),
+          1
+        )
+      }
     }
 
     if (node.parent) {
@@ -427,12 +441,12 @@ export default class Tree {
       }
     }
 
+    node.parent = null
+
     this.$emit('node:removed', node)
 
     this.selectedNodes.remove(node)
     this.checkedNodes.remove(node)
-
-    node.parent = null
 
     return node
   }
