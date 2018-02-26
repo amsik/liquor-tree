@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select" @touchend.stop="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
@@ -204,7 +204,7 @@
   }
 
   .tree-arrow {
-    display: inline-block;
+    flex-shrink: 0;
     height: 30px;
     cursor: pointer;
     margin-left: 30px;
@@ -236,7 +236,7 @@
   }
 
   .tree-checkbox {
-    display: inline-block;
+    flex-shrink: 0;
     position: relative;
     width: 30px;
     height: 30px;
