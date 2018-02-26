@@ -1,17 +1,17 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup="select" @touchend="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select" @touchend.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
-        @click.stop="toggleExpand">
+        @mouseup.stop="toggleExpand">
       </i>
 
       <i
         v-if="options.checkbox"
         class="tree-checkbox"
         :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
-        @click.stop="check">
+        @mouseup.stop="check">
       </i>
 
       <a
@@ -143,8 +143,10 @@
             if (ctrlKey) {
               node.unselect()
             } else {
-              tree.unselectAll()
-              node.select()
+              if (this.tree.selectedNodes.length != 1) {
+                tree.unselectAll()
+                node.select()
+              }
             }
           }
         } else {

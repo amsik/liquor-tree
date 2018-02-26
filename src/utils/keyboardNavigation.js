@@ -5,7 +5,8 @@ const keyCodes = {
   'ARROW_RIGHT': 39,
   'ARROW_BOTTOM': 40,
   'SPACE': 32,
-  'DELETE': 46
+  'DELETE': 46,
+  'ENTER': 13
 }
 
 const codesArr = [37, 38, 39, 40, 32]
@@ -40,6 +41,10 @@ function focusdDown(tree, node) {
 }
 
 function checkNode(tree, node) {
+  if (!tree.options.checkbox) {
+    return
+  }
+
   if (node.checked()) {
     node.uncheck()
   } else {
@@ -108,7 +113,8 @@ export default function(tree) {
       case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
       case keyCodes.ARROW_TOP: return focusUp(tree, node)
       case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
-      case keyCodes.SPACE: return checkNode(tree, node)
+      case keyCodes.SPACE: 
+      case keyCodes.ENTER: return checkNode(tree, node)
       case keyCodes.DELETE: return deleteNode(tree, node)
     }
   }, true)
