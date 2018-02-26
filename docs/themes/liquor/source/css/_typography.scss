@@ -43,7 +43,8 @@ a {
   }
 }
 
-h4[id^="Tree-"] {
+h4[id^="Tree-"],
+h4[id^="Selection-"] {
   margin-top: 50px;
 
   &:before {

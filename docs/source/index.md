@@ -478,7 +478,49 @@ This method "syntactic sugar" of `Tree.find(criteria, true)`
 
 ### Selection API
 
-In progress...
+This array-like object has all array methods (forEach, map and so on). Because it inherits `Array` object. This collection has very similar behaviour with jQuery. `All actions apply to all items in the collection.` I'm going to show one example in more details and other methods have similar logic.
+
+
+#### [Selection.select(extendList)](#Selection-select-extendList)
+
+- **Arguments:**
+  - `{ Boolean } extendList` - in `multiple` mode it will add selected Node
+
+- **Returns:**
+  - [Selection](#Selection-API)
+
+- **Usage:**
+
+  It calls method `select` for `all Nodes` in the collection. For instance:
+
+```javascript
+  // Let's find Nodes which text starts with 'Java' and it's not disabled
+  let selection = this.$refs.tree.findAll({ text: /^Java/, state: { disabled: false } })
+
+  // or you can use (the second parametes is true):
+  // let selection = this.$refs.tree.find({ text: /^Java/, state: { disabled: false } }, true)
+
+  // Here we want to select all nodes in our collection.
+  // For single mode (multiple: false) it will do for ALL nodes:
+  //  - unselect node
+  //  - select node
+  // For multiple mode it will select ALL nodes in the collection
+  selection.select(true)
+```
+
+I think I should not explain behaviour of all methods. I hope it clear how it works. 
+
+Methods list:
+
+- **Selection.select()** - select all nodes
+- **Selection.unselect()** - unselect all nodes
+- **Selection.check()** - check all nodes (if `checkbox` mode)
+- **Selection.uncheck()** - uncheck all nodes (if `checkbox` mode) 
+- **Selection.expand()** - expand nodes (if node has children)
+- **Selection.collapse()** - collapse nodes (if node has children)
+- **Selection.remove()** - remove nodes
+
+
 
 ### Node API
 
