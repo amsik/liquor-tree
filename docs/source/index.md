@@ -524,7 +524,128 @@ Methods list:
 
 ### Node API
 
-In progress...
+A Tree component consists of Nodes. Every Node is a VueJS component witch has `node` property linked to Node class.
+It is desirable not to work with the VueJS Node component directly. You have API that returns Node (not VueJS compoenent).
+**The tree mapping is based on the node states**. Here are list of default states:
+
+```javascript
+const nodeStates = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  visible: true,
+  indeterminate: false
+}
+```
+I hope that every state speaks of itself.
+
+To check state you can use:
+  - Node.selected()
+  - Node.checked()
+  - Node.hidden()
+  - Node.visible()
+  - Node.enabled()
+  - Node.disabled()
+  - Node.expanded()
+  - Node.collapsed()
+  - Node.indeterminate()
+
+**Node.indeterminate()** - If Node has more than one checked Node it will return `true`. Otherwise it returns `false`
+
+
+We have reverse state checks and **this is done purely for convenience**:
+  - Node.hidden() and Node.visible()
+  - Node.enabled() and Node.disabled()
+  - Node.collapsed() and Node.expanded()
+
+
+
+To change Node state:
+  - Node.select(extendList)
+  - Node.unselect()
+  - Node.check()
+  - Node.uncheck()
+  - Node.show()
+  - Node.hide()
+  - Node.expand()
+  - Node.disable()
+  - Node.collapse()
+  - Node.enable()
+  - Node.toggleCollapse()
+  - Node.toggleExpand()
+
+For instance Node is checked. When you call Node.check() **it will not** check Node again and not call 'node:checked' event. This condition applies to all of the above methods. You no need to do:
+
+
+```javascript
+  ...
+  if (!node.checked()) {
+    node.check()
+  }
+  ...
+```
+
+We have only 1 method which receive a parameter. It is a Node.select(extendList). It this case if tree option `multiple` is true it will be added to `selectionNodes` list and user will see more than one selected Nodes. Example:
+
+```javascript
+  // In our example we have one selected node. Using API we are able to find Node: 
+  let someCoolNode = this.$refs.tree.find('Awesome NODE')
+
+  // It will select found Node and we will have 2 selected Nodes
+  someCoolNode.select(true)
+```
+
+#### Adding, removing, finding Nodes
+
+You probably know jQuery and how it works with DOM objects. It is very similar.
+
+  - Node.append(node) // Node.addChild() is alias
+  - Node.prepend(node)
+  - Node.after(node)
+  - Node.before(node)
+
+These methods add children or insert nodes before/after. 
+
+Argument `node` can be:
+  - simple text - it will be Node name with default states
+  - structuraized node object ( See [Node Structure](#Structure) )
+  - Node object
+
+Examples:
+
+```javascript
+
+  // In this example we DO NOT using Selection API...
+  let myAwesomeNode = this.$refs.tree.find({states: { selected: true } })[0]
+
+  if (myAwesomeNode) {
+    myAwesomeNode.append('LAST Child of Awesome Node') // to the end of the list
+    myAwesomeNode.prepend('FIRST Child of Awesome Node') // to the start of the list
+
+    myAwesomeNode.before({
+      text: 'Heey!!',
+      state: {
+        checked: true
+      }
+    })
+  }
+
+```
+
+
+#### Node properties
+
+| Name | Type | Description |
+| --- | -- | ---- |
+| **Node.parent** | { Object &#124; null } | Link to parent ** For root node it will be `null` |
+| **Node.text** | String | Node text. It is able to be as html |
+| **Node.depth** | Int | Node depth. Depth for root nodes is 0 |
+| **Node.tree** | Object | Link to a Tree instance (not Vue component) |
+| **Node.vm** | Object | Link to a VueJS component |
+
+
 
 ### Events
 
