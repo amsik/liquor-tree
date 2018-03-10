@@ -618,7 +618,7 @@ Examples:
 ```javascript
 
   // In this example we DO NOT using Selection API...
-  let myAwesomeNode = this.$refs.tree.find({states: { selected: true } })[0]
+  let myAwesomeNode = this.$refs.tree.find({state: { selected: true } })[0]
 
   if (myAwesomeNode) {
     myAwesomeNode.append('LAST Child of Awesome Node') // to the end of the list

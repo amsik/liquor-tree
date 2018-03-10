@@ -1,1 +1,1826 @@
-!function(){if("undefined"!=typeof document){var e=document.head||document.getElementsByTagName("head")[0],t=document.createElement("style"),n=' .tree-node { white-space: nowrap; display: flex; flex-direction: column; position: relative; box-sizing: border-box; } .tree-content { display: flex; align-items: center; padding: 4px; cursor: pointer; width: 100%; box-sizing: border-box; } .tree-node:not(.selected) > .tree-content:hover { background: #f6f8fb; } .tree-node.selected > .tree-content { background-color: #e7eef7; } .tree-node.disabled > .tree-content:hover { background: inherit; } .tree-arrow { flex-shrink: 0; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree-arrow.has-child { margin-left: 0; width: 30px; position: relative; } .tree-arrow.has-child:after { border: 1.5px solid #494646; position: absolute; border-left: 0; border-top: 0; left: 9px; top: 50%; height: 9px; width: 9px; transform: rotate(-45deg) translateY(-50%) translateX(0); transition: transform .25s; transform-origin: center; } .tree-arrow.expanded.has-child:after { transform: rotate(45deg) translateY(-50%) translateX(-5px); } .tree-checkbox { flex-shrink: 0; position: relative; width: 30px; height: 30px; box-sizing: border-box; border: 1px solid #dadada; border-radius: 2px; background: #fff; transition: border-color .25s, background-color .25s; } .tree-checkbox:after, .tree-arrow:after { position: absolute; display: block; content: ""; } .tree-checkbox.checked, .tree-checkbox.indeterminate { background-color: #3a99fc; border-color: #218eff; } .tree-checkbox.checked:after { box-sizing: content-box; border: 1.5px solid #fff; /* probably width would be rounded in most cases */ border-left: 0; border-top: 0; left: 9px; top: 3px; height: 15px; width: 8px; transform: rotate(45deg) scaleY(0); transition: transform .25s; transform-origin: center; } .tree-checkbox.checked:after { transform: rotate(45deg) scaleY(1); } .tree-checkbox.indeterminate:after { background-color: #fff; top: 50%; left: 20%; right: 20%; height: 2px; } .tree-anchor { flex-grow: 2; outline: none; display: flex; text-decoration: none; color: #343434; vertical-align: top; margin-left: 3px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .tree-node.selected .tree-anchor { outline: none; } .tree-node.disabled .tree-anchor { color: #989191; background: #fff; opacity: .6; cursor: default; outline: none; } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } .tree--small .tree-anchor { line-height: 19px; } .tree--small .tree-checkbox { width: 23px; height: 23px; } .tree--small .tree-arrow { height: 23px; } .tree--small .tree-checkbox.checked:after { left: 7px; top: 3px; height: 11px; width: 5px; } ';t.type="text/css",t.styleSheet?t.styleSheet.cssText=n:t.appendChild(document.createTextNode(n)),e.appendChild(t)}}();var TreeNode={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("li",{staticClass:"tree-node",class:e.nodeClass},[n("div",{staticClass:"tree-content",style:{"padding-left":e.paddingLeft},on:{mouseup:function(t){t.stopPropagation(),e.select(t)}}},[n("i",{staticClass:"tree-arrow",class:{expanded:e.node.states.expanded,"has-child":e.node.children.length},on:{mouseup:function(t){t.stopPropagation(),e.toggleExpand(t)}}}),e._v(" "),e.options.checkbox?n("i",{staticClass:"tree-checkbox",class:{checked:e.node.states.checked,indeterminate:e.node.states.indeterminate},on:{mouseup:function(t){t.stopPropagation(),e.check(t)}}}):e._e(),e._v(" "),n("a",{ref:"anchor",staticClass:"tree-anchor",attrs:{href:"javascript:void(0)",tabindex:"1"},on:{focus:e.onNodeFocus}},[n("node-content",{attrs:{node:e.node}})],1)]),e._v(" "),n("transition",{attrs:{name:"l-fade"}},[e.hasChildren()&&e.state.expanded?n("ul",{staticClass:"tree-children"},e._l(e.node.children,function(t){return t.visible()?n("node",{key:t.id,attrs:{node:t,options:e.options}}):e._e()})):e._e()])],1)},staticRenderFns:[],name:"Node",inject:["tree"],props:["node","options"],components:{NodeContent:{props:["node"],render:function(e){var t=this.node,n=this.node.tree.vm;return n.$scopedSlots.default?n.$scopedSlots.default({node:this.node}):e("span",{domProps:{innerHTML:t.text}})}}},data:function(){return this.node.vm=this,{state:this.node.states}},computed:{paddingLeft:function(){return this.node.depth*this.options.paddingLeft+"px"},nodeClass:function(){var e=this.state,t=this.hasChildren(),n={"has-child":t,expanded:t&&e.expanded,selected:e.selected,disabled:e.disabled};return this.options.checkbox&&(n.checked=e.checked,n.indeterminate=e.indeterminate),n}},methods:{onNodeFocus:function(){this.tree.activeElement=this.node},focus:function(){this.$refs.anchor.focus(),this.node.select()},check:function(){this.node.checked()?this.node.uncheck():this.node.check()},select:function(e){void 0===e&&(e=evnt);var t=e.ctrlKey,n=this.options;if(n.checkbox&&n.checkOnSelect)return!n.parentSelect&&this.hasChildren()?this.toggleExpand():this.check(t);if(!n.parentSelect&&this.hasChildren())return this.toggleExpand();var o=this.tree,r=this.node;n.multiple?r.selected()?t?r.unselect():1!=this.tree.selectedNodes.length&&(o.unselectAll(),r.select()):r.select(t):r.selected()?r.unselect():r.select()},toggleExpand:function(){this.hasChildren()&&this.node.toggleExpand()},hasChildren:function(){return this.node.hasChildren()}}};function recurseDown(e,t){var n;return Array.isArray(e)?e.map(function(e){return recurseDown(e,t)}):(!1!==(n=t(e))&&e.hasChildren()&&(n=recurseDown(e.children,t)),n)}var $div=document.createElement("div");function finder(e){return function(t){return Object.keys(e).every(function(n){var o=t[n],r=getRegExp(e[n]);if("states"==n){var i=e[n];return Object.keys(i).every(function(e){return t[n][e]===i[e]})}return"text"==n&&($div.innerHTML=o,o=$div.innerText),r.test(o)})}}function getRegExp(e){return e instanceof RegExp?e:new RegExp("^"+e+"$","g")}function getAllChildren(e){var t=[];return e.forEach(function e(n){t.push(n),n.children&&n.children.forEach(e)}),t}function find(e,t,n){if(void 0===n&&(n=!0),!e||!e.length)return null;if(n&&(e=getAllChildren(e)),"number"==typeof t)return e[t]||null;("string"==typeof t||t instanceof RegExp)&&(t={text:t}),"function"!=typeof t&&(t=finder(t));var o=e.filter(t);return o.length?o:null}var Node=function(e,t){if(this.id=t.id,this.states=t.state,this.children=t.children||[],this.parent=t.parent||null,this._data=Object.assign({},{text:t.text},t.data||{}),!e)throw new Error("Node must has a Tree context!");this.tree=e},prototypeAccessors={depth:{configurable:!0},text:{configurable:!0}};function nodeIterator(e,t){for(var n=[],o=arguments.length-2;o-- >0;)n[o]=arguments[o+2];e.forEach(function(e){return e[t].apply(e,n)})}Node.prototype.$emit=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.tree).$emit.apply(t,["node:"+e,this].concat(n))},prototypeAccessors.depth.get=function(){var e=0,t=this.parent;if(!t)return e;do{e++}while(t=t.parent);return e},prototypeAccessors.text.get=function(){return this.data("text")},prototypeAccessors.text.set=function(e){var t=this.text;this.data("text",e),this.tree.$emit("node:text:changed",e,t)},Node.prototype.data=function(e,t){return void 0===t?this._data[e]:(this._data[e]=t,this)},Node.prototype.state=function(e,t){return void 0===t?this.states[e]:(this.states[e]=t,this)},Node.prototype.recurseUp=function(e,t){if(void 0===t&&(t=this),t.parent)return!1!==e(t.parent)?this.recurseUp(e,t.parent):void 0},Node.prototype.recurseDown=function(e,t){!0!==t&&e(this),this.hasChildren()&&recurseDown(this.children,e)},Node.prototype.refreshIndeterminateState=function(){if(!this.tree.options.autoCheckChildren)return this;if(this.state("indeterminate",!1),this.hasChildren()){var e=this.children.length,t=0,n=0,o=0;this.children.forEach(function(e){e.checked()&&t++,e.disabled()&&o++,e.indeterminate()&&n++}),t==e-o?this.checked()||(this.state("checked",!0),this.$emit("checked")):(this.checked()&&(this.state("checked",!1),this.$emit("unchecked")),this.state("indeterminate",n>0||t>0&&t<e))}this.parent&&this.parent.refreshIndeterminateState()},Node.prototype.indeterminate=function(){return this.state("indeterminate")},Node.prototype.selectable=function(){return!this.state("disabled")&&this.state("selectable")},Node.prototype.selected=function(){return this.state("selected")},Node.prototype.select=function(e){return!this.selectable()||this.selected()?this:(this.tree.select(this,e),this.state("selected",!0),this.$emit("selected"),this)},Node.prototype.unselect=function(){return this.selectable()&&this.selected()?(this.tree.unselect(this),this.state("selected",!1),this.$emit("unselected"),this):this},Node.prototype.checked=function(){return this.state("checked")},Node.prototype.check=function(){var e=this;return this.checked()||this.disabled()?this:this.indeterminate()?this.uncheck():(this.tree.options.autoCheckChildren?(this.recurseDown(function(t){t.state("indeterminate",!1),t.checked()||(e.tree.check(t),t.state("checked",!0),t.$emit("checked"))}),this.parent&&this.parent.refreshIndeterminateState()):(this.tree.check(this),this.state("checked",!0),this.$emit("checked")),this)},Node.prototype.uncheck=function(){var e=this;return!this.indeterminate()&&!this.checked()||this.disabled()?this:(this.tree.options.autoCheckChildren?(this.recurseDown(function(t){t.state("indeterminate",!1),t.checked()&&(e.tree.uncheck(t),t.state("checked",!1),t.$emit("unchecked"))}),this.parent&&this.parent.refreshIndeterminateState()):(this.tree.uncheck(this),this.state("checked",!1),this.$emit("unchecked")),this)},Node.prototype.show=function(){return this.visible()?this:(this.state("visible",!0),this.$emit("shown"),this)},Node.prototype.hide=function(){return this.hidden()?this:(this.state("visible",!1),this.$emit("hidden"),this)},Node.prototype.visible=function(){return this.state("visible")},Node.prototype.hidden=function(){return!this.state("visible")},Node.prototype.enable=function(){return this.enabled()?this:(this.recurseDown(function(e){e.disabled()&&(e.state("disabled",!1),e.$emit("enabled"))}),this)},Node.prototype.enabled=function(){return!this.state("disabled")},Node.prototype.disable=function(){return this.disabled()?this:(this.recurseDown(function(e){e.enabled()&&(e.state("disabled",!0),e.$emit("disabled"))}),this)},Node.prototype.disabled=function(){return this.state("disabled")},Node.prototype.expand=function(){return!this.hasChildren()||this.expanded()||this.disabled()?this:(this.state("expanded",!0),this.$emit("expanded"),this)},Node.prototype.expanded=function(){return this.state("expanded")},Node.prototype.collapse=function(){return!this.hasChildren()||this.collapsed()||this.disabled()?this:(this.state("expanded",!1),this.$emit("collapsed"),this)},Node.prototype.collapsed=function(){return!this.state("expanded")},Node.prototype.toggleExpand=function(){return this._toggleOpenedState()},Node.prototype.toggleCollapse=function(){return this._toggleOpenedState()},Node.prototype._toggleOpenedState=function(){return this.disabled()||!this.hasChildren()?this:this.expanded()?this.collapse():this.expand()},Node.prototype.index=function(e){return this.tree.index(this,e)},Node.prototype.first=function(){return this.hasChildren()?this.children[0]:null},Node.prototype.last=function(){return this.hasChildren()?this.children[this.children.length-1]:null},Node.prototype.next=function(){return this.tree.nextNode(this)},Node.prototype.prev=function(){return this.tree.prevNode(this)},Node.prototype.insertAt=function(e,t){return void 0===t&&(t=this.children.length),(e=this.tree.objectToNode(e)).parent=this,this.children.splice(t,0,e),this.$emit("added",e),e},Node.prototype.addChild=function(e){return this.insertAt(e)},Node.prototype.append=function(e){return this.addChild(e)},Node.prototype.prepend=function(e){return this.insertAt(e,0)},Node.prototype.before=function(e){return this.tree.before(this,e)},Node.prototype.after=function(e){return this.tree.after(this,e)},Node.prototype.empty=function(){for(var e;e=this.children.pop();)e.remove();return this},Node.prototype.remove=function(){return this.tree.removeNode(this)},Node.prototype.removeChild=function(e){var t=this.find(e);return t?this.tree.removeNode(t):null},Node.prototype.find=function(e,t){return e instanceof Node?e:find(this.children,e,t)},Node.prototype.focus=function(){this.vm&&this.vm.focus()},Node.prototype.hasChildren=function(){return this.children.length>0},Node.prototype.isRoot=function(){return null===this.parent},Object.defineProperties(Node.prototype,prototypeAccessors);var Selection=function(e){function t(t,n){var o;e.call(this),this.tree=t,(o=this).push.apply(o,n)}return e&&(t.__proto__=e),t.prototype=Object.create(e&&e.prototype),t.prototype.constructor=t,t.prototype.remove=function(){return nodeIterator(this,"remove"),this},t.prototype.expand=function(){return nodeIterator(this,"expand"),this},t.prototype.collapse=function(){return nodeIterator(this,"collapse"),this},t.prototype.select=function(e){return nodeIterator(this,"select",e),this},t.prototype.unselect=function(){return nodeIterator(this,"unselect"),this},t.prototype.check=function(){return this.tree.options.checkbox&&nodeIterator(this,"check"),this},t.prototype.uncheck=function(){return this.tree.options.checkbox&&nodeIterator(this,"uncheck"),this},t}(Array);function s4(){return Math.floor(65536*(1+Math.random())).toString(16).substring(1)}function uuidV4(){return s4()+s4()+"-"+s4()+"-"+s4()+"-"+s4()+"-"+s4()+s4()+s4()}var nodeStates={selected:!1,selectable:!0,checked:!1,expanded:!1,disabled:!1,visible:!0,indeterminate:!1};function merge(e){return void 0===e&&(e={}),Object.assign({},nodeStates,e)}function objectToNode(e,t){var n=null;return t instanceof Node?t:("string"==typeof t?n=new Node(e,{text:t,state:merge(),id:uuidV4()}):((n=new Node(e,t)).states=merge(n.states),n.id||(n.id=uuidV4()),n.children.length&&(n.children=n.children.map(function(t){return(t=objectToNode(e,t)).parent=n,t}))),n)}var List=function(e){function t(){e.apply(this,arguments)}return e&&(t.__proto__=e),t.prototype=Object.create(e&&e.prototype),t.prototype.constructor=t,t.prototype.empty=function(){return this.splice(0,this.length),this},t.prototype.add=function(){for(var e,t=[],n=arguments.length;n--;)t[n]=arguments[n];return(e=this).push.apply(e,t),this},t.prototype.remove=function(e){var t=this.indexOf(e);return-1==t?this:(this.splice(t,1),this)},t.prototype.removeAll=function(e){for(;this.includes(e);)this.remove(e);return this},t.prototype.top=function(){return this[this.length-1]},t}(Array),defaultPropertyNames={id:"id",text:"text",children:"children",state:"state",data:"data"};function convertNames(e,t){return{id:e[t.id],text:e[t.text],children:e[t.children],state:e[t.state],data:e[t.data]}}var TreeParser={parse:function(e,t,n){void 0===n&&(n={}),"string"==typeof e&&(e=JSON.parse(e)),Array.isArray(e)||(e=[e]);var o=Object.assign({},defaultPropertyNames,n);return e.map(function e(t){var n=convertNames(t,o);return n.children&&!Array.isArray(n.children)&&(n.children=[n.children]),n.children&&(n.children=n.children.map(e)),n}).map(function(e){return objectToNode(t,e)})}},Tree=function(e){this.vm=e,this.options=e.options,this.activeElement=null};Tree.prototype.$on=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$on.apply(t,[e].concat(n))},Tree.prototype.$once=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$once.apply(t,[e].concat(n))},Tree.prototype.$off=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$off.apply(t,[e].concat(n))},Tree.prototype.$emit=function(e){for(var t,n=[],o=arguments.length-1;o-- >0;)n[o]=arguments[o+1];(t=this.vm).$emit.apply(t,[e].concat(n))},Tree.prototype.selected=function(){return new(Function.prototype.bind.apply(Selection,[null].concat([this],this.selectedNodes)))},Tree.prototype.checked=function(){return this.options.checkbox?new(Function.prototype.bind.apply(Selection,[null].concat([this],this.checkedNodes))):null},Tree.prototype.setModel=function(e){var t=this;if(this.model=e,this.selectedNodes=new List,this.checkedNodes=new List,recurseDown(e,function(e){e.tree=t,e.selected()&&t.selectedNodes.add(e),e.checked()&&(t.checkedNodes.add(e),e.parent&&e.parent.refreshIndeterminateState())}),!this.options.multiple&&this.selectedNodes.length){var n=this.selectedNodes.top();this.selectedNodes.forEach(function(e){n!==e&&e.state("selected",!1)}),this.selectedNodes.empty().add(n)}this.options.checkOnSelect&&this.options.checkbox&&this.unselectAll()},Tree.prototype.recurseDown=function(e,t){return!t&&e&&(t=e,e=this.model),recurseDown(e,t)},Tree.prototype.select=function(e,t){var n=this.getNode(e);return!!n&&(this.options.multiple&&t?this.selectedNodes.add(n):(this.unselectAll(),this.selectedNodes.empty().add(n)),!0)},Tree.prototype.selectAll=function(){var e=this;return!!this.options.multiple&&(this.selectedNodes.empty(),this.recurseDown(function(t){e.selectedNodes.add(t.select(!0))}),!0)},Tree.prototype.unselect=function(e){var t=this.getNode(e);return!!t&&(this.selectedNodes.remove(t),!0)},Tree.prototype.unselectAll=function(){for(var e;e=this.selectedNodes.pop();)e.unselect();return!0},Tree.prototype.check=function(e){this.checkedNodes.add(e)},Tree.prototype.uncheck=function(e){this.checkedNodes.remove(e)},Tree.prototype.checkAll=function(){this.recurseDown(function(e){0==e.depth&&(e.indeterminate()&&e.state("indeterminate",!1),e.check())})},Tree.prototype.uncheckAll=function(){for(var e;e=this.checkedNodes.pop();)e.uncheck();return!0},Tree.prototype.expand=function(e){return!e.expanded()&&(e.expand(),!0)},Tree.prototype.collapse=function(e){return!e.collapsed()&&(e.collapse(),!0)},Tree.prototype.toggleExpand=function(e){return!!e.hasChildren()&&(e.toggleExpand(),!0)},Tree.prototype.toggleCollapse=function(e){return!!e.hasChildren()&&(e.toggleCollapse(),!0)},Tree.prototype.expandAll=function(){this.recurseDown(function(e){e.hasChildren()&&e.collapsed()&&e.expand()})},Tree.prototype.collapseAll=function(){this.recurseDown(function(e){e.hasChildren()&&e.expanded()&&e.collapse()})},Tree.prototype.index=function(e,t){var n=e.parent,o=(n=n?n.children:this.model).indexOf(e);return t?{index:o,target:n,node:n[o]}:o},Tree.prototype.nextNode=function(e){var t=this.index(e,!0);return t.target[t.index+1]||null},Tree.prototype.nextVisibleNode=function(e){if(e.hasChildren()&&e.expanded())return e.first();var t=this.nextNode(e);return!t&&e.parent?e.parent.next():t},Tree.prototype.prevNode=function(e){var t=this.index(e,!0);return t.target[t.index-1]||null},Tree.prototype.prevVisibleNode=function(e){var t=this.prevNode(e);return t?t.hasChildren()&&t.expanded()?t.last():t:e.parent},Tree.prototype.addToModel=function(e,t){var n=this;void 0===t&&(t=this.model.length),e=this.objectToNode(e),this.model.splice(t,0,e),this.recurseDown(e,function(e){e.tree=n}),this.$emit("node:added",e)},Tree.prototype.append=function(e,t){var n=this.find(e);return!!n&&n.append(t)},Tree.prototype.prepend=function(e,t){var n=this.find(e);return!!n&&n.prepend(t)},Tree.prototype.before=function(e,t){e=this.find(e);var n=this.index(e,!0),o=this.objectToNode(t);return!!~n.index&&(n.target.splice(n.index,0,o),this.$emit("node:added",o),t)},Tree.prototype.after=function(e,t){e=this.find(e);var n=this.index(e,!0),o=this.objectToNode(t);return!!~n.index&&(n.target.splice(n.index+1,0,o),this.$emit("node:added",o),t)},Tree.prototype.addNode=function(e){var t=this.model.length;return e=objectToNode(e),this.model.splice(t,0,e),this.$emit("node:added",e),e},Tree.prototype.remove=function(e,t){return this.removeNode(this.find(e,t))},Tree.prototype.removeNode=function(e){if(e instanceof Selection)return e.remove();if(!e)return!1;if(e.parent){var t=e.parent.children;~t.indexOf(e)&&t.splice(t.indexOf(e),1)}else~this.model.indexOf(e)&&this.model.splice(this.model.indexOf(e),1);return e.parent&&e.parent.indeterminate()&&!e.parent.hasChildren()&&e.parent.state("indeterminate",!1),e.parent=null,this.$emit("node:removed",e),this.selectedNodes.remove(e),this.checkedNodes.remove(e),e},Tree.prototype.isNode=function(e){return e instanceof Node},Tree.prototype.find=function(e,t){if(e instanceof Node)return e;var n=find(this.model,e);return n&&n.length?new Selection(this,!0===t?n:[n[0]]):null},Tree.prototype.getNode=function(e){return e instanceof Node?e:null},Tree.prototype.objectToNode=function(e){return objectToNode(this,e)},Tree.prototype.parse=function(e,t){t||(t=this.options.propertyNames);try{return TreeParser.parse(e,this,t)}catch(e){return console.error(e),[]}};var keyCodes={ARROW_LEFT:37,ARROW_TOP:38,ARROW_RIGHT:39,ARROW_BOTTOM:40,SPACE:32,DELETE:46,ENTER:13},codesArr=[37,38,39,40,32];function focusUp(e,t){var n=e.prevVisibleNode(t);if(n)return n.disabled()?focusUp(e,n):void n.focus()}function focusdDown(e,t){var n=e.nextVisibleNode(t);if(n)return n.disabled()?focusdDown(e,n):void n.focus()}function checkNode(e,t){e.options.checkbox&&(t.checked()?t.uncheck():t.check())}function leftArrow(e,t){if(t.expanded())t.collapse();else{var n=t.parent;n&&n.focus()}}function rightArrow(e,t){if(t.collapsed())t.expand();else{var n=t.first();n&&n.focus()}}function deleteNode(e,t){var n=e.options.deletion;n&&("function"==typeof n?!0===n(t)&&t.remove():!0===n&&t.remove())}function initKeyboardNavigation(e){e.vm.$el.addEventListener("keydown",function(t){var n=t.keyCode,o=e.activeElement;if(e.isNode(o))switch(codesArr.includes(n)&&(t.preventDefault(),t.stopPropagation()),n){case keyCodes.ARROW_LEFT:return leftArrow(e,o);case keyCodes.ARROW_RIGHT:return rightArrow(e,o);case keyCodes.ARROW_TOP:return focusUp(e,o);case keyCodes.ARROW_BOTTOM:return focusdDown(e,o);case keyCodes.SPACE:case keyCodes.ENTER:return checkNode(e,o);case keyCodes.DELETE:return deleteNode(e,o)}},!0)}var TreeMixin={mounted:function(){var e=new Tree(this);this.model=e.parse(this.data,this.options.modelParse),this.tree=e,this.tree.setModel(this.model),this._provided.tree=e,!1!==this.options.keyboardNavigation&&initKeyboardNavigation(e)},methods:{selected:function(){return this.tree.selected()},checked:function(){return this.tree.checked()},append:function(e,t){return t?this.tree.append(e,t):this.tree.addToModel(e,this.tree.model.length)},prepend:function(e,t){return t?this.tree.prepend(e,t):this.tree.addToModel(e,0)},addChild:function(e,t){return this.append(e,t)},remove:function(e,t){return this.tree.remove(e,t)},before:function(e,t){return t?this.tree.before(e,t):this.prepend(e)},after:function(e,t){return t?this.tree.after(e,t):this.append(e)},find:function(e,t){return this.tree.find(e,t)},findAll:function(e){return this.tree.find(e,!0)},recursiveDown:function(){},expandReqursice:function(){}}};!function(){if("undefined"!=typeof document){var e=document.head||document.getElementsByTagName("head")[0],t=document.createElement("style"),n=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; padding: 0; } .tree > .tree-root { padding: 3px; box-sizing: border-box; } ";t.type="text/css",t.styleSheet?t.styleSheet.cssText=n:t.appendChild(document.createTextNode(n)),e.appendChild(t)}}();var defaults={multiple:!0,checkbox:!1,checkOnSelect:!1,autoCheckChildren:!0,parentSelect:!1,keyboardNavigation:!0,paddingLeft:24},TreeRoot={render:function(){var e=this,t=e.$createElement,n=e._self._c||t;return n("div",{staticClass:"tree",attrs:{role:"tree"}},[n("ul",{staticClass:"tree-root"},e._l(e.model,function(t){return t.visible()?n("node",{key:t.id,attrs:{node:t,options:e.options}}):e._e()}))])},staticRenderFns:[],name:"Tree",components:{node:TreeNode},mixins:[TreeMixin],provide:function(e){return{tree:null}},props:{data:{type:Array,default:function(e){return[]}},options:{type:Object,default:function(e){return{}}}},data:function(){for(var e in defaults)!1==e in this.options&&(this.options[e]=defaults[e]);return{model:null,tree:null}}},install=function(e){e.component(TreeRoot.name,TreeRoot)};TreeRoot.install=install,"undefined"!=typeof window&&window.Vue&&window.Vue.use(TreeRoot);export default TreeRoot;
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree-node { white-space: nowrap; display: flex; flex-direction: column; position: relative; box-sizing: border-box; } .tree-content { display: flex; align-items: center; padding: 4px; cursor: pointer; width: 100%; box-sizing: border-box; } .tree-node:not(.selected) > .tree-content:hover { background: #f6f8fb; } .tree-node.selected > .tree-content { background-color: #e7eef7; } .tree-node.disabled > .tree-content:hover { background: inherit; } .tree-arrow { flex-shrink: 0; height: 30px; cursor: pointer; margin-left: 30px; width: 0; } .tree-arrow.has-child { margin-left: 0; width: 30px; position: relative; } .tree-arrow.has-child:after { border: 1.5px solid #494646; position: absolute; border-left: 0; border-top: 0; left: 9px; top: 50%; height: 9px; width: 9px; transform: rotate(-45deg) translateY(-50%) translateX(0); transition: transform .25s; transform-origin: center; } .tree-arrow.expanded.has-child:after { transform: rotate(45deg) translateY(-50%) translateX(-5px); } .tree-checkbox { flex-shrink: 0; position: relative; width: 30px; height: 30px; box-sizing: border-box; border: 1px solid #dadada; border-radius: 2px; background: #fff; transition: border-color .25s, background-color .25s; } .tree-checkbox:after, .tree-arrow:after { position: absolute; display: block; content: \"\"; } .tree-checkbox.checked, .tree-checkbox.indeterminate { background-color: #3a99fc; border-color: #218eff; } .tree-checkbox.checked:after { box-sizing: content-box; border: 1.5px solid #fff; /* probably width would be rounded in most cases */ border-left: 0; border-top: 0; left: 9px; top: 3px; height: 15px; width: 8px; transform: rotate(45deg) scaleY(0); transition: transform .25s; transform-origin: center; } .tree-checkbox.checked:after { transform: rotate(45deg) scaleY(1); } .tree-checkbox.indeterminate:after { background-color: #fff; top: 50%; left: 20%; right: 20%; height: 2px; } .tree-anchor { flex-grow: 2; outline: none; display: flex; text-decoration: none; color: #343434; vertical-align: top; margin-left: 3px; line-height: 24px; padding: 3px 6px; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; } .tree-node.selected .tree-anchor { outline: none; } .tree-node.disabled .tree-anchor { color: #989191; background: #fff; opacity: .6; cursor: default; outline: none; } .l-fade-enter-active, .l-fade-leave-active { transition: opacity .3s, transform .3s; transform: translateX(0); } .l-fade-enter, .l-fade-leave-to { opacity: 0; transform: translateX(-2em); } .tree--small .tree-anchor { line-height: 19px; } .tree--small .tree-checkbox { width: 23px; height: 23px; } .tree--small .tree-arrow { height: 23px; } .tree--small .tree-checkbox.checked:after { left: 7px; top: 3px; height: 11px; width: 5px; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var TreeNode = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('li',{staticClass:"tree-node",class:_vm.nodeClass},[_c('div',{staticClass:"tree-content",style:({'padding-left': _vm.paddingLeft}),on:{"mouseup":function($event){$event.stopPropagation();_vm.select($event);}}},[_c('i',{staticClass:"tree-arrow",class:{'expanded': _vm.node.states.expanded, 'has-child': _vm.node.children.length},on:{"mouseup":function($event){$event.stopPropagation();_vm.toggleExpand($event);}}}),_vm._v(" "),(_vm.options.checkbox)?_c('i',{staticClass:"tree-checkbox",class:{'checked': _vm.node.states.checked, 'indeterminate': _vm.node.states.indeterminate},on:{"mouseup":function($event){$event.stopPropagation();_vm.check($event);}}}):_vm._e(),_vm._v(" "),_c('a',{ref:"anchor",staticClass:"tree-anchor",attrs:{"href":"javascript:void(0)","tabindex":"1"},on:{"focus":_vm.onNodeFocus}},[_c('node-content',{attrs:{"node":_vm.node}})],1)]),_vm._v(" "),_c('transition',{attrs:{"name":"l-fade"}},[(_vm.hasChildren() && _vm.state.expanded)?_c('ul',{staticClass:"tree-children"},_vm._l((_vm.node.children),function(child){return (child.visible())?_c('node',{key:child.id,attrs:{"node":child,"options":_vm.options}}):_vm._e()})):_vm._e()])],1)},staticRenderFns: [],
+  name: 'Node',
+  inject: ['tree'],
+  props: ['node', 'options'],
+
+  components: {
+    NodeContent: {
+      props: ['node'],
+      render: function render(h) {
+        var node = this.node;
+        var vm = this.node.tree.vm;
+
+        return vm.$scopedSlots.default
+          ? vm.$scopedSlots.default({ node: this.node })
+          : h('span', {
+            domProps: {
+              innerHTML: node.text
+            }
+          })
+      }
+    }
+  },
+
+  data: function data() {
+    this.node.vm = this;
+
+    return {
+      state: this.node.states
+    }
+  },
+
+  computed: {
+    paddingLeft: function paddingLeft() {
+      return this.node.depth * this.options.paddingLeft + 'px'
+    },
+
+    nodeClass: function nodeClass() {
+      var state = this.state;
+      var hasChildren = this.hasChildren();
+      var classes = {
+        'has-child': hasChildren,
+        'expanded': hasChildren && state.expanded,
+        'selected': state.selected,
+        'disabled': state.disabled
+      };
+
+      if (this.options.checkbox) {
+        classes['checked'] = state.checked;
+        classes['indeterminate'] = state.indeterminate;
+      }
+
+      return classes
+    }
+  },
+
+  methods: {
+    onNodeFocus: function onNodeFocus() {
+      this.tree.activeElement = this.node;
+    },
+
+    focus: function focus() {
+      this.$refs.anchor.focus();
+      this.node.select();
+    },
+
+    check: function check() {
+      if (this.node.checked()) {
+        this.node.uncheck();
+      } else {
+        this.node.check();
+      }
+    },
+
+    select: function select(ref) {
+      if ( ref === void 0 ) ref = evnt;
+      var ctrlKey = ref.ctrlKey;
+
+      var opts = this.options;
+
+      if (opts.checkbox && opts.checkOnSelect) {
+        if (!opts.parentSelect && this.hasChildren()) {
+          return this.toggleExpand()
+        }
+
+        return this.check(ctrlKey)
+      }
+
+      // 'parentSelect' behaviour.
+      // For nodes which has a children list we have to expand/collapse
+      if (!opts.parentSelect && this.hasChildren()) {
+        return this.toggleExpand()
+      }
+
+      var tree = this.tree;
+      var node = this.node;
+
+      if (opts.multiple) {
+        if (!node.selected()) {
+          node.select(ctrlKey);
+        } else {
+          if (ctrlKey) {
+            node.unselect();
+          } else {
+            if (this.tree.selectedNodes.length != 1) {
+              tree.unselectAll();
+              node.select();
+            }
+          }
+        }
+      } else {
+        if (node.selected()) {
+          node.unselect();
+        } else {
+          node.select();
+        }
+      }
+    },
+
+    toggleExpand: function toggleExpand() {
+      if (this.hasChildren()) {
+        this.node.toggleExpand();
+      }
+    },
+
+    hasChildren: function hasChildren() {
+      return this.node.hasChildren()
+    }
+  }
+};
+
+function recurseDown(obj, fn) {
+  var res;
+
+  if (Array.isArray(obj)) {
+    return obj.map(function (node) { return recurseDown(node, fn); })
+  }
+
+  res = fn(obj);
+
+  // Recurse children
+  if (res !== false && obj.hasChildren()) {
+      res = recurseDown(obj.children, fn);
+  }
+
+  return res;
+}
+
+var $div = document.createElement('div');
+
+function finder(criteria) {
+  return function(node) {
+    return Object.keys(criteria).every(function (key) {
+      // it is possible to pass 'states' or 'state'
+      if ('state' == key || 'states' == key) {
+        var states = criteria[key];
+
+        return Object.keys(states).every(function (s) { return node['states'][s] === states[s]; })       
+      }
+
+      var val = node[key];
+      var c = getRegExp(criteria[key]);
+
+      if ('states' == key) {
+        var states$1 = criteria[key];
+
+        return Object.keys(states$1).every(function (s) { return node[key][s] === states$1[s]; })
+      } else {
+        if ('text' == key) {
+          $div.innerHTML = val;
+          val = $div.innerText;
+        }
+
+        return c.test(val)
+      }
+    })
+  }
+}
+
+function getRegExp(val) {
+  if (val instanceof RegExp) {
+    return val
+  }
+
+  return new RegExp(("^" + val + "$"), 'g')
+}
+
+function getAllChildren(source) {
+  var result = [];
+
+  source.forEach(function collect(node) {
+    result.push(node);
+
+    if (node.children) {
+      node.children.forEach(collect);
+    }
+  });
+
+  return result
+}
+
+
+function find(source, criteria, deep) {
+  if ( deep === void 0 ) deep = true;
+
+  if (!source || !source.length) {
+    return null
+  }
+
+  if (deep) {
+    source = getAllChildren(source);
+  }
+
+  // find by index
+  if ('number' == typeof criteria) {
+    return source[criteria] || null
+  }
+
+  if ('string' == typeof criteria || criteria instanceof RegExp) {
+    criteria = {
+      text: criteria
+    };
+  }
+
+  if ('function' != typeof criteria) {
+    criteria = finder(criteria);
+  }
+
+  var result = source.filter(criteria);
+
+  if (result.length) {
+    return result
+  }
+
+  return null
+}
+
+var Node = function Node(tree, item) {
+  this.id = item.id;
+  this.states = item.state;
+
+  this.children = item.children || [];
+  this.parent = item.parent || null;
+
+  this._data = Object.assign({}, {
+    text: item.text
+  }, item.data || {});
+
+  if (!tree) {
+    throw new Error('Node must has a Tree context!')
+  }
+
+  this.tree = tree;
+};
+
+var prototypeAccessors = { depth: { configurable: true },text: { configurable: true } };
+
+Node.prototype.$emit = function $emit (evnt) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.tree).$emit.apply(ref, [ ("node:" + evnt), this ].concat( args ));
+};
+
+prototypeAccessors.depth.get = function () {
+  var depth = 0;
+  var parent = this.parent;
+
+  if (!parent) {
+    return depth
+  }
+
+  do {
+    depth++;
+  } while(parent = parent.parent)
+
+  return depth
+};
+
+prototypeAccessors.text.get = function () {
+  return this.data('text')
+};
+
+prototypeAccessors.text.set = function (text) {
+  var oldText = this.text;
+
+  this.data('text', text);
+  this.tree.$emit('node:text:changed', text, oldText);
+};
+
+Node.prototype.data = function data (name, value) {
+  if (undefined === value) {
+    return this._data[name]
+  }
+
+  this._data[name] = value;
+  return this
+};
+
+Node.prototype.state = function state (name, value) {
+  if (undefined === value) {
+    return this.states[name]
+  }
+
+  // TODO: check if it for example `selectable` state it should unselect node
+
+  this.states[name] = value;
+
+  return this
+};
+
+Node.prototype.recurseUp = function recurseUp (fn, node) {
+    if ( node === void 0 ) node = this;
+
+  if (!node.parent) {
+    return
+  }
+
+  if (false !== fn(node.parent)) {
+    return this.recurseUp(fn, node.parent)
+  }
+};
+
+Node.prototype.recurseDown = function recurseDown$1 (fn, ignoreThis) {
+  if (true !== ignoreThis) {
+    fn(this);
+  }
+
+  if (this.hasChildren()) {
+    recurseDown(this.children, fn);
+  }
+};
+
+Node.prototype.refreshIndeterminateState = function refreshIndeterminateState () {
+  if (!this.tree.options.autoCheckChildren) {
+    return this
+  }
+
+  this.state('indeterminate', false);
+
+  if (this.hasChildren()) {
+    var childrenCount = this.children.length;
+    var checked = 0;
+    var indeterminate = 0;
+    var disabled = 0;
+
+    this.children.forEach(function (child) {
+      if (child.checked()) {
+        checked++;
+      }
+
+      if (child.disabled()) {
+        disabled++;
+      }
+
+      if (child.indeterminate()) {
+        indeterminate++;
+      }
+    });
+
+    if (checked == childrenCount - disabled) {
+      if (!this.checked()) {
+        this.state('checked', true);
+        this.$emit('checked');
+      }
+    } else {
+      if (this.checked()) {
+        this.state('checked', false);
+        this.$emit('unchecked');
+      }
+
+      this.state(
+        'indeterminate',
+        indeterminate > 0 || (checked > 0 && checked < childrenCount)
+      );
+    }
+  }
+
+  if (this.parent) {
+    this.parent.refreshIndeterminateState();
+  }
+};
+
+
+Node.prototype.indeterminate = function indeterminate () {
+  return this.state('indeterminate')
+};
+
+
+Node.prototype.selectable = function selectable () {
+  return !this.state('disabled') && this.state('selectable')
+};
+
+Node.prototype.selected = function selected () {
+  return this.state('selected')
+};
+
+Node.prototype.select = function select (extendList) {
+  if (!this.selectable() || this.selected()) {
+    return this
+  }
+
+  this.tree.select(this, extendList);
+
+  this.state('selected', true);
+  this.$emit('selected');
+
+  return this
+};
+
+Node.prototype.unselect = function unselect () {
+  if (!this.selectable() || !this.selected()) {
+    return this
+  }
+
+  this.tree.unselect(this);
+
+  this.state('selected', false);
+  this.$emit('unselected');
+
+  return this
+};
+
+
+
+Node.prototype.checked = function checked () {
+  return this.state('checked')
+};
+
+Node.prototype.check = function check () {
+    var this$1 = this;
+
+  if (this.checked() || this.disabled()) {
+    return this
+  }
+
+  if (this.indeterminate()) {
+    return this.uncheck()
+  }
+
+  if (this.tree.options.autoCheckChildren) {
+    this.recurseDown(function (node) {
+      node.state('indeterminate', false);
+
+      if (!node.checked()) {
+        this$1.tree.check(node);
+
+        node.state('checked', true);
+        node.$emit('checked');
+      }
+    });
+
+    if (this.parent) {
+      this.parent.refreshIndeterminateState();
+    }
+  } else {
+    this.tree.check(this);
+
+    this.state('checked', true);
+    this.$emit('checked');
+  }
+
+  return this
+};
+
+Node.prototype.uncheck = function uncheck () {
+    var this$1 = this;
+
+  if (!this.indeterminate() && !this.checked() || this.disabled()) {
+    return this
+  }
+
+  if (this.tree.options.autoCheckChildren) {
+    this.recurseDown(function (node) {
+      node.state('indeterminate', false);
+
+      if (node.checked()) {
+        this$1.tree.uncheck(node);
+
+        node.state('checked', false);
+        node.$emit('unchecked');
+      }
+    });
+
+    if (this.parent) {
+      this.parent.refreshIndeterminateState();
+    }
+  } else {
+    this.tree.uncheck(this);
+
+    this.state('checked', false);
+    this.$emit('unchecked');
+  }
+
+  return this
+};
+
+
+
+Node.prototype.show = function show () {
+  if (this.visible()) {
+    return this
+  }
+
+  this.state('visible', true);
+  this.$emit('shown');
+
+  return this
+};
+
+Node.prototype.hide = function hide () {
+  if (this.hidden()) {
+    return this
+  }
+
+  this.state('visible', false);
+  this.$emit('hidden');
+
+  return this
+};
+
+Node.prototype.visible = function visible () {
+  return this.state('visible')
+};
+
+Node.prototype.hidden = function hidden () {
+  return !this.state('visible')
+};
+
+
+
+Node.prototype.enable = function enable () {
+  if (this.enabled()) {
+    return this
+  }
+
+  this.recurseDown(function (node) {
+    if (node.disabled()) {
+      node.state('disabled', false);
+      node.$emit('enabled');
+    }
+  });
+
+  return this
+};
+
+Node.prototype.enabled = function enabled () {
+  return !this.state('disabled')
+};
+
+Node.prototype.disable = function disable () {
+  if (this.disabled()) {
+    return this
+  }
+
+  this.recurseDown(function (node) {
+    if (node.enabled()) {
+      node.state('disabled', true);
+      node.$emit('disabled');
+    }
+  });
+
+  return this
+};
+
+Node.prototype.disabled = function disabled () {
+  return this.state('disabled')
+};
+
+
+Node.prototype.expand = function expand () {
+  if (!this.hasChildren() || this.expanded() || this.disabled()) {
+    return this
+  }
+
+  this.state('expanded', true);
+  this.$emit('expanded');
+
+  return this
+};
+
+Node.prototype.expanded = function expanded () {
+  return this.state('expanded')
+};
+
+Node.prototype.collapse = function collapse () {
+  if (!this.hasChildren() || this.collapsed() || this.disabled()) {
+    return this
+  }
+
+  this.state('expanded', false);
+  this.$emit('collapsed');
+
+  return this
+};
+
+Node.prototype.collapsed = function collapsed () {
+  return !this.state('expanded')
+};
+
+Node.prototype.toggleExpand = function toggleExpand () {
+  return this._toggleOpenedState()
+};
+
+Node.prototype.toggleCollapse = function toggleCollapse () {
+  return this._toggleOpenedState()
+};
+
+Node.prototype._toggleOpenedState = function _toggleOpenedState () {
+  if (this.disabled() || !this.hasChildren()) {
+    return this
+  }
+
+  if (this.expanded()) {
+    return this.collapse()
+  }
+
+  return this.expand()
+};
+
+
+Node.prototype.index = function index (verbose) {
+  return this.tree.index(this, verbose)
+};
+
+Node.prototype.first = function first () {
+  if (!this.hasChildren()) {
+    return null
+  }
+
+  return this.children[0]
+};
+
+Node.prototype.last = function last () {
+  if (!this.hasChildren()) {
+    return null
+  }
+
+  return this.children[this.children.length - 1]
+};
+
+Node.prototype.next = function next () {
+  return this.tree.nextNode(this)
+};
+
+Node.prototype.prev = function prev () {
+  return this.tree.prevNode(this)
+};
+
+
+Node.prototype.insertAt = function insertAt (node, index) {
+    if ( index === void 0 ) index = this.children.length;
+
+  node = this.tree.objectToNode(node);
+  node.parent = this;
+
+  this.children.splice(
+    index, 0, node
+  );
+
+  this.$emit('added', node);
+
+  return node
+};
+
+Node.prototype.addChild = function addChild (node) {
+  return this.insertAt(node)
+};
+
+Node.prototype.append = function append (node) {
+  return this.addChild(node)
+};
+
+Node.prototype.prepend = function prepend (node) {
+  return this.insertAt(node, 0)
+};
+
+Node.prototype.before = function before (node) {
+  return this.tree.before(this, node)
+};
+
+Node.prototype.after = function after (node) {
+  return this.tree.after(this, node)
+};
+
+Node.prototype.empty = function empty () {
+  var node;
+
+  while( node = this.children.pop() ) {
+    node.remove();
+  }
+
+  return this
+};
+
+Node.prototype.remove = function remove () {
+  return this.tree.removeNode(this)
+};
+
+Node.prototype.removeChild = function removeChild (criteria) {
+  var node = this.find(criteria);
+
+  if (node) {
+    return this.tree.removeNode(node)
+  }
+
+  return null
+};
+
+
+
+Node.prototype.find = function find$1 (criteria, deep) {
+  if (criteria instanceof Node) {
+    return criteria
+  }
+
+  return find(this.children, criteria, deep)
+};
+
+Node.prototype.focus = function focus () {
+  if (this.vm) {
+    this.vm.focus();
+  }
+};
+
+Node.prototype.hasChildren = function hasChildren () {
+  return this.children.length > 0
+};
+
+/**
+* Sometimes it's no need to have a parent. It possible to have more than 1 parent
+*/
+Node.prototype.isRoot = function isRoot () {
+  return null === this.parent
+};
+
+Object.defineProperties( Node.prototype, prototypeAccessors );
+
+function nodeIterator(context, method) {
+  var args = [], len = arguments.length - 2;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 2 ];
+
+  context.forEach(function (node) { return node[method].apply(node, args); });
+}
+
+var Selection = (function (Array) {
+  function Selection(tree, items) {
+    var ref;
+
+    Array.call(this);
+
+    this.tree = tree;
+    (ref = this).push.apply(ref, items);
+  }
+
+  if ( Array ) Selection.__proto__ = Array;
+  Selection.prototype = Object.create( Array && Array.prototype );
+  Selection.prototype.constructor = Selection;
+
+  Selection.prototype.remove = function remove () {
+    nodeIterator(this, 'remove');
+    return this
+  };
+
+  Selection.prototype.expand = function expand () {
+    nodeIterator(this, 'expand');
+    return this
+  };
+  
+  Selection.prototype.collapse = function collapse () {
+    nodeIterator(this, 'collapse');
+    return this
+  };
+
+  Selection.prototype.select = function select (extendList) {
+    nodeIterator(this, 'select', extendList);
+    return this
+  };
+
+  Selection.prototype.unselect = function unselect () {
+    nodeIterator(this, 'unselect');
+    return this
+  };
+
+  Selection.prototype.check = function check () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'check');
+    }
+    
+    return this
+  };
+
+  Selection.prototype.uncheck = function uncheck () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'uncheck');
+    }
+    
+    return this   
+  };
+
+  return Selection;
+}(Array));
+
+// it is not genuine GUIDs
+
+function s4() {
+  return Math.floor((1 + Math.random()) * 0x10000)
+    .toString(16)
+    .substring(1);
+}
+
+function uuidV4() {
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4()
+}
+
+var nodeStates = {
+  selected: false,
+  selectable: true,
+  checked: false,
+  expanded: false,
+  disabled: false,
+  visible: true,
+  indeterminate: false
+};
+
+function merge(state) {
+  if ( state === void 0 ) state = {};
+
+  return Object.assign({}, nodeStates, state)
+}
+
+function objectToNode(tree, obj) {
+  var node = null;
+
+  if (obj instanceof Node) {
+    return obj
+  }
+
+  if ('string' == typeof obj) {
+    node = new Node(tree, {
+      text: obj,
+      state: merge(),
+      id: uuidV4()
+    });
+  } else {
+    node = new Node(tree, obj);
+    node.states = merge(node.states);
+
+    if (!node.id) {
+      node.id = uuidV4();
+    }
+
+    if (node.children.length) {
+      node.children = node.children.map(function (child) {
+        child = objectToNode(tree, child);
+        child.parent = node;
+
+        return child
+      });
+    }
+  }
+
+  return node
+}
+
+var List = (function (Array) {
+  function List () {
+    Array.apply(this, arguments);
+  }
+
+  if ( Array ) List.__proto__ = Array;
+  List.prototype = Object.create( Array && Array.prototype );
+  List.prototype.constructor = List;
+
+  List.prototype.empty = function empty () {
+    this.splice(0, this.length);
+
+    return this
+  };
+
+  List.prototype.add = function add () {
+    var ref;
+
+    var items = [], len = arguments.length;
+    while ( len-- ) items[ len ] = arguments[ len ];
+    (ref = this).push.apply(ref, items);
+
+    return this
+  };
+
+  List.prototype.remove = function remove (item) {
+    var index = this.indexOf(item);
+
+    if (-1 == index) {
+      return this
+    }
+
+    this.splice(index, 1);
+
+    return this
+  };
+
+  List.prototype.removeAll = function removeAll (item) {
+    var this$1 = this;
+
+    while(this.includes(item)) {
+      this$1.remove(item);
+    }
+
+    return this
+  };
+
+  List.prototype.top = function top () {
+    return this[this.length - 1]
+  };
+
+  return List;
+}(Array));
+
+var defaultPropertyNames = {
+  id: 'id',
+  text: 'text',
+  children: 'children',
+  state: 'state',
+  data: 'data'
+};
+
+
+function convertNames(obj, names) {
+  return {
+    id: obj[names.id],
+    text: obj[names.text],
+    children: obj[names.children],
+    state: obj[names.state],
+    data: obj[names.data]
+  }
+}
+
+
+var TreeParser = {
+  parse: function parse(data, tree, options) {
+    if ( options === void 0 ) options = {};
+
+    if ('string' == typeof data) {
+      data = JSON.parse(data);
+    }
+
+    if (!Array.isArray(data)) {
+      data = [data];
+    }
+
+    var p = Object.assign(
+      {},
+      defaultPropertyNames,
+      options
+    );
+
+    var preparedItems = data.map(function converter(item) {
+      var convertedItem = convertNames(item, p);
+
+      // Possible to receive 1 child like a simple object. It must be converted to an array
+      // We do not have checks on the correctness of the format. A developer should pass correct format
+      if (convertedItem.children && !Array.isArray(convertedItem.children)) {
+        convertedItem.children = [convertedItem.children];
+      }
+
+      if (convertedItem.children) {
+        convertedItem.children = convertedItem.children.map(converter);
+      }
+
+      return convertedItem
+    });
+
+    return preparedItems.map(function (item) { return objectToNode(tree,item); })
+  }
+};
+
+var Tree = function Tree(vm) {
+  this.vm = vm;
+  this.options = vm.options;
+
+  this.activeElement = null;
+};
+
+Tree.prototype.$on = function $on (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$on.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$once = function $once (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$once.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$off = function $off (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$off.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.$emit = function $emit (name) {
+    var ref;
+
+    var args = [], len = arguments.length - 1;
+    while ( len-- > 0 ) args[ len ] = arguments[ len + 1 ];
+  (ref = this.vm).$emit.apply(ref, [ name ].concat( args ));
+};
+
+Tree.prototype.selected = function selected () {
+  return new (Function.prototype.bind.apply( Selection, [ null ].concat( [this], this.selectedNodes) ))
+};
+
+Tree.prototype.checked = function checked () {
+  if (!this.options.checkbox) {
+    return null
+  }
+
+  return new (Function.prototype.bind.apply( Selection, [ null ].concat( [this], this.checkedNodes) ))
+};
+
+
+Tree.prototype.setModel = function setModel (model) {
+    var this$1 = this;
+
+  this.model = model;
+
+  /**
+  * VueJS transform properties to reactives when constructor is running
+  * And we lose List object (extended from Array)
+  */
+  this.selectedNodes = new List;
+  this.checkedNodes = new List;
+
+  recurseDown(model, function (node) {
+    node.tree = this$1;
+
+    if (node.selected()) {
+      this$1.selectedNodes.add(node);
+    }
+
+    if (node.checked()) {
+      this$1.checkedNodes.add(node);
+
+      if (node.parent) {
+        node.parent.refreshIndeterminateState();
+      }
+    }
+  });
+
+  if (!this.options.multiple && this.selectedNodes.length) {
+    var top = this.selectedNodes.top();
+
+    this.selectedNodes.forEach(function (node) {
+      if (top !== node) {
+        node.state('selected', false);
+      }
+    });
+
+    this.selectedNodes
+      .empty()
+      .add(top);
+  }
+
+  // Nodes can't be selected on init. By it's possible to select through API
+  if (this.options.checkOnSelect && this.options.checkbox) {
+    this.unselectAll();
+  }
+};
+
+Tree.prototype.recurseDown = function recurseDown$1 (node, fn) {
+  if (!fn && node) {
+    fn = node;
+    node = this.model;
+  }
+
+  return recurseDown(node, fn)
+};
+
+
+Tree.prototype.select = function select (node, extendList) {
+  var treeNode = this.getNode(node);
+
+  if (!treeNode) {
+    return false
+  }
+
+  if (this.options.multiple && extendList) {
+    this.selectedNodes.add(treeNode);
+  } else {
+    this.unselectAll();
+    this.selectedNodes
+      .empty()
+      .add(treeNode);
+  }
+
+  return true
+};
+
+Tree.prototype.selectAll = function selectAll () {
+    var this$1 = this;
+
+  if (!this.options.multiple) {
+    return false
+  }
+
+  this.selectedNodes.empty();
+
+  this.recurseDown(function (node) {
+    this$1.selectedNodes.add(
+      node.select(true)
+    );
+  });
+
+  return true
+};
+
+Tree.prototype.unselect = function unselect (node) {
+  var treeNode = this.getNode(node);
+
+  if (!treeNode) {
+    return false
+  }
+
+  this.selectedNodes.remove(treeNode);
+
+  return true
+};
+
+Tree.prototype.unselectAll = function unselectAll () {
+  var node;
+
+  while (node = this.selectedNodes.pop()) {
+    node.unselect();
+  }
+
+  return true
+};
+
+
+Tree.prototype.check = function check (node) {
+  this.checkedNodes.add(node);
+};
+
+Tree.prototype.uncheck = function uncheck (node) {
+  this.checkedNodes.remove(node);
+};
+
+Tree.prototype.checkAll = function checkAll () {
+  this.recurseDown(function (node) {
+    if (0 == node.depth) {
+      if (node.indeterminate()) {
+        node.state('indeterminate', false);
+      }
+
+      node.check();
+    }
+  });
+};
+
+Tree.prototype.uncheckAll = function uncheckAll () {
+  var node;
+
+  while (node = this.checkedNodes.pop()) {
+    node.uncheck();
+  }
+
+  return true
+};
+
+
+Tree.prototype.expand = function expand (node) {
+  if (node.expanded()) {
+    return false
+  }
+
+  node.expand();
+
+  return true
+};
+
+Tree.prototype.collapse = function collapse (node) {
+  if (node.collapsed()) {
+    return false
+  }
+
+  node.collapse();
+
+  return true
+};
+
+Tree.prototype.toggleExpand = function toggleExpand (node) {
+  if (!node.hasChildren()) {
+    return false
+  }
+
+  node.toggleExpand();
+
+  return true
+};
+
+Tree.prototype.toggleCollapse = function toggleCollapse (node) {
+  if (!node.hasChildren()) {
+    return false
+  }
+
+  node.toggleCollapse();
+
+  return true
+};
+
+Tree.prototype.expandAll = function expandAll () {
+  this.recurseDown(function (node) {
+    if (node.hasChildren() && node.collapsed()) {
+      node.expand();
+    }
+  });
+};
+
+Tree.prototype.collapseAll = function collapseAll () {
+  this.recurseDown(function (node) {
+    if (node.hasChildren() && node.expanded()) {
+      node.collapse();
+    }
+  });
+};
+
+
+Tree.prototype.index = function index (node, verbose) {
+  var target = node.parent;
+
+  if (target) {
+    target = target.children;
+  } else {
+    target = this.model;
+  }
+
+  var index = target.indexOf(node);
+
+  if (verbose) {
+    return {
+      index: index,
+      target: target,
+      node: target[index]
+    }
+  }
+
+  return index
+};
+
+Tree.prototype.nextNode = function nextNode (node) {
+  var ref = this.index(node, true);
+    var target = ref.target;
+    var index = ref.index;
+
+  return target[index + 1] || null
+};
+
+Tree.prototype.nextVisibleNode = function nextVisibleNode (node) {
+  if (node.hasChildren() && node.expanded()) {
+    return node.first()
+  }
+
+  var nextNode = this.nextNode(node);
+
+  if (!nextNode && node.parent) {
+    return node.parent.next()
+  }
+
+  return nextNode
+};
+
+Tree.prototype.prevNode = function prevNode (node) {
+  var ref = this.index(node, true);
+    var target = ref.target;
+    var index = ref.index;
+
+  return target[index - 1] || null
+};
+
+Tree.prototype.prevVisibleNode = function prevVisibleNode (node) {
+  var prevNode = this.prevNode(node);
+
+  if (!prevNode) {
+    return node.parent
+  }
+
+  if (prevNode.hasChildren() && prevNode.expanded()) {
+    return prevNode.last()
+  }
+
+  return prevNode
+};
+
+
+
+Tree.prototype.addToModel = function addToModel (node, index) {
+    var this$1 = this;
+    if ( index === void 0 ) index = this.model.length;
+
+  node = this.objectToNode(node);
+
+  this.model.splice(index, 0, node);
+  this.recurseDown(node, function (n) {
+    n.tree = this$1;
+  });
+
+  this.$emit('node:added', node);
+};
+
+
+Tree.prototype.append = function append (criteria, node) {
+  var targetNode = this.find(criteria);
+
+  if (targetNode) {
+    return targetNode.append(node)
+  }
+
+  return false
+};
+
+Tree.prototype.prepend = function prepend (criteria, node) {
+  var targetNode = this.find(criteria);
+
+  if (targetNode) {
+    return targetNode.prepend(node)
+  }
+
+  return false
+};
+
+Tree.prototype.before = function before (targetNode, sourceNode) {
+  targetNode = this.find(targetNode);
+
+  var position = this.index(targetNode, true);
+  var node = this.objectToNode(sourceNode);
+
+  if (!~position.index) {
+    return false
+  }
+
+  position.target.splice(
+    position.index,
+    0,
+    node
+  );
+
+  this.$emit('node:added', node);
+
+  return sourceNode
+};
+
+Tree.prototype.after = function after (targetNode, sourceNode) {
+  targetNode = this.find(targetNode);
+
+  var position = this.index(targetNode, true);
+  var node = this.objectToNode(sourceNode);
+
+  if (!~position.index) {
+    return false
+  }
+
+  position.target.splice(
+    position.index + 1,
+    0,
+    node
+  );
+
+  this.$emit('node:added', node);
+
+  return sourceNode
+};
+
+
+
+Tree.prototype.addNode = function addNode (node) {
+  var index = this.model.length;
+
+  node = objectToNode(node);
+
+  this.model.splice(index, 0, node);
+  this.$emit('node:added', node);
+
+  return node
+};
+
+Tree.prototype.remove = function remove (criteria, multiple) {
+  return this.removeNode(
+    this.find(criteria, multiple)
+  )
+};
+
+Tree.prototype.removeNode = function removeNode (node) {
+  if (node instanceof Selection) {
+    return node.remove()
+  }
+
+  if (!node) {
+    return false
+  }
+
+  if (!node.parent) {
+    if (~this.model.indexOf(node)) {
+      this.model.splice(
+        this.model.indexOf(node),
+        1
+      );
+    }
+  } else {
+    var children = node.parent.children;
+
+    if (~children.indexOf(node)) {
+      children.splice(
+        children.indexOf(node),
+        1
+      );
+    }
+  }
+
+  if (node.parent) {
+    if (node.parent.indeterminate() && !node.parent.hasChildren()) {
+      node.parent.state('indeterminate', false);
+    }
+  }
+
+  node.parent = null;
+
+  this.$emit('node:removed', node);
+
+  this.selectedNodes.remove(node);
+  this.checkedNodes.remove(node);
+
+  return node
+};
+
+
+
+
+Tree.prototype.isNode = function isNode (node) {
+  return node instanceof Node
+};
+
+
+Tree.prototype.find = function find$1 (criteria, multiple) {
+  if (criteria instanceof Node) {
+    return criteria
+  }
+
+  var result = find(this.model, criteria);
+
+  if (!result || !result.length) {
+    return null
+  }
+
+  if (true === multiple) {
+    return new Selection(this, result)
+  }
+
+  return new Selection(this, [result[0]])
+};
+
+Tree.prototype.getNode = function getNode (node) {
+  if (node instanceof Node) {
+    return node
+  }
+
+  return null
+};
+
+Tree.prototype.objectToNode = function objectToNode$1 (obj) {
+  return objectToNode(this, obj)
+};
+
+Tree.prototype.parse = function parse (data, options) {
+  if (!options) {
+    options = this.options.propertyNames;
+  }
+
+  try {
+    return TreeParser.parse(data, this, options)
+  } catch(e) {
+    console.error(e);
+    return []
+  }
+};
+
+var keyCodes = {
+  'ARROW_LEFT': 37,
+  'ARROW_TOP': 38,
+  'ARROW_RIGHT': 39,
+  'ARROW_BOTTOM': 40,
+  'SPACE': 32,
+  'DELETE': 46,
+  'ENTER': 13
+};
+
+var codesArr = [37, 38, 39, 40, 32];
+
+
+function focusUp(tree, node) {
+  var prevNode = tree.prevVisibleNode(node);
+
+  if (!prevNode) {
+    return
+  }
+
+  if (prevNode.disabled()) {
+    return focusUp(tree, prevNode)
+  }
+
+  prevNode.focus();
+}
+
+function focusdDown(tree, node) {
+  var nextNode = tree.nextVisibleNode(node);
+
+  if (!nextNode) {
+    return
+  }
+
+  if (nextNode.disabled()) {
+    return focusdDown(tree, nextNode)
+  }
+
+  nextNode.focus();
+}
+
+function checkNode(tree, node) {
+  if (!tree.options.checkbox) {
+    return
+  }
+
+  if (node.checked()) {
+    node.uncheck();
+  } else {
+    node.check();
+  }
+}
+
+function leftArrow(tree, node) {
+  if (node.expanded()) {
+    node.collapse();
+  } else {
+    var parent = node.parent;
+
+    if (parent) {
+      parent.focus();
+    }
+  }
+}
+
+function rightArrow(tree, node) {
+  if (node.collapsed()) {
+    node.expand();
+  } else {
+    var first = node.first();
+
+    if (first) {
+      first.focus();
+    }
+  }
+}
+
+function deleteNode(tree, node) {
+  var deletion = tree.options.deletion;
+
+  if (deletion) {
+    if ('function' == typeof deletion) {
+      if (true === deletion(node)) {
+        node.remove();
+      }
+    } else if (true === deletion) {
+      node.remove();
+    }
+  }
+}
+
+
+function initKeyboardNavigation(tree) {
+  var vm = tree.vm;
+  var $el = vm.$el;
+
+  $el.addEventListener('keydown', function (e) {
+    var code = e.keyCode;
+    var node = tree.activeElement;
+
+    if (!tree.isNode(node)) {
+      return
+    }
+
+    if (codesArr.includes(code)) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    switch(code) {
+      case keyCodes.ARROW_LEFT: return leftArrow(tree, node)
+      case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
+      case keyCodes.ARROW_TOP: return focusUp(tree, node)
+      case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
+      case keyCodes.SPACE: 
+      case keyCodes.ENTER: return checkNode(tree, node)
+      case keyCodes.DELETE: return deleteNode(tree, node)
+    }
+  }, true);
+
+}
+
+var TreeMixin = {
+  mounted: function mounted() {
+    var tree = new Tree(this);
+
+    this.model = tree.parse(this.data, this.options.modelParse);
+
+    this.tree = tree;
+    this.tree.setModel(this.model);
+
+    this._provided.tree = tree;
+
+    if (false !== this.options.keyboardNavigation) {
+      initKeyboardNavigation(tree);
+    }
+  },
+
+  methods: {
+    selected: function selected() {
+      return this.tree.selected()
+    },
+
+    checked: function checked() {
+      return this.tree.checked()
+    },
+
+    append: function append(criteria, node) {
+      // append to model
+      if (!node) {
+        return this.tree.addToModel(criteria, this.tree.model.length)
+      }
+
+      return this.tree.append(criteria, node)
+    },
+
+    prepend: function prepend(criteria, node) {
+      if (!node) {
+        return this.tree.addToModel(criteria, 0)
+      }
+
+      return this.tree.prepend(criteria, node)
+    },
+
+    addChild: function addChild(criteria, node) {
+      return this.append(criteria, node)
+    },
+
+    remove: function remove(criteria, multiple) {
+      return this.tree.remove(criteria, multiple)
+    },
+
+    before: function before(criteria, node) {
+      if (!node) {
+        return this.prepend(criteria)
+      }
+
+      return this.tree.before(criteria, node)
+    },
+
+    after: function after(criteria, node) {
+      if (!node) {
+        return this.append(criteria)
+      }
+
+      return this.tree.after(criteria, node)
+    },
+
+    find: function find(criteria, multiple) {
+      return this.tree.find(criteria, multiple)
+    },
+
+    findAll: function findAll(criteria) {
+      return this.tree.find(criteria, true)
+    },
+
+    recursiveDown: function recursiveDown() {
+
+    },
+
+    expandReqursice: function expandReqursice() {
+
+    }
+  }
+
+};
+
+(function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=" .tree { overflow: auto; } .tree-root, .tree-children { list-style: none; padding: 0; } .tree > .tree-root { padding: 3px; box-sizing: border-box; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var defaults = {
+  multiple: true,
+  checkbox: false,
+  checkOnSelect: false,
+  autoCheckChildren: true,
+  parentSelect: false,
+  keyboardNavigation: true,
+  paddingLeft: 24
+};
+
+var TreeRoot = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"tree",attrs:{"role":"tree"}},[_c('ul',{staticClass:"tree-root"},_vm._l((_vm.model),function(node){return (node.visible())?_c('node',{key:node.id,attrs:{"node":node,"options":_vm.options}}):_vm._e()}))])},staticRenderFns: [],
+  name: 'Tree',
+  components: {
+    'node': TreeNode
+  },
+
+  mixins: [TreeMixin],
+
+  provide: function (_) { return ({
+    tree: null
+  }); },
+
+  props: {
+    data: {
+      type: Array,
+      default: function (_) { return []; }
+    },
+
+    options: {
+      type: Object,
+      default: function (_) { return ({}); }
+    }
+  },
+
+  data: function data() {
+    var this$1 = this;
+
+    // we should not mutating a prop directly...
+    // that's why we add if it necessary
+    for (var prop in defaults) {
+      if ( false === (prop in this$1.options) ) {
+        this$1.options[prop] = defaults[prop];
+      }
+    }
+
+    return {
+      model: null,
+      tree: null
+    }
+  }
+}
+
+var install = function (Vue) {
+  Vue.component(TreeRoot.name, TreeRoot);
+};
+
+TreeRoot.install = install;
+
+if (typeof window !== 'undefined' && window.Vue) {
+  window.Vue.use(TreeRoot);
+}
+
+export default TreeRoot;
+//# sourceMappingURL=liquor-tree.esm.js.map

@@ -3,6 +3,13 @@ const $div = document.createElement('div')
 function finder(criteria) {
   return function(node) {
     return Object.keys(criteria).every(key => {
+      // it is possible to pass 'states' or 'state'
+      if ('state' == key || 'states' == key) {
+        let states = criteria[key]
+
+        return Object.keys(states).every(s => node['states'][s] === states[s])       
+      }
+
       let val = node[key]
       let c = getRegExp(criteria[key])
 
