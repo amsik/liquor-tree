@@ -9,14 +9,28 @@ function initEvents(vm) {
 
 export default {
   mounted() {
-    const tree = new Tree(this)
-
-    this.model = tree.parse(this.data, this.options.modelParse)
+    let tree = new Tree(this)
+    let dataProvider
 
     this.tree = tree
-    this.tree.setModel(this.model)
-
     this._provided.tree = tree
+
+    // Yeah... nice check!
+    if (this.data && this.data.then) {
+      dataProvider = this.data
+      this.loading = true
+    } else {
+      dataProvider = Promise.resolve(this.data)
+    }
+
+    dataProvider.then(data => {
+      this.model = tree.parse(data, this.options.modelParse)
+      this.tree.setModel(this.model)
+
+      if (this.loading) {
+        this.loading = false
+      }
+    })
 
     if (false !== this.options.keyboardNavigation) {
       initKeyboardNavigation(tree)

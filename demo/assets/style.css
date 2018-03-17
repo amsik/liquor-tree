@@ -95,10 +95,13 @@
 .examples {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .example {
-  flex-basis: 50%;
+  flex-basis: 49%;
   padding: 30px;
   box-sizing: border-box;
+  border: 1px solid #eee;
+  margin-top: 5px;
 }

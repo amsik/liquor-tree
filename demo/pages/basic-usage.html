@@ -15,6 +15,12 @@
       .demo-tree {
         width: 50%;
       }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
     </style>
   </head>
   <body>
@@ -44,6 +50,20 @@
             <tree :data="treeData1" :options="treeOptions1"/>
           </div>
         </div>
+
+        <div class="example">
+          <div class="example-description">
+            <p>Init data can be either Array or Promise object. Loading icon (https://loading.io/)</p>
+          </div>
+
+          <div class="example-tree">
+            <button @click="initTree2" v-if="!treeData2">Build Tree</button>
+            <tree 
+              v-if="treeData2"
+              :data="treeData2"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -55,12 +75,25 @@
 
           treeData0: getTreeData0(),
           treeData1: getTreeData1(),
+          treeData2: null,
           treeOptions1: {
             multiple: false,
             keyboardNavigation: false,
             parentSelect: true
           }
-        })
+        }),
+
+        methods: {
+          initTree2() {
+            this.treeData2 = new Promise(resolve => {
+              setTimeout(() => resolve(getTreeData1()), 2600)
+            })
+
+            this.treeData2.then(data => {
+              data[0].state = {}
+            })
+          }
+        }
       })
 
       function getTreeData0() {

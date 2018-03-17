@@ -1,5 +1,5 @@
 <template>
-  <div class="tree" role="tree">
+  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading}">
     <ul class="tree-root">
       <node
         v-for="node in model"
@@ -41,10 +41,7 @@
     }),
 
     props: {
-      data: {
-        type: Array,
-        default: _ => []
-      },
+      data: {},
 
       options: {
         type: Object,
@@ -63,7 +60,8 @@
 
       return {
         model: null,
-        tree: null
+        tree: null,
+        loading: false
       }
     }
   }
