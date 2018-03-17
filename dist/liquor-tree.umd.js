@@ -285,6 +285,71 @@ function find(source, criteria, deep) {
   return null
 }
 
+function nodeIterator(context, method) {
+  var args = [], len = arguments.length - 2;
+  while ( len-- > 0 ) args[ len ] = arguments[ len + 2 ];
+
+  context.forEach(function (node) { return node[method].apply(node, args); });
+}
+
+var Selection = (function (Array) {
+  function Selection(tree, items) {
+    var ref;
+
+    Array.call(this);
+
+    this.tree = tree;
+    (ref = this).push.apply(ref, items);
+  }
+
+  if ( Array ) Selection.__proto__ = Array;
+  Selection.prototype = Object.create( Array && Array.prototype );
+  Selection.prototype.constructor = Selection;
+
+  Selection.prototype.remove = function remove () {
+    nodeIterator(this, 'remove');
+    return this
+  };
+
+  Selection.prototype.expand = function expand () {
+    nodeIterator(this, 'expand');
+    return this
+  };
+  
+  Selection.prototype.collapse = function collapse () {
+    nodeIterator(this, 'collapse');
+    return this
+  };
+
+  Selection.prototype.select = function select (extendList) {
+    nodeIterator(this, 'select', extendList);
+    return this
+  };
+
+  Selection.prototype.unselect = function unselect () {
+    nodeIterator(this, 'unselect');
+    return this
+  };
+
+  Selection.prototype.check = function check () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'check');
+    }
+    
+    return this
+  };
+
+  Selection.prototype.uncheck = function uncheck () {
+    if (this.tree.options.checkbox) {
+      nodeIterator(this, 'uncheck');
+    }
+    
+    return this   
+  };
+
+  return Selection;
+}(Array));
+
 var Node = function Node(tree, item) {
   this.id = item.id;
   this.states = item.state;
@@ -292,7 +357,7 @@ var Node = function Node(tree, item) {
   this.children = item.children || [];
   this.parent = item.parent || null;
 
-  this._data = Object.assign({}, {
+  this.data = Object.assign({}, {
     text: item.text
   }, item.data || {});
 
@@ -329,23 +394,14 @@ prototypeAccessors.depth.get = function () {
 };
 
 prototypeAccessors.text.get = function () {
-  return this.data('text')
+  return this.data.text
 };
 
 prototypeAccessors.text.set = function (text) {
   var oldText = this.text;
 
-  this.data('text', text);
+  this.data.text = text;
   this.tree.$emit('node:text:changed', text, oldText);
-};
-
-Node.prototype.data = function data (name, value) {
-  if (undefined === value) {
-    return this._data[name]
-  }
-
-  this._data[name] = value;
-  return this
 };
 
 Node.prototype.state = function state (name, value) {
@@ -700,9 +756,19 @@ Node.prototype.prev = function prev () {
 
 
 Node.prototype.insertAt = function insertAt (node, index) {
+    var this$1 = this;
     if ( index === void 0 ) index = this.children.length;
 
   node = this.tree.objectToNode(node);
+
+  if (Array.isArray(node)) {
+    node
+      .reverse()
+      .map(function (n) { return this$1.insertAt(n, index); });
+
+    return new Selection(this.tree, [].concat( node ))
+  }
+
   node.parent = this;
 
   this.children.splice(
@@ -787,71 +853,6 @@ Node.prototype.isRoot = function isRoot () {
 
 Object.defineProperties( Node.prototype, prototypeAccessors );
 
-function nodeIterator(context, method) {
-  var args = [], len = arguments.length - 2;
-  while ( len-- > 0 ) args[ len ] = arguments[ len + 2 ];
-
-  context.forEach(function (node) { return node[method].apply(node, args); });
-}
-
-var Selection = (function (Array) {
-  function Selection(tree, items) {
-    var ref;
-
-    Array.call(this);
-
-    this.tree = tree;
-    (ref = this).push.apply(ref, items);
-  }
-
-  if ( Array ) Selection.__proto__ = Array;
-  Selection.prototype = Object.create( Array && Array.prototype );
-  Selection.prototype.constructor = Selection;
-
-  Selection.prototype.remove = function remove () {
-    nodeIterator(this, 'remove');
-    return this
-  };
-
-  Selection.prototype.expand = function expand () {
-    nodeIterator(this, 'expand');
-    return this
-  };
-  
-  Selection.prototype.collapse = function collapse () {
-    nodeIterator(this, 'collapse');
-    return this
-  };
-
-  Selection.prototype.select = function select (extendList) {
-    nodeIterator(this, 'select', extendList);
-    return this
-  };
-
-  Selection.prototype.unselect = function unselect () {
-    nodeIterator(this, 'unselect');
-    return this
-  };
-
-  Selection.prototype.check = function check () {
-    if (this.tree.options.checkbox) {
-      nodeIterator(this, 'check');
-    }
-    
-    return this
-  };
-
-  Selection.prototype.uncheck = function uncheck () {
-    if (this.tree.options.checkbox) {
-      nodeIterator(this, 'uncheck');
-    }
-    
-    return this   
-  };
-
-  return Selection;
-}(Array));
-
 // it is not genuine GUIDs
 
 function s4() {
@@ -894,6 +895,8 @@ function objectToNode(tree, obj) {
       state: merge(),
       id: uuidV4()
     });
+  } else if (Array.isArray(obj)) {
+    return obj.map(function (o) { return objectToNode(tree, o); })
   } else {
     node = new Node(tree, obj);
     node.states = merge(node.states);

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Checkboxes</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Checkboxes. You can navigate using keyboard and check/uncheck node using either Space or Enter key
+    </div>
+
+    <div class="demo-tree" id="app">
+      <tree
+        :data="treeData"
+        :options="treeOptions" />
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeData: getTreeData(),
+          treeOptions: {
+            checkbox: true
+          }
+        })
+      })
+
+      function getTreeData() {
+        return [
+            {
+                text: 'Item 1',
+                id: 1
+            },
+
+            {
+                text: 'Item 2',
+                id: 2,
+                state: {
+                  expanded: true
+                },
+                children: [
+                    {text: '<b>Item 2.1</b>', state: {checked: true}},
+                    {text: 'Item 2.2'},
+                    {
+                        text: 'Item 2.3',
+                        children: [
+                            {text: 'Item 2.2.3.1'},
+                            {text: 'Item 2.2.3.2'},
+                            {text: 'Item 2.2.3.3'},
+                            {text: 'Item 2.2.3.4', children: [
+                                {text: 'Item 2.2.3.4.1'},
+                                {text: 'Item 2.2.3.4.2'}
+                            ]}
+                        ]
+                    },
+                    {text: 'Item 2.4'}
+                ]
+            },
+
+            {
+                text: 'Item 3',
+                id: 1111111111,
+                state: { checked: true }
+            },
+
+            {
+                text: 'Item 4',
+                state: { disabled: true }
+            },
+
+            {
+                text: 'Item 5',
+                state: {
+                    opened: true
+                },
+                children: [
+                    {text: 'Item 5.1'},
+                    {text: 'Item 5.2'},
+                    {text: 'Item 5.3'}
+                ],
+                id: 5
+            }
+        ]
+      }
+    </script>
+
+  </body>
+</html>

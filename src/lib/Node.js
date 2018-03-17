@@ -1,6 +1,8 @@
 import { recurseDown } from '@/utils/recurse'
 import find from '@/utils/find'
 
+import Selection from '@/lib/Selection'
+
 export default class Node {
   constructor(tree, item) {
     this.id = item.id
@@ -9,7 +11,7 @@ export default class Node {
     this.children = item.children || []
     this.parent = item.parent || null
 
-    this._data = Object.assign({}, {
+    this.data = Object.assign({}, {
       text: item.text
     }, item.data || {})
 
@@ -40,23 +42,14 @@ export default class Node {
   }
 
   get text() {
-    return this.data('text')
+    return this.data.text
   }
 
   set text(text) {
     let oldText = this.text
 
-    this.data('text', text)
+    this.data.text = text
     this.tree.$emit('node:text:changed', text, oldText)
-  }
-
-  data(name, value) {
-    if (undefined === value) {
-      return this._data[name]
-    }
-
-    this._data[name] = value
-    return this
   }
 
   state(name, value) {
@@ -406,6 +399,15 @@ export default class Node {
 
   insertAt(node, index = this.children.length) {
     node = this.tree.objectToNode(node)
+
+    if (Array.isArray(node)) {
+      node
+        .reverse()
+        .map(n => this.insertAt(n, index))
+
+      return new Selection(this.tree, [...node])
+    }
+
     node.parent = this
 
     this.children.splice(

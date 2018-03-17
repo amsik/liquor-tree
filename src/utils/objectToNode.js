@@ -31,6 +31,8 @@ export default function objectToNode(tree, obj) {
       state: merge(),
       id: uuidV4()
     })
+  } else if (Array.isArray(obj)) {
+    return obj.map(o => objectToNode(tree, o))
   } else {
     node = new Node(tree, obj)
     node.states = merge(node.states)

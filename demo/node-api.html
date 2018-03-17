@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Tree</title>
+    <style media="screen">
+        .app,
+        .app2 {
+            width: 340px;
+            font-size: 15px;
+            float: left;
+        }
+
+        .logger {
+          clear: both;
+          height: 300px;
+          overflow: auto;
+          border: 1px solid #eee
+        }
+
+        .logger p {
+          margin: 0
+        }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+    <script src="liquor-tree.umd.js"></script>
+
+    <template id="demo">
+      <tree
+          :data="treeData"
+          :options="treeOptions"
+          ref="tree"
+      />
+    </template>
+
+    <script type="text/javascript">
+        let data = _ => ([
+          {
+            text: 'JS: The Right Way',
+
+            // it makes node expanded
+            state: { expanded: true },
+            children: [
+              { text: 'Getting Started', state: { disabled: 1 } },
+              { text: 'JavaScript Code Style', state: { selected: true } },
+              { text: 'The Good Parts', state: { expanded: true}, children: [
+                { text: 'OBJECT ORIENTED' },
+                { text: 'ANONYMOUS FUNCTIONS' },
+                { text: 'FUNCTIONS AS FIRST-CLASS OBJECTS' },
+                { text: 'LOOSE TYPING' }
+              ]},
+              { text: 'Patterns', children: [
+                { text: 'DESIGN PATTERNS', state: { expanded: true }, children: [
+                  { text: 'Creational Design Patterns', children: [
+                    { text: 'Factory' },
+                    { text: 'Prototype' },
+                    { text: 'Mixin' },
+                    { text: 'Singleton' }
+                  ]},
+                  { text: 'Structural Design Patterns'}
+                ]},
+                { text: 'MV* PATTERNS', cildren: [
+                  { text: 'MVC Pattern' },
+                  { text: 'MVP Pattern' },
+                  { text: 'MVVM Pattern' }
+                ]}
+              ]}
+            ]
+          }
+        ]);
+
+        let app = new Vue({
+            el: '#app',
+            template: '#demo',
+            data() {
+                return {
+                    treeData: data(),
+                    treeOptions: {
+                    }
+                }
+            },
+
+            mounted() {
+              window.selected = this.$refs.tree.selected()[0]
+            }
+        })
+    </script>
+
+  </body>
+</html>
