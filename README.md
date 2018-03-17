@@ -33,8 +33,6 @@ $ yarn add liquor-tree
     <tree
         :data="items"
         :options="options"
-        @node:selected="onSelected"
-        @node:checked="onChecked"
         ref="tree"
     />
   </template>
@@ -56,21 +54,24 @@ $ yarn add liquor-tree
               {text: Item 3.1},
               {text: Item 3.2}
             ]}
-          ]
-        }
-      },
-
-      methods: {
-        onSelected(node) {
-        },
-
-        onChecked(node) {
+          ],
+          options: {
+            checkbox: true
+          }
         }
       }
       ...
     }
   </script>
 ```
+
+## Development
+
+Check out the `package.json`s script section. There are 2 scripts:
+
+- `npm run dev` - it will open browser and you can *play* with code
+- `npm run build` - it will craete a module file in `production` mode 
+
 
 ## License
 
