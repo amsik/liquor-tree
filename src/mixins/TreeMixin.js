@@ -1,6 +1,11 @@
 import Tree from '@/lib/Tree'
 import initKeyboardNavigation from '@/utils/keyboardNavigation'
 
+function initEvents(vm) {
+  vm.tree.$on('node:selected', node => {
+    vm.$emit('input', node)
+  })
+}
 
 export default {
   mounted() {
@@ -16,6 +21,8 @@ export default {
     if (false !== this.options.keyboardNavigation) {
       initKeyboardNavigation(tree)
     }
+
+    initEvents(this)
   },
 
   methods: {

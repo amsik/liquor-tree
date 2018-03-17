@@ -94,6 +94,7 @@
 
 .examples {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .example {

@@ -26,17 +26,19 @@
       <div class="examples">
         <div class="example">
           <div class="example-description">
-            Tree behaviour by default. Without any states. Tree allows to has more than 1 root node.
+            <p>Tree behaviour by default. Without any states. Tree allows to has more than 1 root node.</p>
+            <p>Tree allows you to use <b>v-model</b> attribute.</p>
+            <p v-if="selectedNode0">Selected node: <b>{{ selectedNode0.text }}</b></p>
           </div>
           <div class="example-tree">
-            <tree :data="treeData0" />
+            <tree :data="treeData0" v-model="selectedNode0" />
           </div>
         </div>
 
         <div class="example">
           <div class="example-description">
-            Here we defined some states for Nodes. You can check the whole <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">structure</a>.
-            Also we added some tree options. <a href="https://amsik.github.io/liquor-tree/#Component-Options">Full list.</a>
+            <p>Here we defined some states for Nodes. You can check the whole <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">structure</a>.</p>
+            <p>Also we added some tree options. <a href="https://amsik.github.io/liquor-tree/#Component-Options">Full list.</a></p>
           </div>
           <div class="example-tree">
             <tree :data="treeData1" :options="treeOptions1"/>
@@ -49,6 +51,8 @@
       new Vue({
         el: '#app',
         data: () => ({
+          selectedNode0: null,
+
           treeData0: getTreeData0(),
           treeData1: getTreeData1(),
           treeOptions1: {
