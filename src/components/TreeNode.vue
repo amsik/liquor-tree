@@ -130,7 +130,7 @@
         // 'parentSelect' behaviour.
         // For nodes which has a children list we have to expand/collapse
         if (!opts.parentSelect && this.hasChildren()) {
-          return this.toggleExpand()
+          this.toggleExpand()
         }
 
         let tree = this.tree

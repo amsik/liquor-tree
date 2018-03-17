@@ -19,79 +19,139 @@
   </head>
   <body>
     <div class="hello">
-      Basic Usage. Tree is using Default <b>states</b>.
+      Basic Usage.
     </div>
 
-    <div class="demo-tree" id="app">
-      <tree :data="treeData" />
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            Tree behaviour by default. Without any states. Tree allows to has more than 1 root node.
+          </div>
+          <div class="example-tree">
+            <tree :data="treeData0" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">
+            Here we defined some states for Nodes. You can check the whole <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">structure</a>.
+            Also we added some tree options. <a href="https://amsik.github.io/liquor-tree/#Component-Options">Full list.</a>
+          </div>
+          <div class="example-tree">
+            <tree :data="treeData1" :options="treeOptions1"/>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script>
       new Vue({
         el: '#app',
         data: () => ({
-          treeData: getTreeData()
+          treeData0: getTreeData0(),
+          treeData1: getTreeData1(),
+          treeOptions1: {
+            multiple: false,
+            keyboardNavigation: false,
+            parentSelect: true
+          }
         })
       })
 
-      function getTreeData() {
+      function getTreeData0() {
         return [
-            {
-                text: 'Item 1',
-                state: {
-                    selected: true
-                },
-                id: 1
-            },
+          { text: 'Item 1' },
+          { text: 'Item 2', children: [
+            { text: 'Item 2.1' },
+            { text: 'Item 2.2' },
+            { text: 'Item 2.3' }
+          ]},
+          { text: 'Item 3' },
+          { text: 'Item 4' },
+          { text: 'Item 5' },
+        ]
+      }
 
-            {
-                text: 'Item 2',
-                id: 2,
-                state: {
-                  expanded: true
-                },
-                children: [
-                    {text: '<b>Item 2.1</b>', state: {checked: true}},
-                    {text: 'Item 2.2'},
-                    {
-                        text: 'Item 2.3',
-                        children: [
-                            {text: 'Item 2.2.3.1'},
-                            {text: 'Item 2.2.3.2'},
-                            {text: 'Item 2.2.3.3'},
-                            {text: 'Item 2.2.3.4', children: [
-                                {text: 'Item 2.2.3.4.1'},
-                                {text: 'Item 2.2.3.4.2'}
-                            ]}
-                        ]
-                    },
-                    {text: 'Item 2.4'}
-                ]
-            },
-
-            {
-                text: 'Item 3',
-                id: 1111111111,
-                state: {selected: true}
-            },
-
-            {
-                text: 'Item 4'
-            },
-
-            {
-                text: 'Item 5',
-                state: {
-                    expanded: true,
-                    disabled: true
-                },
-                children: [
-                    {text: 'Item 5.1'},
-                    {text: 'Item 5.2'},
-                    {text: 'Item 5.3'}
-                ],
-                id: 5
+      function getTreeData1() {
+        return [{
+            text: 'Item 1',
+            state: {
+              selected: true
             }
+          },
+
+          {
+            text: 'Item 2',
+            state: {
+              expanded: true
+            },
+            children: [{
+                text: '<b>Item 2.1</b>',
+                state: {
+                  checked: true
+                }
+              },
+              {
+                text: 'Item 2.2'
+              },
+              {
+                text: 'Item 2.3',
+                children: [{
+                    text: 'Item 2.2.3.1'
+                  },
+                  {
+                    text: 'Item 2.2.3.2'
+                  },
+                  {
+                    text: 'Item 2.2.3.3'
+                  },
+                  {
+                    text: 'Item 2.2.3.4',
+                    children: [{
+                        text: 'Item 2.2.3.4.1'
+                      },
+                      {
+                        text: 'Item 2.2.3.4.2'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                text: 'Item 2.4'
+              }
+            ]
+          },
+
+          {
+            text: 'Item 3',
+            state: {
+              selected: true
+            }
+          },
+
+          {
+            text: 'Item 4'
+          },
+
+          {
+            text: 'Item 5',
+            state: {
+              expanded: true,
+              disabled: true
+            },
+            children: [{
+                text: 'Item 5.1'
+              },
+              {
+                text: 'Item 5.2'
+              },
+              {
+                text: 'Item 5.3'
+              }
+            ]
+          }
         ]
       }
     </script>
