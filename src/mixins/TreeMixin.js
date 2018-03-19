@@ -15,15 +15,28 @@ export default {
     this.tree = tree
     this._provided.tree = tree
 
-    // Yeah... nice check!
-    if (this.data && this.data.then) {
+
+    if (!this.data && this.options.fetchData) {
+
+      // Get initial data if we don't have a data directly
+      // In this case we call 'fetcher' with node.id == 'root' && node.name == 'root'
+      dataProvider = tree.fetchInitData()
+
+    } else if (this.data && this.data.then) { 
+
+      // Yeah... nice check!
       dataProvider = this.data
       this.loading = true
+
     } else {
       dataProvider = Promise.resolve(this.data)
     }
 
     dataProvider.then(data => {
+      if (!data) { // It can be an async request
+        return (this.loading = false)
+      }
+
       this.model = tree.parse(data, this.options.modelParse)
       this.tree.setModel(this.model)
 

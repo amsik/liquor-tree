@@ -1,0 +1,79 @@
+[{
+    "text": "Item 1",
+    "state": {
+      "selected": true
+    }
+  },
+
+  {
+    "text": "Item 2",
+    "state": {
+      "expanded": true
+    },
+    "children": [{
+        "text": "<b>Item 2.1</b>",
+        "state": {
+          "checked": true
+        }
+      },
+      {
+        "text": "Item 2.2"
+      },
+      {
+        "text": "Item 2.3",
+        "children": [{
+            "text": "Item 2.2.3.1"
+          },
+          {
+            "text": "Item 2.2.3.2"
+          },
+          {
+            "text": "Item 2.2.3.3"
+          },
+          {
+            "text": "Item 2.2.3.4",
+            "children": [{
+                "text": "Item 2.2.3.4.1"
+              },
+              {
+                "text": "Item 2.2.3.4.2"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Item 2.4"
+      }
+    ]
+  },
+
+  {
+    "text": "Item 3",
+    "state": {
+      "selected": true
+    }
+  },
+
+  {
+    "text": "Item 4"
+  },
+
+  {
+    "text": "Item 5",
+    "state": {
+      "expanded": true,
+      "disabled": true
+    },
+    "children": [{
+        "text": "Item 5.1"
+      },
+      {
+        "text": "Item 5.2"
+      },
+      {
+        "text": "Item 5.3"
+      }
+    ]
+  }
+]

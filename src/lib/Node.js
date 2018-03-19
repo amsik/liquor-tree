@@ -11,6 +11,8 @@ export default class Node {
     this.children = item.children || []
     this.parent = item.parent || null
 
+    this.isBatch = item.isBatch || false
+
     this.data = Object.assign({}, {
       text: item.text
     }, item.data || {})
@@ -322,8 +324,15 @@ export default class Node {
       return this
     }
 
-    this.state('expanded', true)
-    this.$emit('expanded')
+    if (this.isBatch) {
+      this.tree.loadChildren(this).then(_ => {
+        this.state('expanded', true)
+        this.$emit('expanded')
+      })
+    } else {
+      this.state('expanded', true)
+      this.$emit('expanded')
+    }
 
     return this
   }
@@ -398,6 +407,10 @@ export default class Node {
 
 
   insertAt(node, index = this.children.length) {
+    if (!node) {
+      return
+    }
+
     node = this.tree.objectToNode(node)
 
     if (Array.isArray(node)) {
@@ -480,7 +493,7 @@ export default class Node {
   }
 
   hasChildren() {
-    return this.children.length > 0
+    return this.isBatch || this.children.length > 0
   }
 
   /**

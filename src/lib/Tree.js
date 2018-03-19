@@ -6,6 +6,7 @@ import objectToNode from '@/utils/objectToNode'
 import { List } from '@/utils/stack'
 import { TreeParser } from '@/utils/treeParser'
 import { recurseDown } from '@/utils/recurse'
+import { get, createTemplate } from '@/utils/request'
 
 
 export default class Tree {
@@ -14,6 +15,19 @@ export default class Tree {
     this.options = vm.options
 
     this.activeElement = null
+
+    // We have to convert 'fetchData' to function. It must return Promise always
+    let fetchData = this.options.fetchData
+
+    if ('string' == typeof fetchData) {
+      this.options.fetchData = ((template) => {
+        let urlTemplate = createTemplate(template)
+
+        return node => {
+          return get(urlTemplate(node))
+        }
+      })(fetchData)
+    }
   }
 
   $on(name, ...args) {
@@ -43,6 +57,46 @@ export default class Tree {
 
     return new Selection(this, ...this.checkedNodes)
   }
+
+  loadChildren(node) {
+    if (!node) {
+      return
+    }
+
+    let result = this.fetch(node)
+      .then(children => {
+        node.isBatch = false
+        node.append(children)
+      })
+      .catch(this.options.onFetchError)
+
+    return result
+  }
+
+  fetch(node) {
+    let result = this.options.fetchData(node)
+
+    if (!result.then) {
+      result = get(result)
+    }
+
+    result
+      .then(data => data && this.parse(data, this.options.modelParse))
+      .catch(this.options.onFetchError)
+
+    return result
+  }
+
+  fetchInitData() {
+    // simulate root node
+    const node = {
+      id: 'root',
+      name: 'root'
+    }
+
+    return this.fetch(node)
+  }
+
 
 
   setModel(model) {

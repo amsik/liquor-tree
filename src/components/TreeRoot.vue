@@ -25,7 +25,10 @@
     autoCheckChildren: true,
     parentSelect: false,
     keyboardNavigation: true,
-    paddingLeft: 24
+    paddingLeft: 24,
+    fetchData: null,
+    modelParse: null,
+    onFetchError: function(err) { throw err }
   }
 
   export default {

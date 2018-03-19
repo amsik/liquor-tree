@@ -21,7 +21,7 @@ $ npm install liquor-tree
 
 **Yarn:**
 
-``` shell
+```shell
 $ yarn add liquor-tree
 ```
 

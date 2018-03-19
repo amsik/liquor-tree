@@ -19,7 +19,8 @@ let defaultPropertyNames = {
   text: 'text',
   children: 'children',
   state: 'state',
-  data: 'data'
+  data: 'data',
+  isBatch: 'isBatch'
 }
 
 
@@ -29,7 +30,8 @@ function convertNames(obj, names) {
     text: obj[names.text],
     children: obj[names.children],
     state: obj[names.state],
-    data: obj[names.data]
+    data: obj[names.data],
+    isBatch: obj[names.isBatch]
   }
 }
 

@@ -4,7 +4,8 @@
 
   const menuItems = [
     { text: 'Basic Usage', href: 'basic-usage.html' },
-    { text: 'Checkboxes', href: 'checkboxes.html' }
+    { text: 'Checkboxes', href: 'checkboxes.html' },
+    { text: 'Async Data', href: 'async.html' }
   ]
 
   function initMenu() {

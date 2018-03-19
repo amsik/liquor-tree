@@ -1,0 +1,14 @@
+[
+  { 
+    "text": "'DESIGN PATTERNS'", 
+    "state": { "expanded": true }, 
+    "children": [
+      { "text": "'Creational Design Patterns'" },
+      { "text": "'Factory'" },
+      { "text": "'Prototype'" },
+      { "text": "'Mixin'" },
+      { "text": "'Singleton'", "state": { "disabled": true } }
+    ]
+  },
+  { "text": "'Structural Design Patterns'"}
+]

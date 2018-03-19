@@ -3,7 +3,7 @@
     <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
-        :class="{'expanded': node.states.expanded, 'has-child': node.children.length}"
+        :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
         @mouseup.stop="toggleExpand">
       </i>
 

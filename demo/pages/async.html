@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Basic Usage</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Async Loading.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            <p>Tree is able to recieve the data as an Object or a Promise. Lets try with <b>fetch</b> API.</p>
+          </div>
+
+          <div class="example-tree">
+            <tree :data="treeData" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">
+            Here we don't have an initial data. The tree will try to fetch init data with ID == 'root' (node's name is 'root' as well)
+          </div>
+          <div class="example-tree">
+              <tree :options="fetchExample0" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Some Vuex emulation :)
+      const $store = {
+        dispatch(t) {
+          switch(t) {
+            case 'FETCH-TREE': return fetch('/assets/data/fetch-example.json').then(r => r.json())
+          }
+        }
+      }
+
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeData: $store.dispatch('FETCH-TREE'),
+
+          fetchExample0: {
+            /*
+              - fetchData: `/assets/data/fetch0/data-{id}.json`
+              - fetchData(node) {
+                return `/assets/data/fetch0/data-${node.id}.json`
+              }
+              - fetchData(node) {
+                // return Promise object
+                return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).catch(e => console.log(e))
+              }
+            */
+
+            fetchData(node) {
+              // return Promise object
+              return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).catch(e => console.log(e))
+            }
+          },
+
+        })
+      })
+    </script>
+
+  </body>
+</html>
