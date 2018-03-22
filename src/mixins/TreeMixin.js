@@ -1,33 +1,28 @@
 import Tree from '@/lib/Tree'
 import initKeyboardNavigation from '@/utils/keyboardNavigation'
 
-function initEvents(vm) {
+function initEvents (vm) {
   vm.tree.$on('node:selected', node => {
     vm.$emit('input', node)
   })
 }
 
 export default {
-  mounted() {
-    let tree = new Tree(this)
+  mounted () {
+    const tree = new Tree(this)
     let dataProvider
 
     this.tree = tree
     this._provided.tree = tree
 
-
     if (!this.data && this.options.fetchData) {
-
       // Get initial data if we don't have a data directly
       // In this case we call 'fetcher' with node.id == 'root' && node.name == 'root'
       dataProvider = tree.fetchInitData()
-
-    } else if (this.data && this.data.then) { 
-
+    } else if (this.data && this.data.then) {
       // Yeah... nice check!
       dataProvider = this.data
       this.loading = true
-
     } else {
       dataProvider = Promise.resolve(this.data)
     }
@@ -45,7 +40,7 @@ export default {
       }
     })
 
-    if (false !== this.options.keyboardNavigation) {
+    if (this.options.keyboardNavigation !== false) {
       initKeyboardNavigation(tree)
     }
 
@@ -53,15 +48,15 @@ export default {
   },
 
   methods: {
-    selected() {
+    selected () {
       return this.tree.selected()
     },
 
-    checked() {
+    checked () {
       return this.tree.checked()
     },
 
-    append(criteria, node) {
+    append (criteria, node) {
       // append to model
       if (!node) {
         return this.tree.addToModel(criteria, this.tree.model.length)
@@ -70,7 +65,7 @@ export default {
       return this.tree.append(criteria, node)
     },
 
-    prepend(criteria, node) {
+    prepend (criteria, node) {
       if (!node) {
         return this.tree.addToModel(criteria, 0)
       }
@@ -78,15 +73,15 @@ export default {
       return this.tree.prepend(criteria, node)
     },
 
-    addChild(criteria, node) {
+    addChild (criteria, node) {
       return this.append(criteria, node)
     },
 
-    remove(criteria, multiple) {
+    remove (criteria, multiple) {
       return this.tree.remove(criteria, multiple)
     },
 
-    before(criteria, node) {
+    before (criteria, node) {
       if (!node) {
         return this.prepend(criteria)
       }
@@ -94,7 +89,7 @@ export default {
       return this.tree.before(criteria, node)
     },
 
-    after(criteria, node) {
+    after (criteria, node) {
       if (!node) {
         return this.append(criteria)
       }
@@ -102,21 +97,21 @@ export default {
       return this.tree.after(criteria, node)
     },
 
-    find(criteria, multiple) {
+    find (criteria, multiple) {
       return this.tree.find(criteria, multiple)
     },
 
-    findAll(criteria) {
+    findAll (criteria) {
       return this.tree.find(criteria, true)
     },
 
-    recursiveDown() {
+    recursiveDown () {
 
     },
 
-    expandReqursice() {
+    expandReqursice () {
 
     }
   }
 
-};
+}

@@ -1,24 +1,24 @@
 const $div = document.createElement('div')
 
-function finder(criteria) {
-  return function(node) {
+function finder (criteria) {
+  return function (node) {
     return Object.keys(criteria).every(key => {
       // it is possible to pass 'states' or 'state'
-      if ('state' == key || 'states' == key) {
-        let states = criteria[key]
+      if (key === 'state' || key === 'states') {
+        const states = criteria[key]
 
-        return Object.keys(states).every(s => node['states'][s] === states[s])       
+        return Object.keys(states).every(s => node['states'][s] === states[s])
       }
 
       let val = node[key]
-      let c = getRegExp(criteria[key])
+      const c = getRegExp(criteria[key])
 
-      if ('states' == key) {
-        let states = criteria[key]
+      if (key === 'states') {
+        const states = criteria[key]
 
         return Object.keys(states).every(s => node[key][s] === states[s])
       } else {
-        if ('text' == key) {
+        if (key === 'text') {
           $div.innerHTML = val
           val = $div.innerText
         }
@@ -29,7 +29,7 @@ function finder(criteria) {
   }
 }
 
-function getRegExp(val) {
+function getRegExp (val) {
   if (val instanceof RegExp) {
     return val
   }
@@ -37,10 +37,10 @@ function getRegExp(val) {
   return new RegExp(`^${val}$`, 'g')
 }
 
-function getAllChildren(source) {
-  let result = []
+function getAllChildren (source) {
+  const result = []
 
-  source.forEach(function collect(node) {
+  source.forEach(function collect (node) {
     result.push(node)
 
     if (node.children) {
@@ -51,8 +51,7 @@ function getAllChildren(source) {
   return result
 }
 
-
-export default function find(source, criteria, deep = true) {
+export default function find (source, criteria, deep = true) {
   if (!source || !source.length) {
     return null
   }
@@ -62,21 +61,21 @@ export default function find(source, criteria, deep = true) {
   }
 
   // find by index
-  if ('number' == typeof criteria) {
+  if (typeof criteria === 'number') {
     return source[criteria] || null
   }
 
-  if ('string' == typeof criteria || criteria instanceof RegExp) {
+  if (typeof criteria === 'string' || criteria instanceof RegExp) {
     criteria = {
       text: criteria
     }
   }
 
-  if ('function' != typeof criteria) {
+  if (typeof criteria !== 'function') {
     criteria = finder(criteria)
   }
 
-  let result = source.filter(criteria)
+  const result = source.filter(criteria)
 
   if (result.length) {
     return result

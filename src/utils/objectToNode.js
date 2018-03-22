@@ -14,18 +14,18 @@ const nodeStates = {
   indeterminate: false
 }
 
-function merge(state = {}) {
+function merge (state = {}) {
   return Object.assign({}, nodeStates, state)
 }
 
-export default function objectToNode(tree, obj) {
+export default function objectToNode (tree, obj) {
   let node = null
 
   if (obj instanceof Node) {
     return obj
   }
 
-  if ('string' == typeof obj) {
+  if (typeof obj === 'string') {
     node = new Node(tree, {
       text: obj,
       state: merge(),

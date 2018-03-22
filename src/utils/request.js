@@ -1,35 +1,36 @@
+/*eslint no-undef: 0 */
 
-function request(url) {
+function request (url) {
   return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest;
+    const xhr = new XMLHttpRequest()
 
-    xhr.open('GET', url);
-    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.open('GET', url)
+    xhr.setRequestHeader('Content-Type', 'application/json')
     xhr.addEventListener('load', _ => {
       try {
-        let response = JSON.parse(xhr.response);
+        const response = JSON.parse(xhr.response)
 
-        resolve(response);
+        resolve(response)
       } catch (e) {
-        reject(e);
+        reject(e)
       };
-    });
+    })
 
-    xhr.send(null);
-  });
+    xhr.send(null)
+  })
 }
 
-export function get(url) {
+export function get (url) {
   return request(url)
 }
 
-export function createTemplate(template) {
+export function createTemplate (template) {
   return source => {
-    let re = /{([^}]+)}/
+    const re = /{([^}]+)}/
     let m
     let result = template
 
-    while(m = re.exec(result)) {
+    while (m = re.exec(result)) {
       result = result.replace(m[0], source[m[1]])
     }
 

@@ -13,8 +13,7 @@ import objectToNode from '@/utils/objectToNode'
   }
 */
 
-
-let defaultPropertyNames = {
+const defaultPropertyNames = {
   id: 'id',
   text: 'text',
   children: 'children',
@@ -23,8 +22,7 @@ let defaultPropertyNames = {
   isBatch: 'isBatch'
 }
 
-
-function convertNames(obj, names) {
+function convertNames (obj, names) {
   return {
     id: obj[names.id],
     text: obj[names.text],
@@ -35,10 +33,9 @@ function convertNames(obj, names) {
   }
 }
 
-
 const TreeParser = {
-  parse(data, tree, options = {}) {
-    if ('string' == typeof data) {
+  parse (data, tree, options = {}) {
+    if (typeof data === 'string') {
       data = JSON.parse(data)
     }
 
@@ -46,14 +43,14 @@ const TreeParser = {
       data = [data]
     }
 
-    let p = Object.assign(
+    const p = Object.assign(
       {},
       defaultPropertyNames,
       options
     )
 
-    let preparedItems = data.map(function converter(item) {
-      let convertedItem = convertNames(item, p)
+    const preparedItems = data.map(function converter (item) {
+      const convertedItem = convertNames(item, p)
 
       // Possible to receive 1 child like a simple object. It must be converted to an array
       // We do not have checks on the correctness of the format. A developer should pass correct format
@@ -68,7 +65,7 @@ const TreeParser = {
       return convertedItem
     })
 
-    return preparedItems.map(item => objectToNode(tree,item))
+    return preparedItems.map(item => objectToNode(tree, item))
   }
 }
 

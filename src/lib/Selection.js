@@ -1,54 +1,54 @@
 
-function nodeIterator(context, method, ...args) {
+function nodeIterator (context, method, ...args) {
   context.forEach(node => node[method](...args))
 }
 
 export default class Selection extends Array {
-  constructor(tree, items) {
-    super();
+  constructor (tree, items) {
+    super()
 
-    this.tree = tree;
+    this.tree = tree
     this.push(...items)
   }
 
-  remove() {
+  remove () {
     nodeIterator(this, 'remove')
     return this
   }
 
-  expand() {
+  expand () {
     nodeIterator(this, 'expand')
     return this
   }
-  
-  collapse() {
+
+  collapse () {
     nodeIterator(this, 'collapse')
     return this
   }
 
-  select(extendList) {
+  select (extendList) {
     nodeIterator(this, 'select', extendList)
     return this
   }
 
-  unselect() {
+  unselect () {
     nodeIterator(this, 'unselect')
     return this
   }
 
-  check() {
+  check () {
     if (this.tree.options.checkbox) {
       nodeIterator(this, 'check')
     }
-    
+
     return this
   }
 
-  uncheck() {
+  uncheck () {
     if (this.tree.options.checkbox) {
       nodeIterator(this, 'uncheck')
     }
-    
-    return this   
+
+    return this
   }
 }

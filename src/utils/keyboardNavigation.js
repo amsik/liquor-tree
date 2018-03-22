@@ -11,9 +11,8 @@ const keyCodes = {
 
 const codesArr = [37, 38, 39, 40, 32]
 
-
-function focusUp(tree, node) {
-  let prevNode = tree.prevVisibleNode(node)
+function focusUp (tree, node) {
+  const prevNode = tree.prevVisibleNode(node)
 
   if (!prevNode) {
     return
@@ -26,8 +25,8 @@ function focusUp(tree, node) {
   prevNode.focus()
 }
 
-function focusdDown(tree, node) {
-  let nextNode = tree.nextVisibleNode(node)
+function focusdDown (tree, node) {
+  const nextNode = tree.nextVisibleNode(node)
 
   if (!nextNode) {
     return
@@ -40,7 +39,7 @@ function focusdDown(tree, node) {
   nextNode.focus()
 }
 
-function checkNode(tree, node) {
+function checkNode (tree, node) {
   if (!tree.options.checkbox) {
     return
   }
@@ -52,11 +51,11 @@ function checkNode(tree, node) {
   }
 }
 
-function leftArrow(tree, node) {
+function leftArrow (tree, node) {
   if (node.expanded()) {
     node.collapse()
   } else {
-    let parent = node.parent
+    const parent = node.parent
 
     if (parent) {
       parent.focus()
@@ -64,11 +63,11 @@ function leftArrow(tree, node) {
   }
 }
 
-function rightArrow(tree, node) {
+function rightArrow (tree, node) {
   if (node.collapsed()) {
     node.expand()
   } else {
-    let first = node.first()
+    const first = node.first()
 
     if (first) {
       first.focus()
@@ -76,28 +75,27 @@ function rightArrow(tree, node) {
   }
 }
 
-function deleteNode(tree, node) {
+function deleteNode (tree, node) {
   const deletion = tree.options.deletion
 
   if (deletion) {
-    if ('function' == typeof deletion) {
-      if (true === deletion(node)) {
+    if (typeof deletion === 'function') {
+      if (deletion(node) === true) {
         node.remove()
       }
-    } else if (true === deletion) {
+    } else if (deletion === true) {
       node.remove()
     }
   }
 }
 
-
-export default function(tree) {
+export default function (tree) {
   const vm = tree.vm
   const $el = vm.$el
 
   $el.addEventListener('keydown', e => {
-    let code = e.keyCode
-    let node = tree.activeElement
+    const code = e.keyCode
+    const node = tree.activeElement
 
     if (!tree.isNode(node)) {
       return
@@ -108,15 +106,14 @@ export default function(tree) {
       e.stopPropagation()
     }
 
-    switch(code) {
+    switch (code) {
       case keyCodes.ARROW_LEFT: return leftArrow(tree, node)
       case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
       case keyCodes.ARROW_TOP: return focusUp(tree, node)
       case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
-      case keyCodes.SPACE: 
+      case keyCodes.SPACE:
       case keyCodes.ENTER: return checkNode(tree, node)
       case keyCodes.DELETE: return deleteNode(tree, node)
     }
   }, true)
-
 };

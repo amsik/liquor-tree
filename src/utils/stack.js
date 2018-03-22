@@ -1,21 +1,21 @@
 
 export class List extends Array {
-  empty() {
+  empty () {
     this.splice(0, this.length)
 
     return this
   }
 
-  add(...items) {
+  add (...items) {
     this.push(...items)
 
     return this
   }
 
-  remove(item) {
-    let index = this.indexOf(item)
+  remove (item) {
+    const index = this.indexOf(item)
 
-    if (-1 == index) {
+    if (index === -1) {
       return this
     }
 
@@ -24,15 +24,15 @@ export class List extends Array {
     return this
   }
 
-  removeAll(item) {
-    while(this.includes(item)) {
+  removeAll (item) {
+    while (this.includes(item)) {
       this.remove(item)
     }
 
     return this
   }
 
-  top() {
+  top () {
     return this[this.length - 1]
   }
 }

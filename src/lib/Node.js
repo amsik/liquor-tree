@@ -4,7 +4,7 @@ import find from '@/utils/find'
 import Selection from '@/lib/Selection'
 
 export default class Node {
-  constructor(tree, item) {
+  constructor (tree, item) {
     this.id = item.id
     this.states = item.state
 
@@ -24,11 +24,11 @@ export default class Node {
     this.tree = tree
   }
 
-  $emit(evnt, ...args) {
+  $emit (evnt, ...args) {
     this.tree.$emit(`node:${evnt}`, this, ...args)
   }
 
-  get depth() {
+  get depth () {
     let depth = 0
     let parent = this.parent
 
@@ -38,23 +38,23 @@ export default class Node {
 
     do {
       depth++
-    } while(parent = parent.parent)
+    } while (parent = parent.parent)
 
     return depth
   }
 
-  get text() {
+  get text () {
     return this.data.text
   }
 
-  set text(text) {
-    let oldText = this.text
+  set text (text) {
+    const oldText = this.text
 
     this.data.text = text
     this.tree.$emit('node:text:changed', text, oldText)
   }
 
-  state(name, value) {
+  state (name, value) {
     if (undefined === value) {
       return this.states[name]
     }
@@ -66,18 +66,18 @@ export default class Node {
     return this
   }
 
-  recurseUp(fn, node = this) {
+  recurseUp (fn, node = this) {
     if (!node.parent) {
       return
     }
 
-    if (false !== fn(node.parent)) {
+    if (fn(node.parent) !== false) {
       return this.recurseUp(fn, node.parent)
     }
   }
 
-  recurseDown(fn, ignoreThis) {
-    if (true !== ignoreThis) {
+  recurseDown (fn, ignoreThis) {
+    if (ignoreThis !== true) {
       fn(this)
     }
 
@@ -86,7 +86,7 @@ export default class Node {
     }
   }
 
-  refreshIndeterminateState() {
+  refreshIndeterminateState () {
     if (!this.tree.options.autoCheckChildren) {
       return this
     }
@@ -94,7 +94,7 @@ export default class Node {
     this.state('indeterminate', false)
 
     if (this.hasChildren()) {
-      let childrenCount = this.children.length
+      const childrenCount = this.children.length
       let checked = 0
       let indeterminate = 0
       let disabled = 0
@@ -113,7 +113,7 @@ export default class Node {
         }
       })
 
-      if (checked == childrenCount - disabled) {
+      if (checked === childrenCount - disabled) {
         if (!this.checked()) {
           this.state('checked', true)
           this.$emit('checked')
@@ -136,21 +136,19 @@ export default class Node {
     }
   }
 
-
-  indeterminate() {
+  indeterminate () {
     return this.state('indeterminate')
   }
 
-
-  selectable() {
+  selectable () {
     return !this.state('disabled') && this.state('selectable')
   }
 
-  selected() {
+  selected () {
     return this.state('selected')
   }
 
-  select(extendList) {
+  select (extendList) {
     if (!this.selectable() || this.selected()) {
       return this
     }
@@ -163,7 +161,7 @@ export default class Node {
     return this
   }
 
-  unselect() {
+  unselect () {
     if (!this.selectable() || !this.selected()) {
       return this
     }
@@ -176,13 +174,11 @@ export default class Node {
     return this
   }
 
-
-
-  checked() {
+  checked () {
     return this.state('checked')
   }
 
-  check() {
+  check () {
     if (this.checked() || this.disabled()) {
       return this
     }
@@ -216,7 +212,7 @@ export default class Node {
     return this
   }
 
-  uncheck() {
+  uncheck () {
     if (!this.indeterminate() && !this.checked() || this.disabled()) {
       return this
     }
@@ -246,9 +242,7 @@ export default class Node {
     return this
   }
 
-
-
-  show() {
+  show () {
     if (this.visible()) {
       return this
     }
@@ -259,7 +253,7 @@ export default class Node {
     return this
   }
 
-  hide() {
+  hide () {
     if (this.hidden()) {
       return this
     }
@@ -270,17 +264,15 @@ export default class Node {
     return this
   }
 
-  visible() {
+  visible () {
     return this.state('visible')
   }
 
-  hidden() {
+  hidden () {
     return !this.state('visible')
   }
 
-
-
-  enable() {
+  enable () {
     if (this.enabled()) {
       return this
     }
@@ -295,11 +287,11 @@ export default class Node {
     return this
   }
 
-  enabled() {
+  enabled () {
     return !this.state('disabled')
   }
 
-  disable() {
+  disable () {
     if (this.disabled()) {
       return this
     }
@@ -314,12 +306,11 @@ export default class Node {
     return this
   }
 
-  disabled() {
+  disabled () {
     return this.state('disabled')
   }
 
-
-  expand() {
+  expand () {
     if (!this.hasChildren() || this.expanded() || this.disabled()) {
       return this
     }
@@ -337,11 +328,11 @@ export default class Node {
     return this
   }
 
-  expanded() {
+  expanded () {
     return this.state('expanded')
   }
 
-  collapse() {
+  collapse () {
     if (!this.hasChildren() || this.collapsed() || this.disabled()) {
       return this
     }
@@ -352,19 +343,19 @@ export default class Node {
     return this
   }
 
-  collapsed() {
+  collapsed () {
     return !this.state('expanded')
   }
 
-  toggleExpand() {
+  toggleExpand () {
     return this._toggleOpenedState()
   }
 
-  toggleCollapse() {
+  toggleCollapse () {
     return this._toggleOpenedState()
   }
 
-  _toggleOpenedState() {
+  _toggleOpenedState () {
     if (this.disabled() || !this.hasChildren()) {
       return this
     }
@@ -376,12 +367,11 @@ export default class Node {
     return this.expand()
   }
 
-
-  index(verbose) {
+  index (verbose) {
     return this.tree.index(this, verbose)
   }
 
-  first() {
+  first () {
     if (!this.hasChildren()) {
       return null
     }
@@ -389,7 +379,7 @@ export default class Node {
     return this.children[0]
   }
 
-  last() {
+  last () {
     if (!this.hasChildren()) {
       return null
     }
@@ -397,16 +387,15 @@ export default class Node {
     return this.children[this.children.length - 1]
   }
 
-  next() {
+  next () {
     return this.tree.nextNode(this)
   }
 
-  prev() {
+  prev () {
     return this.tree.prevNode(this)
   }
 
-
-  insertAt(node, index = this.children.length) {
+  insertAt (node, index = this.children.length) {
     if (!node) {
       return
     }
@@ -432,42 +421,42 @@ export default class Node {
     return node
   }
 
-  addChild(node) {
+  addChild (node) {
     return this.insertAt(node)
   }
 
-  append(node) {
+  append (node) {
     return this.addChild(node)
   }
 
-  prepend(node) {
+  prepend (node) {
     return this.insertAt(node, 0)
   }
 
-  before(node) {
+  before (node) {
     return this.tree.before(this, node)
   }
 
-  after(node) {
+  after (node) {
     return this.tree.after(this, node)
   }
 
-  empty() {
+  empty () {
     let node
 
-    while( node = this.children.pop() ) {
+    while (node = this.children.pop()) {
       node.remove()
     }
 
     return this
   }
 
-  remove() {
+  remove () {
     return this.tree.removeNode(this)
   }
 
-  removeChild(criteria) {
-    let node = this.find(criteria)
+  removeChild (criteria) {
+    const node = this.find(criteria)
 
     if (node) {
       return this.tree.removeNode(node)
@@ -476,9 +465,7 @@ export default class Node {
     return null
   }
 
-
-
-  find(criteria, deep) {
+  find (criteria, deep) {
     if (criteria instanceof Node) {
       return criteria
     }
@@ -486,20 +473,20 @@ export default class Node {
     return find(this.children, criteria, deep)
   }
 
-  focus() {
+  focus () {
     if (this.vm) {
       this.vm.focus()
     }
   }
 
-  hasChildren() {
+  hasChildren () {
     return this.isBatch || this.children.length > 0
   }
 
   /**
   * Sometimes it's no need to have a parent. It possible to have more than 1 parent
   */
-  isRoot() {
-    return null === this.parent
+  isRoot () {
+    return this.parent === null
   }
 }
