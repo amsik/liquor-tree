@@ -5,6 +5,10 @@ import Selection from '@/lib/Selection'
 
 export default class Node {
   constructor (tree, item) {
+    if (!item) {
+      throw new Error('Node can not be empty')
+    }
+
     this.id = item.id
     this.states = item.state
 

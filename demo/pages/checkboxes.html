@@ -11,30 +11,60 @@
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <script src="/liquor-tree.umd.js"></script>
 
-    <style>
-      .demo-tree {
-        width: 50%;
-      }
-    </style>
   </head>
   <body>
     <div class="hello">
-      Checkboxes. You can navigate using keyboard and check/uncheck node using either Space or Enter key
+      Checkboxes.
     </div>
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">You can navigate using keyboard and check/uncheck node using either Space or Enter key</div>
+          <div class="example-tree">
+              <tree
+                :data="treeData0"
+                :options="treeOptions0" />
+          </div>
+        </div>
 
-    <div class="demo-tree" id="app">
-      <tree
-        :data="treeData"
-        :options="treeOptions" />
+        <div class="example">
+            <div class="example-description">
+              <p>Using <b>v-model</b>. We have some differences in checkbox mode. Note that <b>multiple</b> is false. If <b>multiple</b> is true the selected object will be an array.</p>
+              <p v-if="treeModel">
+                <b>Selected: </b>  {{ treeModel.selected.text }}
+              </p>
+              
+              <p v-if="treeModel">
+                  <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
+                </p>
+            </div>
+            <div class="example-tree">
+                <tree
+                  :data="treeData1"
+                  :options="treeOptions1"
+                  v-model="treeModel" />
+            </div>
+          </div>
+      </div>
     </div>
+    
+
+    
 
     <script>
       new Vue({
         el: '#app',
         data: () => ({
-          treeData: getTreeData(),
-          treeOptions: {
+          treeData0: getTreeData(),
+          treeOptions0: {
             checkbox: true
+          },
+
+          treeModel: null,
+          treeData1: getTreeData(),
+          treeOptions1: {
+            checkbox: true,
+            multiple: false
           }
         })
       })

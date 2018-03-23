@@ -5,9 +5,10 @@ function nodeIterator (context, method, ...args) {
 
 export default class Selection extends Array {
   constructor (tree, items) {
-    super()
+    /*eslint semi: 0 */
+    super();
 
-    this.tree = tree
+    this.tree = tree;
     this.push(...items)
   }
 

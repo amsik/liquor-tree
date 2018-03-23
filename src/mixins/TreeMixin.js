@@ -2,9 +2,31 @@ import Tree from '@/lib/Tree'
 import initKeyboardNavigation from '@/utils/keyboardNavigation'
 
 function initEvents (vm) {
+  const { multiple, checkbox } = vm.options
+
+  const emitter = (obj) => {
+    if (!checkbox) {
+      vm.$emit('input', obj)
+    } else {
+      vm.$emit('input', {
+        selected: (multiple ? vm.selected() : obj) || {},
+        checked: vm.checked()
+      })
+    }
+  }
+
   vm.tree.$on('node:selected', node => {
-    vm.$emit('input', node)
+    if (multiple) {
+      emitter(vm.selected())
+    } else {
+      emitter(node)
+    }
   })
+
+  if (checkbox) {
+    vm.tree.$on('node:checked', emitter)
+    vm.tree.$on('node:unchecked', emitter)
+  }
 }
 
 export default {

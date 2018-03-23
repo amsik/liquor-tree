@@ -34,7 +34,7 @@
           <div class="example-description">
             <p>Tree behaviour by default. Without any states. Tree allows to has more than 1 root node.</p>
             <p>Tree allows you to use <b>v-model</b> attribute.</p>
-            <p v-if="selectedNode0">Selected node: <b>{{ selectedNode0.text }}</b></p>
+            <p v-if="selectedNode0">Selected nodes: <b>{{ selectedNode0.map(s => s.text) }}</b></p>
           </div>
           <div class="example-tree">
             <tree :data="treeData0" v-model="selectedNode0" />
