@@ -30,13 +30,13 @@
         <div class="example">
             <div class="example-description">
               <p>Using <b>v-model</b>. We have some differences in checkbox mode. Note that <b>multiple</b> is false. If <b>multiple</b> is true the selected object will be an array.</p>
-              <p v-if="treeModel">
+              <p v-if="treeModel && treeModel.selected">
                 <b>Selected: </b>  {{ treeModel.selected.text }}
               </p>
               
               <p v-if="treeModel">
-                  <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
-                </p>
+                <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
+              </p>
             </div>
             <div class="example-tree">
                 <tree
@@ -47,9 +47,6 @@
           </div>
       </div>
     </div>
-    
-
-    
 
     <script>
       new Vue({

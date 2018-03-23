@@ -5,11 +5,13 @@ function initEvents (vm) {
   const { multiple, checkbox } = vm.options
 
   const emitter = (obj) => {
+    const selected = vm.selected()
+
     if (!checkbox) {
-      vm.$emit('input', obj)
+      vm.$emit('input', multiple ? selected : (selected[0] || null))
     } else {
       vm.$emit('input', {
-        selected: (multiple ? vm.selected() : obj) || {},
+        selected: multiple ? selected : (selected[0] || null),
         checked: vm.checked()
       })
     }
@@ -22,6 +24,8 @@ function initEvents (vm) {
       emitter(node)
     }
   })
+
+  vm.tree.$on('node:unselected', emitter)
 
   if (checkbox) {
     vm.tree.$on('node:checked', emitter)
