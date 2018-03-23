@@ -120,11 +120,15 @@ export default class Node {
       if (checked === childrenCount - disabled) {
         if (!this.checked()) {
           this.state('checked', true)
+          this.tree.check(this)
+
           this.$emit('checked')
         }
       } else {
         if (this.checked()) {
           this.state('checked', false)
+          this.tree.uncheck(this)
+
           this.$emit('unchecked')
         }
 

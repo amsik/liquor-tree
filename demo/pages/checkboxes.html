@@ -42,6 +42,7 @@
                 <tree
                   :data="treeData1"
                   :options="treeOptions1"
+                  ref="tree1"
                   v-model="treeModel" />
             </div>
           </div>
@@ -58,15 +59,24 @@
           },
 
           treeModel: null,
-          treeData1: getTreeData(),
+          treeData1: getTreeData(false),
           treeOptions1: {
             checkbox: true,
             multiple: false
           }
-        })
+        }),
+
+        mounted() {
+          const tree1 = this.$refs.tree1
+
+          this.treeModel = {
+            selected: tree1.selected(),
+            checked: tree1.checked()
+          }
+        }
       })
 
-      function getTreeData() {
+      function getTreeData(checked = true) {
         return [
             {
                 text: 'Item 1',
@@ -80,7 +90,7 @@
                   expanded: true
                 },
                 children: [
-                    {text: '<b>Item 2.1</b>', state: {checked: true}},
+                    {text: '<b>Item 2.1</b>', state: {checked: checked}},
                     {text: 'Item 2.2'},
                     {
                         text: 'Item 2.3',
@@ -101,7 +111,7 @@
             {
                 text: 'Item 3',
                 id: 1111111111,
-                state: { checked: true }
+                state: { checked: checked }
             },
 
             {
