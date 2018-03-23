@@ -1,6 +1,6 @@
 import { recurseDown } from '@/utils/recurse'
 import find from '@/utils/find'
-
+import uuidV4 from '@/utils/uuidV4'
 import Selection from '@/lib/Selection'
 
 export default class Node {
@@ -9,8 +9,8 @@ export default class Node {
       throw new Error('Node can not be empty')
     }
 
-    this.id = item.id
-    this.states = item.state
+    this.id = item.id || uuidV4()
+    this.states = item.state || {}
 
     this.children = item.children || []
     this.parent = item.parent || null
