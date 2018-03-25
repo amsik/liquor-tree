@@ -13,15 +13,15 @@ const nodeStates = {
 
 const tree = {}
 
-describe ('utils: objectToNode.js', () => {
-  it ('ignore Node instance', () => {
+describe('utils: objectToNode.js', () => {
+  it('ignore Node instance', () => {
     const node = new Node(tree, { id: 10 })
     const newNode = objectToNode(tree, node)
 
     expect(newNode).toBe(node)
   })
 
-  it ('parse string', () => {
+  it('parse string', () => {
     const node = objectToNode(tree, 'New Node')
 
     expect(node.text).toBe('New Node')
@@ -29,7 +29,7 @@ describe ('utils: objectToNode.js', () => {
     expect(node.id).toMatch(/\w{8}-\w{4}-\w{4}-\w{4}-\w{8}/)
   })
 
-  it ('parse object', () => {
+  it('parse object', () => {
     const node = objectToNode(tree, {
       text: 'Node 1',
       id: 10,
@@ -50,7 +50,7 @@ describe ('utils: objectToNode.js', () => {
     expect(node.data.mySuperProp).toBe('atatat')
   })
 
-  it ('node children as object', () => {
+  it('node children as object', () => {
     const node = objectToNode(tree, {
       text: 'Item 1',
       children: [
@@ -64,7 +64,7 @@ describe ('utils: objectToNode.js', () => {
     expect(node.children[0].parent).toBe(node)
   })
 
-  it ('node children as text', () => {
+  it('node children as text', () => {
     const node = objectToNode(tree, {
       text: 'Item 1',
       children: [
@@ -76,7 +76,7 @@ describe ('utils: objectToNode.js', () => {
     expect(node.children[1].text).toBe('Item 1.2')
   })
 
-  it ('some child as Node', () => {
+  it('some child as Node', () => {
     const childNode = new Node(tree, { text: 'Item 1.1' })
     const node = objectToNode(tree, {
       text: 'Item 1',

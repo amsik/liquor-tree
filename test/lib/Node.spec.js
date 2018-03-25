@@ -5,8 +5,6 @@ import Tree from '@/lib/Tree'
 
 import objectToNode from '@/utils/ObjectToNode'
 
-const log = a => console.log(JSON.stringify(a))
-
 const vm = new Vue()
 vm.options = {}
 
@@ -72,10 +70,25 @@ describe('Lib: Node.js', () => {
     expect(node.state('UNREAL_state')).toBeTruthy()
   })
 
+  it('node depth', () => {
+    const childNode = objectToNode(tree, { text: 'Item 1.4.2', children: ['Some node'] })
+    const node = objectToNode(tree, {
+      text: 'Item 1',
+      children: [
+        'Item 1.2',
+        childNode
+      ]
+    })
+
+    expect(node.depth).toBe(0)
+    expect(childNode.depth).toBe(1)
+    expect(childNode.children[0].depth).toBe(2)
+  })
+
   it('recurse functions', () => {
     const childNode = objectToNode(tree, { text: 'Item 1.4.2', children: [
       'Item 1.4.2.1', 'Item 1.4.2.2'
-    ]})
+    ] })
 
     const node = objectToNode(tree, {
       text: 'Item 1',
@@ -148,6 +161,66 @@ describe('Lib: Node.js', () => {
     node.select()
 
     expect(node.selected()).toBeFalsy()
-    log(node.selected())
+  })
+
+  it('node check', () => {
+    const tree = new Tree(vm)
+    const model = tree.parse({
+      text: 'Node', state: {
+        checked: false
+      }
+    })
+
+    tree.setModel(model)
+
+    const node = tree.model[0]
+
+    expect(node.checked()).toBeFalsy()
+    node.check()
+    expect(node.checked()).toBeTruthy()
+  })
+
+  it('node visible', () => {
+    const tree = new Tree(vm)
+    const model = tree.parse({
+      text: 'Node'
+    })
+
+    tree.setModel(model)
+
+    const node = tree.model[0]
+
+    expect(node.visible()).toBeTruthy()
+
+    node.hide()
+    expect(node.hidden()).toBeTruthy()
+    expect(node.visible()).toBeFalsy()
+  })
+
+  it('node enable', () => {
+    const tree = new Tree(vm)
+    const model = tree.parse({
+      text: 'Node 0', children: [
+        'Node 01', 'Node 02'
+      ]
+    })
+
+    tree.setModel(model)
+
+    const node = tree.model[0]
+
+    node.disable()
+
+    expect(node.disabled()).toBeTruthy()
+    expect(node.enabled()).toBeFalsy()
+
+    const childNode = node.children[0]
+    expect(childNode.disabled()).toBeTruthy()
+
+    node.enable()
+
+    expect(node.disabled()).toBeFalsy()
+    expect(node.enabled()).toBeTruthy()
+    expect(childNode.enabled()).toBeTruthy()
   })
 })

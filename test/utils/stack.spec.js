@@ -1,14 +1,14 @@
 import { List } from '@/utils/stack'
 
 describe('utils: stack', () => {
-  it ('init', () => {
+  it('init', () => {
     const stack = new List(1, 2, 3)
 
     expect(stack).toEqual([1, 2, 3])
     expect(stack).toBeInstanceOf(Array)
   })
 
-  it ('stack methods', () => {
+  it('stack methods', () => {
     const stack = new List(1, 2, 3, 4, 5)
 
     expect(stack).toHaveLength(5)
