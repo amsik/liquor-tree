@@ -3,6 +3,8 @@ import Vue from 'vue'
 import Node from '@/lib/Node'
 import Tree from '@/lib/Tree'
 
+import objectToNode from '@/utils/ObjectToNode'
+
 const log = a => console.log(JSON.stringify(a))
 
 const vm = new Vue()
@@ -71,75 +73,81 @@ describe('Lib: Node.js', () => {
   })
 
   it('recurse functions', () => {
-    const n = {}
-    const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    const childNode = objectToNode(tree, { text: 'Item 1.4.2', children: [
+      'Item 1.4.2.1', 'Item 1.4.2.2'
+    ]})
 
-    letters.forEach(letter => {
-      n[letter] = new Node(tree, { text: letter })
+    const node = objectToNode(tree, {
+      text: 'Item 1',
+      children: [
+        'Item 1.2',
+        'Item 1.3',
+        {
+          text: 'Item 1.4',
+          children: [
+            'Item 1.4.1', childNode, 'Item 1.4.3'
+          ]
+        },
+        {
+          text: 'Item 1.5'
+        }
+      ]
     })
 
-    const emulatedTree = n.A.children.push(
-      n.B, n.C, n.D
-    )
+    const recurseDownExpected = [
+      'Item 1', 'Item 1.2', 'Item 1.3',
+      'Item 1.4', 'Item 1.4.1', 'Item 1.4.2', 'Item 1.4.2.1', 'Item 1.4.2.2',
+      'Item 1.4.3', 'Item 1.5'
+    ]
 
-    n.B.parent = n.C.parent = n.D.parent = n.A
+    const recurseDownArray = []
 
-    n.D.children.push(n.E)
-    n.E.parent = n.D
-
-    n.E.children.push(n.F)
-    n.F.parent = n.E
-
-    n.F.children.push(n.G)
-    n.F.children.push(n.H)
-    n.G.parent = n.F
-    n.H.parent = n.F
-
-    const recurseUpArray = []
-    const recurseUpStoppedArray = []
-
-    n.G.recurseUp(node => {
-      recurseUpArray.push(node.text)
+    node.recurseDown(n => {
+      recurseDownArray.push(n.text)
     })
 
-    n.G.recurseUp(node => {
-      recurseUpStoppedArray.push(node.text)
+    const recurseDownArrayIgnoreTargetExpected = ['Item 1.4.2.1', 'Item 1.4.2.2']
+    const recurseDownArrayIgnoreTarget = []
 
-      if (node.text === 'E') {
-        return false
-      }
-    })
-
-    expect(recurseUpArray).toEqual(['F', 'E', 'D', 'A'])
-    expect(recurseUpStoppedArray).toEqual(['F', 'E'])
-
-    const A_recurseDownArray = []
-    const F_recurseDownArray = []
-    const F_exclude_sefl_recurseDownArray = []
-
-    n.A.recurseDown(node => {
-      A_recurseDownArray.push(node.text)
-    })
-
-    n.F.recurseDown(node => {
-      F_recurseDownArray.push(node.text)
-    })
-
-    n.F.recurseDown(node => {
-      F_exclude_sefl_recurseDownArray.push(node.text)
+    childNode.recurseDown(n => {
+      recurseDownArrayIgnoreTarget.push(n.text)
     }, true)
 
-    expect(A_recurseDownArray).toEqual(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
-    expect(F_recurseDownArray).toEqual(['F', 'G', 'H'])
-    expect(F_exclude_sefl_recurseDownArray).toEqual(['G', 'H'])
+    const recurseUpExpected = ['Item 1.4.2', 'Item 1.4', 'Item 1']
+    const recurseUpArray = []
+
+    childNode.children[0].recurseUp(n => {
+      recurseUpArray.push(n.text)
+    })
+
+    expect(recurseDownArray).toEqual(recurseDownExpected)
+    expect(recurseUpArray).toEqual(recurseUpExpected)
+    expect(recurseDownArrayIgnoreTarget).toEqual(recurseDownArrayIgnoreTargetExpected)
   })
 
   it('node selection', () => {
-    const node = new Node(tree, { text: 'Test node' })
+    const tree = new Tree(vm)
+    const model = tree.parse({
+      text: 'Node', state: {
+        selected: false
+      }
+    })
 
-    // Start testig with objectToNode
+    tree.setModel(model)
 
-    // node.select()
-    // expect(node.state('selected')).toBeTruthy()
+    const node = tree.model[0]
+
+    expect(node.selected()).toBeFalsy()
+    node.select()
+    expect(node.selected()).toBeTruthy()
+
+    node.unselect()
+    expect(node.selected()).toBeFalsy()
+
+    node.state('selectable', false)
+    node.select()
+
+    expect(node.selected()).toBeFalsy()
+    log(node.selected())
   })
 })
