@@ -9,7 +9,8 @@
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "lint": "eslint --fix src test",
     "test": "npm run lint && npm run unit",
-    "unit": "jest"
+    "unit": "jest",
+    "storybook": "start-storybook -p 9001 -c ./docs/storybook"
   },
   "repository": {
     "type": "git",
@@ -24,11 +25,11 @@
     "vue-tree",
     "treeview"
   ],
-  "dependencies": {
-    "vue": "^2.5.13"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@storybook/vue": "^3.3.15",
     "@vue/test-utils": "^1.0.0-beta.12",
+    "babel-core": "^6.26.0",
     "babel-jest": "^22.4.3",
     "babel-plugin-transform-builtin-extend": "^1.1.2",
     "babel-preset-env": "^1.6.1",
@@ -43,8 +44,10 @@
     "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
     "rollup-plugin-vue": "^3.0.0",
+    "vue": "^2.5.16",
     "vue-jest": "^2.3.0",
-    "vue-template-compiler": "^2.5.13"
+    "vue-loader": "^14.2.2",
+    "vue-template-compiler": "^2.5.16"
   },
   "jest": {
     "moduleFileExtensions": [
