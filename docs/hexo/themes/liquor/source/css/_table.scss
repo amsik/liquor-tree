@@ -1,0 +1,24 @@
+table {
+  width: 100%;
+  margin-bottom: 3em;
+}
+
+.highlight table {
+  margin-bottom: 0;
+}
+
+table th {
+  text-align: left;
+  white-space: nowrap;
+  color: #666;
+  font-weight: 400;
+  border-bottom: 1px solid #d8d8d8;
+  padding: 15px;
+  max-width: 250px;
+}
+
+table td {
+  border-bottom: 1px solid #d8d8d8;
+  padding: 15px;
+  max-width: 250px;
+}

@@ -1,0 +1,63 @@
+$highlightColor: #333333;
+$subColor: #444444;
+
+h1 {
+  border-bottom: 1px solid $bordersColor;
+  margin-bottom: 30px;
+  line-height: 50px;
+  font-size: 34px;
+  font-weight: 800;
+  color: $highlightColor;
+}
+
+h2 {
+  font-size: 25px;
+  font-weight: 600;
+  color: $highlightColor;
+  margin-top: 4em;
+}
+
+h2#Introduction {
+  margin: 0;
+}
+
+h3 {
+  padding-bottom: 0.7em;
+  margin: 45px 0 0.8em;
+  border-bottom: 1px solid #ddd;
+}
+
+
+
+p, ul li {
+  color: $subColor;
+  font-size: 15px;
+  line-height: 23px;
+}
+
+a {
+  color: $primary;
+
+  &:hover {
+    color: darken($primary, 10%);
+  }
+}
+
+h4[id^="Tree-"],
+h4[id^="Selection-"] {
+  margin-top: 50px;
+
+  &:before {
+    content: '# ';
+    color: #10CF93;
+  }
+
+  a {
+    color: #333333;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
