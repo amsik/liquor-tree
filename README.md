@@ -25,6 +25,17 @@ $ npm install liquor-tree
 $ yarn add liquor-tree
 ```
 
+## Live Playground
+
+To run that demo on your own computer:
+
+* Clone this repository
+* `npm install`
+* `npm run storybook` 
+* Visit `http://localhost:9001/`
+
+There are a lot of examples for you. All sources of stories are located in `liquor-tree/docs/storybook/stories`.
+
 ## Usage
 
 ```html
