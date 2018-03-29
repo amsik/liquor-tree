@@ -2,7 +2,7 @@ import Tree from '@/lib/Tree'
 import initKeyboardNavigation from '@/utils/keyboardNavigation'
 
 function initEvents (vm) {
-  const { multiple, checkbox } = vm.options
+  const { multiple, checkbox } = vm.opts
 
   const emitter = (obj) => {
     const selected = vm.selected()
@@ -41,7 +41,7 @@ export default {
     this.tree = tree
     this._provided.tree = tree
 
-    if (!this.data && this.options.fetchData) {
+    if (!this.data && this.opts.fetchData) {
       // Get initial data if we don't have a data directly
       // In this case we call 'fetcher' with node.id == 'root' && node.name == 'root'
       dataProvider = tree.fetchInitData()
@@ -58,7 +58,7 @@ export default {
         return (this.loading = false)
       }
 
-      this.model = tree.parse(data, this.options.modelParse)
+      this.model = tree.parse(data, this.opts.modelParse)
       this.tree.setModel(this.model)
 
       if (this.loading) {
@@ -66,7 +66,7 @@ export default {
       }
     })
 
-    if (this.options.keyboardNavigation !== false) {
+    if (this.opts.keyboardNavigation !== false) {
       initKeyboardNavigation(tree)
     }
 

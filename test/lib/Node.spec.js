@@ -6,7 +6,7 @@ import Tree from '@/lib/Tree'
 import objectToNode from '@/utils/ObjectToNode'
 
 const vm = new Vue()
-vm.options = {}
+vm.opts = {}
 
 const tree = new Tree(vm)
 

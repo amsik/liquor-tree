@@ -7,7 +7,7 @@
 
         :key="node.id"
         :node="node"
-        :options="options"
+        :options="opts"
       />
     </ul>
   </div>
@@ -54,17 +54,15 @@
 
     data() {
       // we should not mutating a prop directly...
-      // that's why we add if it necessary
-      for (let prop in defaults) {
-        if ( false === (prop in this.options) ) {
-          this.options[prop] = defaults[prop]
-        }
-      }
+      // that's why we have to create a new object
+      // TODO: add method for changing options
+      const opts = Object.assign({}, defaults, this.options)
 
       return {
         model: null,
         tree: null,
-        loading: false
+        loading: false,
+        opts
       }
     }
   }

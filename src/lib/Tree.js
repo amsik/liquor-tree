@@ -11,7 +11,7 @@ import { get, createTemplate } from '@/utils/request'
 export default class Tree {
   constructor (vm) {
     this.vm = vm
-    this.options = vm.options
+    this.options = vm.opts
 
     this.activeElement = null
 

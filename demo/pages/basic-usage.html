@@ -8,8 +8,10 @@
     <script src="../assets/menu.js"></script>
 
     <!-- first import Vue -->
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
     <script src="/liquor-tree.umd.js"></script>
+
 
     <style>
       .demo-tree {
@@ -58,7 +60,7 @@
 
           <div class="example-tree">
             <button @click="initTree2" v-if="!treeData2">Build Tree</button>
-            <tree 
+            <tree
               v-if="treeData2"
               :data="treeData2"
             />
@@ -72,7 +74,6 @@
         el: '#app',
         data: () => ({
           selectedNode0: null,
-
           treeData0: getTreeData0(),
           treeData1: getTreeData1(),
           treeData2: null,
