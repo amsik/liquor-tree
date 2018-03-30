@@ -21,7 +21,12 @@ storiesOf('Basic Usage', module)
         multiple: false
       }
     }),
-    template: '<tree :data="treeData" :options="treeOptions" />'
+    template: `
+      <div>
+        <p>It is possible to select only 1 node.</p>
+        <tree :data="treeData" :options="treeOptions" />
+      </div>
+    `
   }))
   .add('checkbox mode', () => ({
     data: () => ({
@@ -39,7 +44,12 @@ storiesOf('Basic Usage', module)
         checkbox: true
       }
     }),
-    template: '<tree :data="treeData" :options="treeOptions" />'
+    template: `
+      <div>
+        <p>You can set any of states during the initialization. See <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">here</a> to learn more.</p>
+        <tree :data="treeData" :options="treeOptions" />
+      </div>
+    `
   }))
 
 
