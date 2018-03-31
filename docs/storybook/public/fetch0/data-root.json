@@ -1,0 +1,16 @@
+[
+  {
+    "text": "Getting Started",
+    "isBatch": true,
+    "id": 1
+  },
+  {
+    "text": "Patterns",
+    "isBatch": true,
+    "id": 2
+  },
+  {
+    "text": "Has an error",
+    "isBatch": true
+  }
+]

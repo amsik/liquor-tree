@@ -8,6 +8,7 @@ Vue.component('tree', Tree)
 function loadStories() {
   require('./stories/index')
   require('./stories/options')
+  require('./stories/async')
 }
 
 configure(loadStories, module)

@@ -23,7 +23,7 @@ export default class Tree {
         const urlTemplate = createTemplate(template)
 
         return node => {
-          return get(urlTemplate(node))
+          return get(urlTemplate(node)).catch(this.options.onFetchError)
         }
       })(fetchData)
     }
@@ -67,7 +67,6 @@ export default class Tree {
         node.isBatch = false
         node.append(children)
       })
-      .catch(this.options.onFetchError)
 
     return result
   }
@@ -77,6 +76,7 @@ export default class Tree {
 
     if (!result.then) {
       result = get(result)
+        .catch(this.options.onFetchError)
     }
 
     result
