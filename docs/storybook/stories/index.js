@@ -1,34 +1,37 @@
 import { storiesOf } from '@storybook/vue'
+import { withNotes } from '@storybook/addon-notes'
 
 
 
 storiesOf('Basic Usage', module)
-  .add('default state', () => ({
+  .add('default state', withNotes('Tree behaviour with default <b>options</b>. It is able to select multiple nodes using Ctrl key')(() => (storyComponents[0])))
+  .add('single mode', withNotes('It is possible to select only 1 node.')(() => (storyComponents[1])))
+  .add('checkbox mode', withNotes('')(() => (storyComponents[2])))
+  .add('default node states', withNotes('You can set any of states during the initialization. See <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">here</a> to learn more.')(() => (storyComponents[3])))
+
+  
+const storyComponents = [
+  /* default state */
+  {
     data: () => ({
       treeData: getData()
     }),
-    template: `
-      <div>
-        <p>Tree behaviour with default <b>options</b>. It is able to select multiple nodes using Ctrl key</p>
-        <tree :data="treeData" />
-      </div>
-    `
-  }))
-  .add('single mode', () => ({
+    template: `<tree :data="treeData" />`
+  },
+
+  /* single mode */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
         multiple: false
       }
     }),
-    template: `
-      <div>
-        <p>It is possible to select only 1 node.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('checkbox mode', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* checkbox mode */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
@@ -36,21 +39,19 @@ storiesOf('Basic Usage', module)
       }
     }),
     template: '<tree :data="treeData" :options="treeOptions" />'
-  }))
-  .add('default node state', () => ({
+  },
+
+  /* default node states */
+  {
     data: () => ({
       treeData: getDataWithStates(),
       treeOptions: {
         checkbox: true
       }
     }),
-    template: `
-      <div>
-        <p>You can set any of states during the initialization. See <a href="https://amsik.github.io/liquor-tree/#Structure" target="_blank">here</a> to learn more.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  }
+]
 
 
 function getDataWithStates() {

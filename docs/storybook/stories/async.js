@@ -1,18 +1,17 @@
 import { storiesOf } from '@storybook/vue'
+import { withNotes } from '@storybook/addon-notes'
 
-storiesOf('Async data', module)
-  .add('data as Promise', () => ({
+const storyComponents = [
+  /* data as Promise */
+  {
     data: () => ({
       treeData: $store.dispatch('PROMISE')
     }),
-    template: `
-      <div>
-        <p>It is able to pass any promise-like object (object has <b>then</b> method)</p>
-        <tree :data="treeData" />
-      </div>
-    `
-  }))
-  .add('fetchData options as string', () => ({
+    template: `<tree :data="treeData" />`
+  },
+
+  /* fetchData options as string */
+  {
     data: () => ({
       treeOptions: {
         fetchData: `/fetch0/data-{id}.json?text={text}`,
@@ -29,14 +28,11 @@ storiesOf('Async data', module)
         }
       }
     }),
-    template: `
-      <div>
-        <p>fetchData receives a template for the url. Braces will be replaces by a relevant property of the Node. If data is not passed it will make a request with <b>id = root</b></p>
-        <tree :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('fetchData options as string with default data', () => ({
+    template: `<tree :options="treeOptions" />`
+  },
+
+  /* fetchData options as string with default data */
+  {
     data: () => ({
       treeData: [
         {
@@ -69,14 +65,11 @@ storiesOf('Async data', module)
         }
       }
     }),
-    template: `
-      <div>
-        <p>Tree data is passed. Therefore, there is no request to the server.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('fetchData options as function', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* fetchData options as function */
+  {
     data: () => ({
       treeOptions: {
         fetchData(node) {
@@ -85,13 +78,16 @@ storiesOf('Async data', module)
         }
       }
     }),
-    template: `
-      <div>
-        <p>You are able to handle a request by yourself. The function must return a <b>promise-like</b> object.</p>
-        <tree :options="treeOptions" />
-      </div>
-    `
-  }))
+    template: `<tree :options="treeOptions" />`
+  }
+]
+
+storiesOf('Async data', module)
+  .add('data as Promise', withNotes('It is able to pass any promise-like object (object has <b>then</b> method)')(() => (storyComponents[0])))
+  .add('fetchData options as string', withNotes('fetchData receives a template for the url. Braces will be replaces by a relevant property of the Node. If data is not passed it will make a request with <b>id = root</b>')(() => (storyComponents[1])))
+  .add('fetchData options as string with default data', withNotes('Tree data is passed. Therefore, there is no request to the server.')(() => (storyComponents[2])))
+  .add('fetchData options as function', withNotes('You are able to handle a request by yourself. The function must return a <b>promise-like</b> object.')(() => (storyComponents[3])))
+
 
 // Vuex emulation
 const $store = {

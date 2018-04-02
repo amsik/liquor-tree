@@ -1,21 +1,40 @@
 import { storiesOf } from '@storybook/vue'
+import { withNotes } from '@storybook/addon-notes'
+
+
 
 storiesOf('Tree Options', module)
-  .add('parentSelect', () => ({
+  .add('parentSelect', withNotes('If node has children and <b>parentSelect</b> options is <b>true</b> it will select node, not expand/collapse. To expand/collapse click on the arrow.')(() => (storyComponents[0])))
+  .add('checkOnSelect', withNotes('Changing node state by clicking on node text (or checkbox icon). But still expanding/collapsing if node has children nodes.')(() => (storyComponents[1])))
+  .add('checkOnSelect && parentSelect', withNotes('It is working how expected ;)')(() => (storyComponents[2])))
+  .add('autoCheckChildren', withNotes('By default current \`checked\` state is applying for each child node. Set \`autoCheckChildren = false\` to prevent this.')(() => (storyComponents[3])))
+  .add('keyboard navigation', withNotes(`
+    <p>Navigation is realized using <b>keydown</b> event. It will not work if user doesn't "Activate" tree (click somewhere inside the tree).</p> 
+    <p>
+      For tree navigation use Arrows on your keyboard:
+      <ul>
+        <li>↑, ↓ - selecting node down/up</li>
+        <li>←, → - expanding/collapsing</li>
+        <li>Space, Enter - checking/unchecking node (only in <b>checkbox</b> mode)</li>
+      </ul>
+    </p>  
+  `)(() => (storyComponents[4])))
+
+
+const storyComponents = [
+  /* parentSelect */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
         parentSelect: true
       }
     }),
-    template: `
-      <div>
-        <p>If node has children and <b>parentSelect</b> options is <b>true</b> it will select node, not expand/collapse. To expand/collapse click on the arrow.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('checkOnSelect', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* checkOnSelect */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
@@ -23,14 +42,11 @@ storiesOf('Tree Options', module)
         checkbox: true
       }
     }),
-    template: `
-      <div>
-        <p>Changing node state by clicking on node text (or checkbox icon). But still expanding/collapsing if node has children nodes.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('checkOnSelect && parentSelect', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* checkOnSelect && parentSelect */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
@@ -39,14 +55,11 @@ storiesOf('Tree Options', module)
         checkbox: true
       }
     }),
-    template: `
-      <div>
-        <p>It is working how expected ;)</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('autoCheckChildren', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* autoCheckChildren */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
@@ -54,14 +67,11 @@ storiesOf('Tree Options', module)
         checkbox: true
       }
     }),
-    template: `
-      <div>
-        <p>By default current \`checked\` state is applying for each child node. Set \`autoCheckChildren = false\` to cancel this.</p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-  .add('keyboard navigation', () => ({
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  },
+
+  /* keyboard navigation */
+  {
     data: () => ({
       treeData: getData(),
       treeOptions: {
@@ -69,22 +79,10 @@ storiesOf('Tree Options', module)
         checkbox: true
       }
     }),
-    template: `
-      <div>
-        <p>Navigation is realized using <b>keydown</b> event. It will not work if user doesn't "Activate" tree (click somewhere inside the tree).</p> 
-        <p>
-          For tree navigation use Arrows on your keyboard:
-          <ul>
-            <li>↑, ↓ - selecting node down/up</li>
-            <li>←, → - expanding/collapsing</li>
-            <li>Space, Enter - checking/unchecking node (only in <b>checkbox</b> mode)</li>
-          </ul>
-        </p>
-        <tree :data="treeData" :options="treeOptions" />
-      </div>
-    `
-  }))
-
+    template: `<tree :data="treeData" :options="treeOptions" />`
+  }
+]
+  
 
 function getData() {
   return [

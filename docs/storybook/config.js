@@ -9,6 +9,8 @@ function loadStories() {
   require('./stories/index')
   require('./stories/options')
   require('./stories/async')
+  require('./stories/v-model')
 }
+
 
 configure(loadStories, module)
