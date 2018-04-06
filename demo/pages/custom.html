@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Custom template</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+    <link href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" media="all" rel="stylesheet" type="text/css" />
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Custom Node/Icons.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            Font ionicons. (http://ionicons.com). Implementing Filesystem.
+          </div>
+          <div class="example-tree">
+            <tree :data="treeData0" >
+              <span class="tree-text" slot-scope="{ node }">
+                <template v-if="!node.hasChildren()">
+                  <i class="ion-android-star"></i>
+                  {{ node.text }}
+                </template>
+
+                <template v-else>
+                  <i :class="[node.expanded() ? 'ion-android-folder-open' : 'ion-android-folder']"></i>
+                  {{ node.text }}
+                </template>
+              </span>
+            </tree>
+          </div>
+        </div>
+
+        <div class="example">
+            <div class="example-description">
+              Custom icons. Using `data` property for Nodes.
+            </div>
+            <div class="example-tree">
+              <tree :data="treeData1" >
+                <span class="tree-text" slot-scope="{ node }">
+                  <template v-if="!node.data.icon">
+                    {{ node.text }}
+                  </template>
+
+                  <template v-else>
+                    <i :class="node.data.icon"></i>
+                    {{ node.text }}
+                  </template>
+                </span>
+              </tree>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeData0: getTreeData0(),
+          treeData1: getTreeData1()
+        })
+      })
+
+      function getTreeData0() {
+        return [
+          { text: 'Disc C:', state: { expanded: true }, children: [
+            { text: 'PerfLogs' },
+            { text: 'Users', children: [
+              { text: 'User 1' },
+              { text: 'User 2' },
+              { text: 'User 3' }
+            ]},
+            { text: 'tomcat' },
+            { text: 'sysCache' },
+            { text: 'Program Files', children: [
+              { text: 'Intel' },
+              { text: 'Internet Explorer' },
+              { text: 'Opera' },
+              { text: 'Oracle' }
+            ]}
+          ]}
+        ]
+      }
+
+      function getTreeData1() {
+        return [
+          { text: 'Social', state: { expanded: true }, children: [
+            { text: 'Twitter', data: { icon: 'ion-social-twitter' }},
+            { text: 'Facebook', data: { icon: 'ion-social-facebook' }},
+            { text: 'Google+', data: { icon: 'ion-social-googleplus' }}
+          ]},
+
+          { text: 'Currencies', children: [
+            { text: 'Dollar', data: { icon: 'ion-social-usd' } },
+            { text: 'Bitcoin', data: { icon: 'ion-social-bitcoin' } },
+            { text: 'Yen', data: { icon: 'ion-social-yen' } },
+            { text: 'Euro', data: { icon: 'ion-social-euro' } }
+          ]}
+        ]
+      }
+
+    </script>
+
+  </body>
+</html>

@@ -44,8 +44,8 @@
       href: "#JSON-Viewer"
       title: JSON Viewer
     - id: radio
-      href: "#Radio"
-      title: Radio
+      href: "#Custom-Node"
+      title: Custom Node
     - id: exmlp-redefine-structure
       href: "#Redefine-Structure-Example"
       title: Redefine Structure Example
