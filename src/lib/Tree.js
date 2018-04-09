@@ -45,6 +45,61 @@ export default class Tree {
     this.vm.$emit(name, ...args)
   }
 
+  clearFilter() {
+    this.recurseDown(node => {
+      node.state('matched', false)
+      node.state('expanded', false)
+    })
+
+    this.vm.matches.length = 0
+  }
+
+  filter (query) {
+    if (!query) {
+      return this.clearFilter()
+    }
+
+    let matches = new Selection(this)
+    let predicate = this.options.filter.matcher
+
+    // collect nodes
+    this.recurseDown(node => {
+      if (predicate(query, node)) {
+        matches.push(node)
+      }
+
+      node.state('visible', false)
+      node.state('matched', false)
+    })
+
+
+    matches.forEach(node => {
+      node.state('matched', true)
+      node.state('visible', true)
+
+      node.expandTop(true)
+
+      if (node.hasChildren()) {
+        node.recurseDown(n => {
+          n.state('visible', true)
+        })
+      }
+
+      node.recurseUp(parent => {
+        parent.state('visible', true)
+      })
+
+      if (node.hasChildren()) {
+        node.state('expanded', false)
+      }
+    })
+
+    this.vm.matches = matches
+
+    return matches
+  }
+
+
   selected () {
     return new Selection(this, ...this.selectedNodes)
   }

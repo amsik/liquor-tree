@@ -318,6 +318,16 @@ export default class Node {
     return this.state('disabled')
   }
 
+  expandTop(ignoreEvent) {
+    this.recurseUp(parent => {
+      parent.state('expanded', true)
+
+      if (true !== ignoreEvent) {
+        this.$emit('expanded', parent)
+      }
+    })
+  }
+
   expand () {
     if (!this.hasChildren() || this.expanded() || this.disabled()) {
       return this

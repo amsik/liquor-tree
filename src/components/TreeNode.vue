@@ -86,7 +86,8 @@
           'has-child': hasChildren,
           'expanded': hasChildren && state.expanded,
           'selected': state.selected,
-          'disabled': state.disabled
+          'disabled': state.disabled,
+          'matched': state.matched
         }
 
         if (this.options.checkbox) {

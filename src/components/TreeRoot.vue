@@ -1,6 +1,7 @@
 <template>
   <div role="tree" :class="{'tree': true, 'tree-loading': this.loading}">
-    <ul class="tree-root">
+    <div v-if="filter && matches.length == 0" class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
+    <ul v-else class="tree-root">
       <node
         v-for="node in model"
         v-if="node.visible()"
@@ -31,6 +32,14 @@
     onFetchError: function(err) { throw err }
   }
 
+  const filterDefaults = {
+    emptyText: 'Nothing found!',
+    matcher(query, node) {
+      return new RegExp(query, 'i').test(node.text)
+    },
+    showParent: true
+  }
+
   export default {
     name: 'Tree',
     components: {
@@ -49,6 +58,14 @@
       options: {
         type: Object,
         default: _ => ({})
+      },
+
+      filter: String
+    },
+
+    watch: {
+      filter (term) {
+        this.tree.filter(term)
       }
     },
 
@@ -56,13 +73,20 @@
       // we should not mutating a prop directly...
       // that's why we have to create a new object
       // TODO: add method for changing options
-      const opts = Object.assign({}, defaults, this.options)
+      let opts = Object.assign({}, defaults, this.options)
+
+      opts.filter = Object.assign(
+        {},
+        filterDefaults,
+        opts.filter
+      )
 
       return {
         model: null,
         tree: null,
         loading: false,
-        opts
+        opts,
+        matches: []
       }
     }
   }
@@ -79,7 +103,8 @@
     padding: 0;
   }
 
-  .tree > .tree-root {
+  .tree > .tree-root,
+  .tree > .tree-filter-empty {
     padding: 3px;
     box-sizing: border-box;
   }

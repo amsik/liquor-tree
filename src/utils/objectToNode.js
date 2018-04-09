@@ -11,7 +11,8 @@ const nodeStates = {
   expanded: false,
   disabled: false,
   visible: true,
-  indeterminate: false
+  indeterminate: false,
+  matched: false
 }
 
 function merge (state = {}) {
