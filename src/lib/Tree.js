@@ -45,7 +45,7 @@ export default class Tree {
     this.vm.$emit(name, ...args)
   }
 
-  clearFilter() {
+  clearFilter () {
     this.recurseDown(node => {
       node.state('matched', false)
       node.state('expanded', false)
@@ -59,8 +59,8 @@ export default class Tree {
       return this.clearFilter()
     }
 
-    let matches = new Selection(this)
-    let predicate = this.options.filter.matcher
+    const matches = new Selection(this)
+    const predicate = this.options.filter.matcher
 
     // collect nodes
     this.recurseDown(node => {
@@ -71,7 +71,6 @@ export default class Tree {
       node.state('visible', false)
       node.state('matched', false)
     })
-
 
     matches.forEach(node => {
       node.state('matched', true)
@@ -98,7 +97,6 @@ export default class Tree {
 
     return matches
   }
-
 
   selected () {
     return new Selection(this, ...this.selectedNodes)

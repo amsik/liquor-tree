@@ -8,6 +8,7 @@ const nodeStates = {
   expanded: false,
   disabled: false,
   visible: true,
+  matched: false,
   indeterminate: false
 }
 

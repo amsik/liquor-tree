@@ -131,12 +131,12 @@ export default {
       return this.tree.find(criteria, true)
     },
 
-    recursiveDown () {
-
+    expandAll () {
+      return this.tree.expandAll()
     },
 
-    expandReqursice () {
-
+    collapseAll () {
+      return this.tree.collapseAll()
     }
   }
 
