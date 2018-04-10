@@ -1,16 +1,32 @@
 <template>
   <div role="tree" :class="{'tree': true, 'tree-loading': this.loading}">
-    <div v-if="filter && matches.length == 0" class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
-    <ul v-else class="tree-root">
-      <node
-        v-for="node in model"
-        v-if="node.visible()"
+    <template v-if="filter && matches.length == 0" >
+      <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
+    </template>
+    <template v-else>
+      <ul class="tree-root">
+        <template v-if="opts.filter.plainList && matches.length > 0">
+          <node
+            v-for="node in matches"
+            v-if="node.visible()"
 
-        :key="node.id"
-        :node="node"
-        :options="opts"
-      />
-    </ul>
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
+        </template>
+        <template v-else>
+          <node
+            v-for="node in model"
+            v-if="node.visible()"
+
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
+        </template>
+      </ul>
+    </template>
   </div>
 </template>
 
@@ -37,7 +53,8 @@
     matcher(query, node) {
       return new RegExp(query, 'i').test(node.text)
     },
-    showParent: true
+    plainList: false,
+    showChildren: true
   }
 
   export default {

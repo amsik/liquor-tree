@@ -48,7 +48,11 @@ export default class Tree {
   clearFilter () {
     this.recurseDown(node => {
       node.state('matched', false)
-      node.state('expanded', false)
+      node.state('visible', true)
+      node.state('expanded', node.__expanded)
+
+      node.__expanded = undefined
+      node.showChildren = true
     })
 
     this.vm.matches.length = 0
@@ -59,8 +63,9 @@ export default class Tree {
       return this.clearFilter()
     }
 
-    const matches = new Selection(this)
+    const matches = []
     const predicate = this.options.filter.matcher
+    const { showChildren, plainList } = this.options.filter
 
     // collect nodes
     this.recurseDown(node => {
@@ -68,24 +73,34 @@ export default class Tree {
         matches.push(node)
       }
 
+      node.showChildren = true
+
+      // save prev `expanded` state
+      if (undefined === node.__expanded) {
+        node.__expanded = node.state('expanded')
+      }
+
       node.state('visible', false)
       node.state('matched', false)
+      node.state('expanded', true)
     })
 
-    matches.forEach(node => {
+    matches.reverse().forEach(node => {
       node.state('matched', true)
       node.state('visible', true)
 
-      node.expandTop(true)
+      node.showChildren = !plainList
 
       if (node.hasChildren()) {
         node.recurseDown(n => {
-          n.state('visible', true)
-        })
+          n.state('visible', !!showChildren)
+        }, true)
       }
+
 
       node.recurseUp(parent => {
         parent.state('visible', true)
+        parent.state('expanded', true)
       })
 
       if (node.hasChildren()) {

@@ -12,6 +12,7 @@ export default class Node {
     this.id = item.id || uuidV4()
     this.states = item.state || {}
 
+    this.showChildren = true
     this.children = item.children || []
     this.parent = item.parent || null
 
@@ -36,7 +37,7 @@ export default class Node {
     let depth = 0
     let parent = this.parent
 
-    if (!parent) {
+    if (!parent || this.showChildren === false) {
       return depth
     }
 
@@ -498,7 +499,7 @@ export default class Node {
   }
 
   hasChildren () {
-    return this.isBatch || this.children.length > 0
+    return this.showChildren && this.isBatch || this.children.length > 0
   }
 
   /**

@@ -19,7 +19,7 @@
         padding: 3px;
       }
 
-      .tree-node.matched > .tree-content {
+      .tree-highlights .tree-node.matched > .tree-content {
         background: #f7f2e7;
       }
 
@@ -43,6 +43,7 @@
           </div>
           <div class="example-tree">
             <tree
+              class="tree-highlights"
               :filter="treeFilter0"
               :options="treeOptions0" />
           </div>
@@ -51,7 +52,7 @@
         <div class="example">
           <div class="example-description">
             <p>
-              Custom matcher. Select complexity:
+              Custom matcher. Also we hide children if node has ones. Select complexity:
               <select v-model="treeFilter1">
                 <option v-for="item in new Array(20).fill('').map((a, i) => i)">{{ item }}</option>
               </select>
@@ -59,13 +60,24 @@
           </div>
           <div class="example-tree">
             <tree :filter="treeFilter1" :options="treeOptions1" >
-                <div slot-scope="{ node }" class="node-info">
-                  <span class="node-name">{{ node.text }}</span>
-                  <span class="node-complexity">{{ node.data.complexity }}</span>
-                </div>
-              </tree>
+              <div slot-scope="{ node }" class="node-info">
+                <span class="node-name">{{ node.text }}</span>
+                <span class="node-complexity">{{ node.data.complexity }}</span>
+              </div>
+            </tree>
           </div>
         </div>
+
+        <div class="example">
+            <div class="example-description">
+              <input type="text" placeholder="Type to filter..." v-model="treeFilter2" class="filter-field">
+            </div>
+            <div class="example-tree">
+              <tree
+                :filter="treeFilter2"
+                :options="treeOptions2" />
+            </div>
+          </div>
       </div>
     </div>
 
@@ -86,16 +98,18 @@
             filter: {
               matcher(query, node) {
                 return query == node.data.complexity
-              }
+              },
+              showChildren: false
             },
             fetchData: '/assets/data/filtering-custom.json'
           },
 
           treeFilter2: '',
           treeOptions2: {
+            checkbox: true,
             fetchData: '/assets/data/filtering.json',
             filter: {
-              showParent: false
+              plainList: true
             }
           },
 
