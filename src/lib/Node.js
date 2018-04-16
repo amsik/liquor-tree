@@ -17,6 +17,7 @@ export default class Node {
     this.parent = item.parent || null
 
     this.isBatch = item.isBatch || false
+    this.isEditing = false
 
     this.data = Object.assign({}, {
       text: item.text
@@ -147,6 +148,10 @@ export default class Node {
 
   indeterminate () {
     return this.state('indeterminate')
+  }
+
+  editable () {
+    return !this.state('disabled') && this.state('editable')
   }
 
   selectable () {
@@ -384,6 +389,28 @@ export default class Node {
     }
 
     return this.expand()
+  }
+
+  startEditing () {
+    if (!this.isEditing) {
+      this.tree._editingNode = this
+      this.isEditing = true
+      this.$emit('editing:start')
+    }
+  }
+
+  stopEditing (newText) {
+    if (!this.isEditing) {
+      return
+    }
+
+    this.isEditing = false
+    this.$emit('editing:stop')
+    this.tree._editingNode = null
+
+    if (newText && newText !== false && this.text !== newText) {
+      this.text = newText
+    }
   }
 
   index (verbose) {

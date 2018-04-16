@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Editing</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .filter-field {
+        display: block;
+        width: 100%;
+        padding: 3px;
+      }
+
+      .tree-highlights .tree-node.matched > .tree-content {
+        background: #f7f2e7;
+      }
+
+      .node-info {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Editing.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            Basic example
+          </div>
+          <div class="example-tree">
+            <tree
+              :options="treeOptions0" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeOptions0: {
+            fetchData: '/assets/data/editing.json',
+            editing: true
+          }
+        })
+      })
+    </script>
+
+  </body>
+</html>

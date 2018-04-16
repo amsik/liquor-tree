@@ -97,7 +97,6 @@ export default class Tree {
         }, true)
       }
 
-
       node.recurseUp(parent => {
         parent.state('visible', true)
         parent.state('expanded', true)

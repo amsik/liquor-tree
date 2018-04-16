@@ -55,13 +55,45 @@
           const node = this.node
           const vm = this.node.tree.vm
 
-          return vm.$scopedSlots.default
-            ? vm.$scopedSlots.default({ node: this.node })
-            : h('span', {
-              domProps: {
-                innerHTML: node.text
-              }
+          if (vm.$scopedSlots.default) {
+            return vm.$scopedSlots.default({ node: this.node })
+          }
+
+          if (node.isEditing) {
+            let nodeText = node.text
+
+            this.$nextTick(_ => {
+              this.$refs.editCtrl.focus()
             })
+
+            return h('input', {
+              domProps: {
+                value: node.text,
+                type: 'text'
+              },
+              class: 'tree-input',
+              on: {
+                input (e) {
+                  nodeText = e.target.value
+                },
+                blur () {
+                  node.stopEditing(nodeText)
+                },
+                keyup (e) {
+                  if (13 == e.keyCode) {
+                    node.stopEditing(nodeText)
+                  }
+                }
+              },
+              ref: 'editCtrl'
+            })
+          }
+
+          return h('span', {
+            domProps: {
+              innerHTML: node.text
+            }
+          })
         }
       }
     },
@@ -119,6 +151,16 @@
 
       select({ctrlKey} = evnt) {
         const opts = this.options
+        const tree = this.tree
+        const node = this.node
+
+        if (opts.editing && node.isEditing) {
+          return
+        }
+
+        if (opts.editing && node.editable()) {
+          return this.startEditing()
+        }
 
         if (opts.checkbox && opts.checkOnSelect) {
           if (!opts.parentSelect && this.hasChildren()) {
@@ -133,9 +175,6 @@
         if (!opts.parentSelect && this.hasChildren()) {
           this.toggleExpand()
         }
-
-        let tree = this.tree
-        let node = this.node
 
         if (opts.multiple) {
           if (!node.selected()) {
@@ -167,6 +206,18 @@
 
       hasChildren() {
         return this.node.hasChildren()
+      },
+
+      startEditing() {
+        if (this.tree._editingNode) {
+          this.tree._editingNode.stopEditing()
+        }
+
+        this.node.startEditing()
+      },
+
+      stopEditing() {
+        this.node.stopEditing()
       }
     }
   }
@@ -313,6 +364,16 @@
     opacity: .6;
     cursor: default;
     outline: none;
+  }
+
+  .tree-input {
+    display: block;
+    width: 100%;
+    height: 24px;
+    line-height: 24px;
+    outline: none;
+    border: 1px solid #3498db;
+    padding: 0 4px;
   }
 
   .l-fade-enter-active, .l-fade-leave-active {

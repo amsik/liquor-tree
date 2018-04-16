@@ -6,7 +6,8 @@ const keyCodes = {
   'ARROW_BOTTOM': 40,
   'SPACE': 32,
   'DELETE': 46,
-  'ENTER': 13
+  'ENTER': 13,
+  'ESC': 27
 }
 
 const codesArr = [37, 38, 39, 40, 32]
@@ -101,19 +102,25 @@ export default function (tree) {
       return
     }
 
-    if (codesArr.includes(code)) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
+    if (tree.options.editing && node.isEditing) {
+      switch (code) {
+        case keyCodes.ESC: return node.stopEditing(false)
+      }
+    } else {
+      if (codesArr.includes(code)) {
+        e.preventDefault()
+        e.stopPropagation()
+      }
 
-    switch (code) {
-      case keyCodes.ARROW_LEFT: return leftArrow(tree, node)
-      case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
-      case keyCodes.ARROW_TOP: return focusUp(tree, node)
-      case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
-      case keyCodes.SPACE:
-      case keyCodes.ENTER: return checkNode(tree, node)
-      case keyCodes.DELETE: return deleteNode(tree, node)
+      switch (code) {
+        case keyCodes.ARROW_LEFT: return leftArrow(tree, node)
+        case keyCodes.ARROW_RIGHT: return rightArrow(tree, node)
+        case keyCodes.ARROW_TOP: return focusUp(tree, node)
+        case keyCodes.ARROW_BOTTOM: return focusdDown(tree, node)
+        case keyCodes.SPACE:
+        case keyCodes.ENTER: return checkNode(tree, node)
+        case keyCodes.DELETE: return deleteNode(tree, node)
+      }
     }
   }, true)
 };
