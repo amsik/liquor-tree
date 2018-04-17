@@ -19,7 +19,8 @@
         class="tree-anchor"
         tabindex="1"
         ref="anchor"
-        @focus="onNodeFocus">
+        @focus="onNodeFocus"
+        @dblclick="tree.$emit('node:dblclick', node)">
           <node-content :node="node" />
       </a>
     </div>
