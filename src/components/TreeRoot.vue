@@ -44,7 +44,8 @@
     keyboardNavigation: true,
     paddingLeft: 24,
     fetchData: null,
-    modelParse: null,
+    propertyNames: null,
+    deletion: false,
     onFetchError: function(err) { throw err }
   }
 

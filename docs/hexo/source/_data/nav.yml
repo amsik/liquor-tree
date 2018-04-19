@@ -32,9 +32,17 @@
       href: "#Redefine-Structure"
       title: Redefine Structure
 
-    - id: Keyboard Navigation
+    - id: Keyboard-Navigation
       href: "#Keyboard-Navigation"
       title: Keyboard Navigation
+
+    - id: Filtering
+      href: "#Filtering"
+      title: Filtering
+
+    - id: Async-data
+      href: "#Async-Data"
+      title: Async Data
 
 
 - title: Examples

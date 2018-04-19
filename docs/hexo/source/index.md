@@ -84,6 +84,7 @@ To registrate the library you can choose between 3 ways I mentioned before.
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
 | **deletion**           | Boolean	&#124; Function | false | If **keyboardNavigation** is false - this property is ignoring. This property defined deletion behaviour. [See example](#Keyboard-Navigation) |
+| **fetchData**         | Object | - | See [guide](#Async-Data) |
 
 
 
@@ -91,6 +92,7 @@ To registrate the library you can choose between 3 ways I mentioned before.
 ### Structure
 
 The component has only two props: **data** and **options**. More about props read [VueJS documentation](https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props)
+Actually more. See [filtering](#Filtering)
 
 - property **options** - This property defines tree behavior. See [Component Options](#Component-Options)
 - property **data** - Array-like object that defines tree nodes
@@ -234,7 +236,7 @@ You able to select multiple nodes with Ctrl key. The same behavior as we are use
 
 ### Checkboxes
 
-It was a default mode. You can switch it to `checkbox` mode. To do it you have to add tree's option:
+The example above is default mode. You can switch it to `checkbox` mode. To do it just add the tree's option `checkbox`:
 
 ``` html
     <tree
@@ -307,7 +309,89 @@ Ohh, too hard. See example:
       :options="{ deletion: node => !node.hasChildren() }"
     />
 ```
-Try [Checkboxes](#Checkboxes) to remove ONLY nodes that has `checked` state 
+Try [example above](#Checkboxes) to remove ONLY nodes that has `checked` state (use DEL code on your keyboard) 
+
+### Filtering
+
+We do not know where to show the field for filtering, how to stylize it and so on... It depends on a situation.
+So we decided to provide a powerfull API to handle it (the library don't know about other components on the page and this is not necessary). See examples to understand ;)
+
+**Default props:**
+
+```javascript
+{
+  emptyText: 'Nothing found!',
+  matcher(query, node) {
+    return new RegExp(query, 'i').test(node.text)
+  },
+  plainList: false,
+  showChildren: true
+}
+```
+
+- **emptyText** - shows when nothing found
+- **showChildren** - this property hides the children of the node if they are available
+- **matcher** - this function determines whether the node is suitable for condition
+- **plainList** - this property brokes the tree structure and shows plain list of matched results (but it easy to fix the structure by clearing filter :-D)
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/o7v4a2nL/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+### Async Data
+
+There are two ways to set an async data:
+- **data** property as a Promise. You can pass it as an array (a lot of examples above) or as a Promise-like object (object what has the **then** method)
+- **fetchData** options. This options is flexible. See examples below.
+
+
+**fetchData** options: 
+
+- As a string. It is like an a pattern. The construction in curly brackets is replaced with similar values in the node object
+  
+```javascript
+  {
+    treeOptions: {
+      fetchData: `/assets/data/fetch0/data-{id}.json`,
+      // fetchData: `/data?id={id}&text={text}`
+    }
+  }
+```
+
+- As a function that returns a string. The same as above. It is run for each request.
+
+```javascript
+  {
+    treeOptions: {
+      fetchData(node) {
+        return `/assets/data/fetch0/data-${node.id}.json`
+      }
+    }
+  }
+```
+
+- As a function that returns a promise-like object. You can do a request to server as you wish
+
+```javascript
+  {
+    treeOptions: {
+      fetchData(node) {
+        return fetch(`/assets/data/fetch0/data-${node.id}.json`)
+          .then(r => r.json())
+          .catch(e => console.log(e))
+      },
+
+      // or
+      fetchData(node) {
+        return axios.get('/user', {
+          params: {
+            ID: node.id
+          }
+        })
+      }
+    }
+  }
+```
+
 
 
 ## Examples

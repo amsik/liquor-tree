@@ -66,6 +66,19 @@
             />
           </div>
         </div>
+
+        <div class="example">
+          <div class="example-description">
+            <p>Overriding default structure of tree data</p>
+          </div>
+
+          <div class="example-tree">
+            <tree
+              :data="treeData3"
+              :options="treeOptions3"
+            />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -73,14 +86,30 @@
       new Vue({
         el: '#app',
         data: () => ({
+          /* example 0 */
           selectedNode0: null,
           treeData0: getTreeData0(),
+
+          /* example 1 */
           treeData1: getTreeData1(),
-          treeData2: null,
           treeOptions1: {
             multiple: false,
             keyboardNavigation: false,
             parentSelect: true
+          },
+
+          /* example 2 */
+          treeData2: null,
+
+          /* example 3 */
+          treeData3: getTreeData2(),
+          treeOptions3: {
+            propertyNames: {
+              text: 'MY_TEXT',
+              children: 'KIDS',
+              state: 'OPTIONS'
+            },
+            deletion: true
           }
         }),
 
@@ -188,6 +217,41 @@
               {
                 text: 'Item 5.3'
               }
+            ]
+          }
+        ]
+      }
+
+      function getTreeData2() {
+        return [
+          {
+            MY_TEXT: 'JS: The Right Way',
+            OPTIONS: { expanded: true },
+            KIDS: [
+              { MY_TEXT: 'Getting Started', OPTIONS: { checked: true } },
+              { MY_TEXT: 'JavaScript Code Style', OPTIONS: { selected: true } },
+              { MY_TEXT: 'The Good Parts', KIDS: [
+                { MY_TEXT: 'OBJECT ORIENTED', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'ANONYMOUS FUNCTIONS', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'FUNCTIONS AS FIRST-CLASS OBJECTS', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'LOOSE TYPING', OPTIONS: { checked: true }  }
+              ]},
+              { MY_TEXT: 'Patterns', KIDS: [
+                { MY_TEXT: 'DESIGN PATTERNS', OPTIONS: { expanded: true }, KIDS: [
+                  { MY_TEXT: 'Creational Design Patterns', KIDS: [
+                    { MY_TEXT: 'Factory' },
+                    { MY_TEXT: 'Prototype' },
+                    { MY_TEXT: 'Mixin' },
+                    { MY_TEXT: 'Singleton' }
+                  ]},
+                  { MY_TEXT: 'Structural Design Patterns'}
+                ]},
+                { MY_TEXT: 'MV* PATTERNS', cildren: [
+                  { MY_TEXT: 'MVC Pattern' },
+                  { MY_TEXT: 'MVP Pattern' },
+                  { MY_TEXT: 'MVVM Pattern' }
+                ]}
+              ]}
             ]
           }
         ]
