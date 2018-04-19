@@ -7,18 +7,29 @@ import serve from 'rollup-plugin-serve'
 
 const path = require('path')
 
+const version = pkg.version
+const banner = `
+/*!
+ * LiquorTree v${version}
+ * (c) ${new Date().getFullYear()} amsik
+ * Released under the MIT License.
+ */
+`
+
 const config = {
   input: 'src/main.js',
   output: [
     {
       file: pkg.module,
       format: 'es',
-      sourcemap: true
+      sourcemap: true,
+      banner
     }, {
       file: pkg.main,
       format: 'umd',
       name: 'LiquorTree',
-      sourcemap: true
+      sourcemap: true,
+      banner
     }
   ],
   plugins: [
@@ -33,7 +44,17 @@ const config = {
 
 if ('production' == process.env.NODE_ENV) {
   config.output.forEach(c => (c.sourcemap = false))
-  config.plugins.push(uglify())
+  config.plugins.push(uglify({
+    output: {
+      comments: function(node, comment) {
+          var text = comment.value;
+          var type = comment.type;
+          if (type == "comment2") {
+              return /license/i.test(text);
+          }
+      }
+    }
+  }))
 }
 
 if ('development' == process.env.NODE_ENV) {

@@ -18,7 +18,8 @@ There are lots of libraries but always something was missing (in my humble opini
 * any number of instances per page
 * multi selection
 * keyboard navigation
-
+* filtering
+* inline editing
 
 
 
@@ -43,19 +44,16 @@ import LiquorTree from 'liquor-tree'
 
 // global registration
 Vue.use(LiquorTree)
-```
 
-``` javascript
-import Vue from 'Vue'
-import LiquorTree from 'liquor-tree'
-
-// global registration
+// or
 Vue.component(LiquorTree.name, LiquorTree)
 ```
 
+
 ``` javascript
 import LiquorTree from 'liquor-tree'
 
+// local registration
 export default {
   name: 'your-awesome-component',
   components: {
@@ -78,7 +76,7 @@ To registrate the library you can choose between 3 ways I mentioned before.
 
 | Name                   | Type         |  Default  | Description |
 |------------------------|:------------:|:---------:|-------------|
-| **multiple**           | Boolean   | true    | Allows to select more that one node. Ignored in `checkbox` mode. In `checkbox` mode it always possible to select multiple nodes   |
+| **multiple**           | Boolean   | true    | Allows to select more that one node.  |
 | **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
 | **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
 | **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same 'checked' state as their parent. |
@@ -116,26 +114,28 @@ Property **data** has its own structure for every node:
 * `children`: List of children nodes.
 * `state`: Allows user to set Node's state.
 
-  By default Node has states: 
-    ```javascript
-    {
-      selected: false,
-      selectable: true,
-      checked: false,
-      expanded: false,
-      disabled: false,
-      visible: true,
-      indeterminate: false
-    }
-    ```
-  It is not necessary to pass all the states for every Node. It will automatically merged with default states object
+By default Node has states: 
+  ```javascript
+  {
+    "selected": false,
+    "selectable": true,
+    "checked": false,
+    "expanded": false,
+    "disabled": false,
+    "visible": true,
+    "indeterminate": false,
+    "matched": false,
+    "editable": true
+  }
+  ```
+It is not necessary to pass all the states for every Node. It will automatically merged with default states object
 
 Initial **data** example:
 
 ``` javascript
   const treeData = [
     { text: 'Item 1', state: { visible: false } },
-    { text: 'Item 2' },
+    { text: 'Item 2', data: { customProp: 'AAAAAAAAAAAAAAAAAAAA' } },
     { text: 'Item 3', state: { selected: true } },
     { text: 'Item 4' },
     { text: 'Item 5', children: [
@@ -152,7 +152,7 @@ Initial **data** example:
 
 #### ES6 (using vue-loader)
 
-``` javascript
+```javascript
 <template>
   <div id="app">
     <tree
@@ -186,7 +186,7 @@ Initial **data** example:
 
 In this way you no need to registrate the library as a component.
 
-``` html
+```html
 <!DOCTYPE html>
 <html>
 <head>
@@ -197,7 +197,6 @@ In this way you no need to registrate the library as a component.
     <tree
       :data="treeData"
       :options="treeOptions"
-      @node:selected="onNodeSelected"
     />
   </div>
 </body>
