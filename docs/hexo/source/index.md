@@ -393,6 +393,10 @@ There are two ways to set an async data:
 ```
 
 
+### Inline Editing
+
+In progress...
+
 
 ## Examples
 
@@ -427,6 +431,13 @@ A library doesn't know this format. But we can add `propertyNames` options and r
 
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/y7190jkd/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+### Custom Theme
+
+This example shows how to use tree in real life
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/qka5pxdm/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 ## API

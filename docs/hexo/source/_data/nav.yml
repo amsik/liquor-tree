@@ -44,6 +44,10 @@
       href: "#Async-Data"
       title: Async Data
 
+    - id: Inline Editing
+      href: "#Inline-Editing"
+      title: Inline Editing
+
 
 - title: Examples
   href: "#Examples"
@@ -57,6 +61,9 @@
     - id: exmlp-redefine-structure
       href: "#Redefine-Structure-Example"
       title: Redefine Structure Example
+    - id: custom-theme
+      href: "#Custom-Theme"
+      title: Custom Theme
 
 - title: API
   href: "#API"

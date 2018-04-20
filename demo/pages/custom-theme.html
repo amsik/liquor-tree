@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Custom theme</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+    <!-- <script src="../assets/data/devdocs-menu.js"></script> -->
+
+
+    <style>
+      body {
+        margin: 0;
+      }
+
+      .hello {
+        font-size: 1em;
+        padding: 0;
+        height: 80px;
+        vertical-align: middle;
+        box-sizing: border-box;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      #app {
+        position: absolute;
+        top: 80px;
+        width: 100%;
+        bottom: 0;
+        right: 0;
+      }
+
+      .navigation {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 280px;
+        overflow-y: scroll;
+        background-color: #f9f9f9;
+      }
+
+      .navigation-filter {
+        padding: 5px 10px;
+      }
+
+      .navigation-filter input {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        font-size: .875rem;
+        background: #fff;
+        border: 1px solid;
+        border-color: #d2d2d2;
+        border-radius: 3px;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+
+      .content {
+        overflow: auto;
+        position: absolute;
+        left: 280px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .tree-arrow.has-child:after {
+        background: url(../assets/img/arrow.png);
+        border: 0;
+        width: 16px;
+        height: 16px;
+        background-repeat: no-repeat;
+        transform: rotate(0deg) translateY(-50%) translateX(-2px);
+      }
+
+      .tree-arrow.expanded.has-child:after {
+        transform: rotate(90deg) translateY(0%) translateX(-8px);
+      }
+
+      .tree-node.selected > .tree-content {
+        background: #398df0;
+      }
+
+      .tree-node.selected > .tree-content > .tree-anchor {
+        color: #fff;
+      }
+
+      .tree-content {
+        padding: 2px 0;
+      }
+
+      .tree-scope {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .release {
+        color: #a9a9a9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Custom theme. This example shows how to use tree in real life. It is a clone (a lot of functionallity are missed) of super amazing site (https://devdocs.io)
+    </div>
+
+    <div id="app">
+      <div class="navigation">
+        <div class="navigation-filter">
+          <input type="text" v-model="treeFilter" placeholder="Type to filter...">
+        </div>
+        <div class="navigation-tree">
+          <tree :data="treeData" :options="treeOptions" :filter="treeFilter" v-model="selectedNode">
+            <div class="tree-scope" slot-scope="{ node }">
+              <template v-if="node.data.isRoot">
+                <!-- you can add an icon here, but it is too long for the demo... sorry  -->
+
+                <span class="text">
+                  {{ node.text }}
+                </span>
+
+                <span class="release" v-if="!node.hasChildren()">
+                  {{ node.data.release }}
+                </span>
+              </template>
+              <template v-else>
+
+                <!-- here we can leave a vue-router for example... -->
+
+                <span class="text">
+                    {{ node.text }}
+                  </span>
+
+                  <span class="release">
+                    {{ node.data.release }}
+                  </span>
+              </template>
+            </div>
+          </tree>
+        </div>
+      </div>
+      <div class="content">
+        <div v-if="!selectedNode || selectedNode.hasChildren()">Welcome!</div>
+        <ul v-else>
+          <li>Name: <b>{{ selectedNode.data.name }}</b></li>
+          <li>Type: <b>{{ selectedNode.data.type }}</b></li>
+          <li>Slug: <b>{{ selectedNode.data.slug }}</b></li>
+          <li>Release: <b>{{ selectedNode.data.release }}</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => {
+          return {
+            selectedNode: null,
+            treeFilter: '',
+            treeOptions: {
+              multiple: false,
+              filter: {
+                plainList: true
+              }
+            },
+
+            // do not judge me :)
+            treeData: fetch('../assets/data/devdocs-menu.json').then(r => r.json()).then(r => {
+              const items = {}
+
+              r.forEach(item => {
+                const { name } = item;
+
+                if (false === (name in items)) {
+                  items[name] = []
+                }
+
+                let treeItem = {
+                  text: item.version ? `${item.name} ${item.version}` : item.name,
+                  data: item
+                }
+
+                items[name].push(treeItem)
+              })
+
+              let o = Object.keys(items).reduce((a, b) => {
+                let children = items[b]
+                let item
+
+                if (children.length > 1) {
+                  item = {
+                    text: children[0].data.name,
+                    data: Object.assign({}, children[0].data),
+                    children
+                  }
+                } else {
+                  item = children[0]
+                  item.data
+                }
+
+                if (!item.data) {
+                  item.data = {
+                    type: children[0].data.type,
+                    isRoot: true
+                  }
+                } else {
+                  item.data.isRoot = true
+                }
+
+                a.push(item)
+
+                return a
+              }, [])
+
+              return o
+            })
+          }
+        },
+
+        methods: {
+        }
+      })
+
+    </script>
+
+  </body>
+</html>
