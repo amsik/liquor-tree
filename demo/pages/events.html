@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Basic Usage</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+
+      .filter-field {
+        display: block;
+        width: 100%;
+        padding: 3px;
+      }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
+
+      .events-table {
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      .events-table-header {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        background-color: #fff;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+
+      }
+
+      .events-table .event:nth-of-type(odd) {
+        background-color: #f9f9f9;
+      }
+
+      .events-table .event {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: top;
+        border-top: 1px solid #ddd;
+        display: flex;
+      }
+
+      .events-table .event > span,
+      .events-table-header > span {
+        flex-basis: 25%;
+      }
+
+      .fade-enter-active, .fade-leave-active {
+        transition: opacity .8s;
+      }
+      .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Tree Events.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            <input type="text" placeholder="Type to filter..." v-model="filter" class="filter-field">
+          </div>
+          <div class="example-tree">
+            <tree :data="data" :options="opts" :filter="filter" ref="tree" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">
+            List of tree events
+          </div>
+
+          <div class="events-table">
+            <div class="events-table-header">
+              <span>Event Name</span>
+              <span>Event Args</span>
+              <span>Node Name</span>
+              <span>Timestamp</span>
+            </div>
+
+            <transition-group name="fade" tag="div" class="events-table-body">
+              <div :key="e.id" v-for="e in eventsList" class="event">
+                <span><b>{{ e.name }}</b></span>
+                <span>{{ e.args }}</span>
+                <span>{{ e.nodeText }}</span>
+                <span>{{ e.time | time }}</span>
+              </div>
+            </transition-group>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const eventsList = [
+        { name: 'tree:mounted', args: ['Tree Component'] },
+        { name: 'node:selected', args: ['Node'] },
+        { name: 'node:unselected', args: ['Node'] }
+      ]
+
+      let uniqueId = 0
+
+      new Vue({
+        el: '#app',
+        data: () => ({
+          events: [],
+
+          data: getData(),
+          filter: null,
+          opts: {
+            fetchData: '/assets/data/events/{id}.json'
+          }
+        }),
+
+        filters: {
+          time(time) {
+            return +time
+          }
+        },
+
+        computed: {
+          eventsList() {
+            return this.events.concat().reverse()
+          }
+        },
+
+        mounted() {
+          eventsList.forEach(e => {
+            this.$refs.tree.$on(e.name, this.initEventViewer(e))
+          })
+        },
+
+        methods: {
+          initEventViewer(event) {
+            const events = this.events
+
+            return function (node) {
+              events.push(
+                Object.assign(
+                  {},
+                  event,
+                  { time: new Date, nodeText: node && node.text ? node.text : '-', id: uniqueId++ }
+                )
+              )
+            }
+          }
+        }
+      })
+
+      function getData() {
+        return new Promise(resolve => {
+          setTimeout(_ => {
+            resolve([
+              {
+                "text": "Introduction",
+                "isBatch": true,
+                "id": 1
+              },
+              {
+                "text": "Part I: Fundamentals",
+                "isBatch": true,
+                "id": 2
+              },
+              {
+                "text": "Data Types and Variables",
+                "isBatch": true,
+                "id": 3
+              }
+            ])
+          }, 100)
+        })
+      }
+    </script>
+
+  </body>
+</html>

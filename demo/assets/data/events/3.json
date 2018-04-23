@@ -1,0 +1,10 @@
+[
+  { "text": "Interactive Programming" },
+  { "text": "Find the Buried Treasure!", "state": { "disabled": true, "expanded": true }, "children": [
+    { "text": "#1: A Snowman-Drawing Function" },
+    { "text": "#2: Drawing an Array of Points" },
+    { "text": "#3: Painting with Your Mouse" },
+    { "text": "#4: Drawing the Man in Hangman" }
+  ]},
+  { "text": "Object-Oriented Programming" }
+]

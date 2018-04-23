@@ -71,6 +71,10 @@ export default {
     }
 
     initEvents(this)
+
+    this.$nextTick(_ => {
+      this.$emit('tree:mounted', this)
+    })
   },
 
   methods: {
