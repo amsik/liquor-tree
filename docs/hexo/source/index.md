@@ -743,4 +743,6 @@ Examples:
 
 ### Events
 
-In progress...
+This example shows every possible events for the tree.
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/cuseo1j7/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>

@@ -5,10 +5,6 @@ const NodeContent = {
     const node = this.node
     const vm = this.node.tree.vm
 
-    if (vm.$scopedSlots.default) {
-      return vm.$scopedSlots.default({ node: this.node })
-    }
-
     if (node.isEditing) {
       let nodeText = node.text
 
@@ -33,10 +29,17 @@ const NodeContent = {
             if (e.keyCode === 13) {
               node.stopEditing(nodeText)
             }
+          },
+          mouseup (e) {
+            e.stopPropagation()
           }
         },
         ref: 'editCtrl'
       })
+    }
+
+    if (vm.$scopedSlots.default) {
+      return vm.$scopedSlots.default({ node: this.node })
     }
 
     return h('span', {

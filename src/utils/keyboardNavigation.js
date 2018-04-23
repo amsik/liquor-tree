@@ -102,7 +102,7 @@ export default function (tree) {
       return
     }
 
-    if (tree.options.editing && node.isEditing) {
+    if (node.isEditing) {
       switch (code) {
         case keyCodes.ESC: return node.stopEditing(false)
       }

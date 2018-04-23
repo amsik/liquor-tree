@@ -57,7 +57,7 @@ export default class Node {
     const oldText = this.text
 
     this.data.text = text
-    this.tree.$emit('node:text:changed', text, oldText)
+    this.$emit('text:changed', text, oldText)
   }
 
   state (name, value) {
@@ -392,8 +392,13 @@ export default class Node {
   }
 
   startEditing () {
+    if (this.disabled()) {
+      return false
+    }
+
     if (!this.isEditing) {
       this.tree._editingNode = this
+      this.tree.activeElement = this
       this.isEditing = true
       this.$emit('editing:start')
     }
@@ -405,12 +410,14 @@ export default class Node {
     }
 
     this.isEditing = false
-    this.$emit('editing:stop')
     this.tree._editingNode = null
+    this.tree.activeElement = null
 
     if (newText && newText !== false && this.text !== newText) {
       this.text = newText
     }
+
+    this.$emit('editing:stop', this.text === newText)
   }
 
   index (verbose) {
@@ -462,7 +469,9 @@ export default class Node {
       index, 0, node
     )
 
-    this.$emit('added', node)
+    if (!this.isBatch) {
+      this.$emit('added', node)
+    }
 
     return node
   }

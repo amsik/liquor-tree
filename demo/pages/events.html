@@ -69,6 +69,10 @@
       .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
         opacity: 0;
       }
+
+      .node-controls a {
+        color: #ff14ce
+      }
     </style>
   </head>
   <body>
@@ -83,13 +87,22 @@
             <input type="text" placeholder="Type to filter..." v-model="filter" class="filter-field">
           </div>
           <div class="example-tree">
-            <tree :data="data" :options="opts" :filter="filter" ref="tree" />
+            <tree :data="data" :options="opts" :filter="filter" ref="tree">
+              <div slot-scope="{ node }" class="node-container">
+                <div class="node-text">{{ node.text }}</div>
+                <div class="node-controls">
+                  <a href="#" @mouseup.stop="editNode(node)">Edit</a>
+                  <a href="#" @mouseup.stop="removeNode(node)">Remove</a>
+                  <a href="#" @mouseup.stop="addChildNode(node)">Add child</a>
+                </div>
+              </div>
+            </tree>
           </div>
         </div>
 
         <div class="example">
           <div class="example-description">
-            List of tree events
+            List of tree events. Open console to details.
           </div>
 
           <div class="events-table">
@@ -116,11 +129,26 @@
     <script>
       const eventsList = [
         { name: 'tree:mounted', args: ['Tree Component'] },
+        { name: 'tree:filtered', args: ['Matches', 'Filter String'] },
+
+        { name: 'node:shown', args: ['Node'] },
+        { name: 'node:hidden', args: ['Node'] },
+        { name: 'node:dblclick', args: ['Node'] },
         { name: 'node:selected', args: ['Node'] },
-        { name: 'node:unselected', args: ['Node'] }
+        { name: 'node:unselected', args: ['Node'] },
+        { name: 'node:checked', args: ['Node'] },
+        { name: 'node:unchecked', args: ['Node'] },
+        { name: 'node:expanded', args: ['Node'] },
+        { name: 'node:collapsed',  args: ['Node'] },
+        { name: 'node:added',  args: ['Node', 'New Node'] },
+        { name: 'node:removed',  args: ['Node'] },
+        { name: 'node:text:changed', args: ['Node', 'New Text', 'Old Text']},
+
+        { name: 'node:editing:start',  args: ['Node'] },
+        { name: 'node:editing:stop',  args: ['Node', 'isTextChanged'] },
       ]
 
-      let uniqueId = 0
+      let key = 0
 
       new Vue({
         el: '#app',
@@ -130,7 +158,8 @@
           data: getData(),
           filter: null,
           opts: {
-            fetchData: '/assets/data/events/{id}.json'
+            fetchData: '/assets/data/events/{id}.json',
+            checkbox: true
           }
         }),
 
@@ -153,17 +182,40 @@
         },
 
         methods: {
+          editNode(node, e) {
+            node.startEditing()
+          },
+
+          removeNode(node) {
+            if (confirm('Are you sure?')) {
+              node.remove()
+            }
+          },
+
+          addChildNode(node) {
+            node.append('New Node')
+          },
+
           initEventViewer(event) {
             const events = this.events
 
-            return function (node) {
+            return function (node, newNode) {
+              let nodeText = '-'
+              let targetNode = newNode && newNode.text ? newNode : node
+
+              if (targetNode && targetNode.text) {
+                nodeText = targetNode.text
+              }
+
               events.push(
                 Object.assign(
                   {},
                   event,
-                  { time: new Date, nodeText: node && node.text ? node.text : '-', id: uniqueId++ }
+                  { time: new Date, nodeText, id: key++ }
                 )
               )
+
+              console.log(arguments)
             }
           }
         }

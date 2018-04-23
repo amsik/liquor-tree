@@ -56,6 +56,7 @@ export default class Tree {
     })
 
     this.vm.matches.length = 0
+    this.vm.$emit('tree:filtered', [], '')
   }
 
   filter (query) {
@@ -109,6 +110,8 @@ export default class Tree {
 
     this.vm.matches = matches
 
+    this.vm.$emit('tree:filtered', matches, query)
+
     return matches
   }
 
@@ -131,8 +134,8 @@ export default class Tree {
 
     const result = this.fetch(node)
       .then(children => {
-        node.isBatch = false
         node.append(children)
+        node.isBatch = false
       })
 
     return result
@@ -556,6 +559,17 @@ export default class Tree {
 
     this.selectedNodes.remove(node)
     this.checkedNodes.remove(node)
+
+    let matches = this.vm.matches
+
+    if (matches && matches.length) {
+      if (matches.includes(node)) {
+        matches.splice(
+          matches.indexOf(node),
+          1
+        )
+      }
+    }
 
     return node
   }
