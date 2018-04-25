@@ -28,24 +28,33 @@
         </div>
 
         <div class="example">
-            <div class="example-description">
-              <p>Using <b>v-model</b>. We have some differences in checkbox mode. Note that <b>multiple</b> is false. If <b>multiple</b> is true the selected object will be an array.</p>
-              <p v-if="treeModel && treeModel.selected">
-                <b>Selected: </b>  {{ treeModel.selected.text }}
-              </p>
-              
-              <p v-if="treeModel">
-                <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
-              </p>
-            </div>
-            <div class="example-tree">
-                <tree
-                  :data="treeData1"
-                  :options="treeOptions1"
-                  ref="tree1"
-                  v-model="treeModel" />
-            </div>
+          <div class="example-description">
+            <p>Using <b>v-model</b>. We have some differences in checkbox mode. Note that <b>multiple</b> is false. If <b>multiple</b> is true the selected object will be an array.</p>
+            <p v-if="treeModel && treeModel.selected">
+              <b>Selected: </b>  {{ treeModel.selected.text }}
+            </p>
+
+            <p v-if="treeModel">
+              <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
+            </p>
           </div>
+          <div class="example-tree">
+              <tree
+                :data="treeData1"
+                :options="treeOptions1"
+                ref="tree1"
+                v-model="treeModel" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">Test autoCheckChildren option</div>
+          <div class="example-tree">
+              <tree
+                :data="treeData2"
+                :options="treeOptions2" />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -63,7 +72,13 @@
           treeOptions1: {
             checkbox: true,
             multiple: false
-          }
+          },
+
+          treeData2: getTreeData(),
+          treeOptions2: {
+            checkbox: true,
+            autoCheckChildren: false
+          },
         }),
 
         mounted() {
