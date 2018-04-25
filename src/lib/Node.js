@@ -469,6 +469,12 @@ export default class Node {
       index, 0, node
     )
 
+    if (node.disabled() && node.hasChildren()) {
+      node.recurseDown(child => {
+        child.state('disabled', true)
+      })
+    }
+
     if (!this.isBatch) {
       this.$emit('added', node)
     }

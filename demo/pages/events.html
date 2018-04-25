@@ -64,7 +64,7 @@
       }
 
       .fade-enter-active, .fade-leave-active {
-        transition: opacity .8s;
+        transition: opacity 2s;
       }
       .fade-enter, .fade-leave-to /* .fade-leave-active до версии 2.1.8 */ {
         opacity: 0;
@@ -130,7 +130,11 @@
       const eventsList = [
         { name: 'tree:mounted', args: ['Tree Component'] },
         { name: 'tree:filtered', args: ['Matches', 'Filter String'] },
+        { name: 'tree:data:fetch', args: ['Parent Node'] },
+        { name: 'tree:data:received', args: ['Parent Node'] },
 
+        { name: 'node:disabled', args: ['Node']},
+        { name: 'node:enabled', args: ['Node']},
         { name: 'node:shown', args: ['Node'] },
         { name: 'node:hidden', args: ['Node'] },
         { name: 'node:dblclick', args: ['Node'] },
@@ -159,7 +163,10 @@
           filter: null,
           opts: {
             fetchData: '/assets/data/events/{id}.json',
-            checkbox: true
+            checkbox: true,
+            filter: {
+              plainList: true
+            }
           }
         }),
 
@@ -193,7 +200,11 @@
           },
 
           addChildNode(node) {
-            node.append('New Node')
+            // this API doesn't check whether node enabled
+            // you have to do it yourself
+            if (node.enabled()) {
+              node.append('New Node')
+            }
           },
 
           initEventViewer(event) {

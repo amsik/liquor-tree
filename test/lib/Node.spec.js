@@ -3,7 +3,7 @@ import Vue from 'vue'
 import Node from '@/lib/Node'
 import Tree from '@/lib/Tree'
 
-import objectToNode from '@/utils/ObjectToNode'
+import objectToNode from '@/utils/objectToNode'
 
 const vm = new Vue()
 vm.opts = {}

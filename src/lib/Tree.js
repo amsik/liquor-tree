@@ -132,10 +132,20 @@ export default class Tree {
       return
     }
 
+    this.$emit('tree:data:fetch', node)
+
     const result = this.fetch(node)
       .then(children => {
         node.append(children)
         node.isBatch = false
+
+        if (node.checked()) {
+          node.recurseDown(child => {
+            child.state('checked', true)
+          })
+        }
+
+        this.$emit('tree:data:received', node)
       })
 
     return result
@@ -189,6 +199,12 @@ export default class Tree {
         if (node.parent) {
           node.parent.refreshIndeterminateState()
         }
+      }
+
+      if (node.disabled()) {
+        node.recurseDown(child => {
+          child.state('disabled', true)
+        })
       }
     })
 
