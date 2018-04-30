@@ -1,7 +1,7 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.24",
+  "version": "0.2.25",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "library": "LiquorTree",
   "scripts": {
@@ -25,9 +25,11 @@
     "vue-tree",
     "treeview"
   ],
-  "dependencies": {
-    "npm": "^5.8.0"
-  },
+  "dependencies": {},
+  "files": [
+    "src",
+    "dist/*.js"
+  ],
   "devDependencies": {
     "@storybook/addon-notes": "^3.4.0",
     "@storybook/addon-options": "^3.4.0",
