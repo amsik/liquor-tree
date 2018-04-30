@@ -576,7 +576,7 @@ export default class Tree {
     this.selectedNodes.remove(node)
     this.checkedNodes.remove(node)
 
-    let matches = this.vm.matches
+    const matches = this.vm.matches
 
     if (matches && matches.length) {
       if (matches.includes(node)) {
