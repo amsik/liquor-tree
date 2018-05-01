@@ -64,6 +64,8 @@ export default {
       if (this.loading) {
         this.loading = false
       }
+
+      this.$emit('tree:mounted', this)
     })
 
     if (this.opts.keyboardNavigation !== false) {
@@ -71,13 +73,13 @@ export default {
     }
 
     initEvents(this)
-
-    this.$nextTick(_ => {
-      this.$emit('tree:mounted', this)
-    })
   },
 
   methods: {
+    recurseDown(fn) {
+      this.tree.recurseDown(fn)
+    },
+
     selected () {
       return this.tree.selected()
     },
@@ -141,6 +143,14 @@ export default {
 
     collapseAll () {
       return this.tree.collapseAll()
+    },
+
+    sortTree (compareFn, deep) {
+      return this.tree.sortTree(compareFn, deep)
+    },
+
+    sort (...args) {
+      return this.tree.sort(...args)
     }
   }
 

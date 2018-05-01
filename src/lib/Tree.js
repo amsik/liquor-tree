@@ -7,6 +7,7 @@ import { List } from '@/utils/stack'
 import { TreeParser } from '@/utils/treeParser'
 import { recurseDown } from '@/utils/recurse'
 import { get, createTemplate } from '@/utils/request'
+import sort from '@/utils/sort'
 
 export default class Tree {
   constructor (vm) {
@@ -43,6 +44,34 @@ export default class Tree {
 
   $emit (name, ...args) {
     this.vm.$emit(name, ...args)
+  }
+
+  _sort (source, compareFn, deep) {
+    if (false !== deep) {
+      this.recurseDown(source, node => {
+        if (node.hasChildren()) {
+          sort(node.children, compareFn)
+        }
+      })
+    }
+
+    sort(source, compareFn)
+  }
+
+  sortTree (compareFn, deep) {
+    this._sort(this.model, compareFn, deep)
+  }
+
+  sort (query, compareFn, deep) {
+    const targetNode = this.find(query, true)
+
+    if (!targetNode || !compareFn) {
+      return
+    }
+
+    targetNode.forEach(node => {
+      this._sort(node.children, compareFn, deep)
+    })
   }
 
   clearFilter () {

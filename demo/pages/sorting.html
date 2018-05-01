@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Sorting</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .tree-highlights .tree-node.matched > .tree-content {
+        background: #f7f2e7;
+      }
+
+      .node-info {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .example-description {
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .example-tree {
+        border-top: 1px solid #eee;
+        margin-top: 10px;
+      }
+
+      .node {
+        display: flex;
+        justify-content: space-between;
+        flex: 1;
+      }
+
+      .node-score {
+        background: red;
+        flex-basis: 30px;
+        text-align: center;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Sorting. Using content of the book "JavaScript for Kids"
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            <span>
+                Sort tree:
+                <select v-model="treeSort.order">
+                    <option value=""></option>
+                    <option value="asc">Asc</option>
+                    <option value="desc">Desc</option>
+                </select>
+            </span>
+
+            <span>
+              <label>
+                Recursive: <input type="checkbox" value="true" v-model="treeSort.recursive">
+              </label>
+            </span>
+          </div>
+          <div class="example-tree">
+            <tree
+              ref="tree"
+              :options="treeOptions0"
+              @tree:mounted="onTreeMounted" />
+          </div>
+        </div>
+        <div class="example">
+          <div class="example-description">
+            Cusom sorting (data score):
+            <span>
+                <select v-model="treeSort.orderScore">
+                    <option value=""></option>
+                    <option value="asc">Asc</option>
+                    <option value="desc">Desc</option>
+                </select>
+            </span>
+          </div>
+          <div class="example-tree">
+            <tree ref="tree2" :options="treeOptions0">
+              <div class="node" slot-scope="{ node }">
+                <span class="node-text">{{ node.text }}</span>
+                <div class="node-score">{{ node.data.score }}</div>
+              </div>
+            </tree>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeOptions0: {
+            fetchData: '/assets/data/sorting.json',
+          },
+
+          treeSort: {
+            recursive: true,
+            order: '',
+            orderScore: ''
+          }
+        }),
+
+        watch: {
+          ['treeSort.order']() {
+            this.sortTree()
+          },
+          ['treeSort.recursive']() {
+            this.sortTree()
+          },
+          ['treeSort.orderScore'](orderScore) {
+            this.customSort(orderScore)
+          }
+        },
+
+        methods: {
+          onTreeMounted() {
+            window.t = this.$refs.tree
+            this.$refs.tree.recurseDown(node => {
+              if (0 == node.depth) {
+                node.expand()
+              }
+            })
+          },
+
+          customSort(order) {
+            function sort(node0, node1) {
+              let r = (node0.data.score - node1.data.score)
+              let p = 'asc' == order ? 1 : -1
+
+              if (isNaN(r)) {
+                return 0
+              }
+
+              return r * p
+            }
+
+            this.$refs.tree2.sortTree(sort)
+          },
+
+          sortTree() {
+            this.$refs.tree.sortTree(
+              this.treeSort.order,
+              this.treeSort.recursive
+            )
+          },
+
+          sort() {
+          }
+        }
+      })
+    </script>
+
+  </body>
+</html>

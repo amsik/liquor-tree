@@ -1,0 +1,146 @@
+[
+  {
+    "text": "Item 1",
+    "state": {
+      "selected": true
+    },
+    "data": {
+      "score": 10
+    }
+  },
+  {
+    "text": "Item 2",
+    "state": {
+      "expanded": true
+    },
+    "data": {
+      "score": 16
+    },
+    "children": [
+      {
+        "text": "<b>Item 2.1</b>",
+        "state": {
+          "checked": true
+        },
+        "data": {
+          "score": 3
+        }
+      },
+      {
+        "text": "Item 2.2",
+        "data": {
+          "score": 27
+        }
+      },
+      {
+        "text": "Item 2.3",
+        "data": {
+          "score": 44
+        },
+        "children": [
+          {
+            "text": "Item 2.2.3.1",
+            "data": {
+              "score": -3
+            }
+          },
+          {
+            "text": "Item 2.2.3.2",
+            "data": {
+              "score": 54
+            }
+          },
+          {
+            "text": "Item 2.2.3.3",
+            "data": {
+              "score": 12.5
+            }
+          },
+          {
+            "text": "Item 2.2.3.4",
+            "data": {
+              "score": 43
+            },
+            "children": [
+              {
+                "text": "Item 2.2.3.4.1",
+                "data": {
+                  "score": 29
+                }
+              },
+              {
+                "text": "Item 2.2.3.4.2",
+                "data": {
+                  "score": 21
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "text": "Item 2.4",
+        "data": {
+          "score": 5
+        }
+      }
+    ]
+  },
+  {
+    "text": "Item 3",
+    "state": {
+      "selected": true
+    },
+    "data": {
+      "score": 90
+    }
+  },
+  {
+    "text": "Item 4",
+    "data": {
+      "score": 57
+    }
+  },
+  {
+    "text": "Item 5",
+    "data": {
+      "score": -13
+    },
+    "state": {
+      "expanded": true,
+      "disabled": true
+    },
+    "children": [
+      {
+        "text": "Item 5.1",
+        "data": {
+          "score": -5
+        }
+      },
+      {
+        "text": "Item 5.2",
+        "data": {
+          "score": -12
+        }
+      },
+      {
+        "text": "Item 5.3",
+        "data": {
+          "score": -10
+        }
+      }
+    ]
+  },
+  {
+    "text": "Item 6",
+    "data": {
+      "score": 18
+    }
+  },
+  {
+    "text": "Item 16",
+    "data": {
+      "score": 4
+    }
+  }
+]

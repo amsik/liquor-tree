@@ -52,7 +52,7 @@ function getAllChildren (source) {
 }
 
 export default function find (source, criteria, deep = true) {
-  if (!source || !source.length) {
+  if (!source || !source.length || !criteria) {
     return null
   }
 

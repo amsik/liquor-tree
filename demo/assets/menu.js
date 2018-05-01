@@ -8,6 +8,7 @@
     { text: 'Events', href: 'events.html' },
     { text: 'Async Data', href: 'async.html' },
     { text: 'Custom Node/Icons', href: 'custom.html' },
+    { text: 'Sorting', href: 'sorting.html' },
     { text: 'Filtering', href: 'filtering.html' },
     { text: 'Editing', href: 'editing.html' },
     { text: 'Custom theme', href: 'custom-theme.html' }
