@@ -87,7 +87,7 @@
       }
     },
 
-    data() {
+    data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
       // TODO: add method for changing options

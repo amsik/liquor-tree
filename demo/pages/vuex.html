@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Vuex Intergation</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.0.1/dist/vuex.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+    <style>
+      .node-info {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Vuex Intergation.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+              <button @click="syncData">Sync Data</button>
+              <br />It will update the <b>complexity</b> property randomly.
+          </div>
+          <div class="example-tree">
+            <tree
+              :options="options"
+              ref="tree"
+            >
+              <div slot-scope="{ node }" class="node-info">
+                <span class="node-name">{{ node.text }}</span>
+                <span class="node-complexity">{{ node.data.complexity }}</span>
+              </div>
+            </tree>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const random = (max, min) => {
+        return Math.floor(Math.random() * ( max - min + 1 ) + min)
+      }
+
+
+      const Store = new Vuex.Store({
+        state: {
+          tree: []
+        },
+        mutations: {
+          initTree(state, treeData) {
+            state.tree.push(...treeData)
+          },
+
+          updateTree(state, newData) {
+            state.tree = newData
+          }
+        },
+        actions: {
+          initTree(store) {
+            return fetch('/assets/data/filtering-custom.json')
+              .then(r => r.json())
+              .then(data => store.commit('initTree', data))
+          }
+        }
+      })
+
+      new Vue({
+        el: '#app',
+        store: Store,
+        data: () => ({
+          options: {
+            store: {
+              store: Store,
+              key: 'tree',
+              mutations: []
+            },
+            checkbox: true
+          }
+        }),
+
+        mounted () {
+          this.$store.dispatch('initTree')
+        },
+
+        methods: {
+          syncData () {
+            let { tree } = this.$store.state
+
+            tree = tree.map(function updater(t) {
+              t.data.complexity = random(-50, 50)
+              t.children = !t.children ? [] : t.children.map(c => {
+                c.data.complexity = random(-50, 50)
+                return c
+              })
+
+              return t
+            })
+
+            tree.push({ text: 'Extra text ' + Math.random(), data: { complexity: 0 } })
+
+            this.$store.commit('updateTree', tree)
+          }
+        }
+      })
+    </script>
+
+  </body>
+</html>

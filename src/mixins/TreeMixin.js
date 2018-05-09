@@ -54,12 +54,16 @@ export default {
     }
 
     dataProvider.then(data => {
-      if (!data) { // It can be an async request
-        return (this.loading = false)
+      if (!data) {
+        data = []
       }
 
-      this.model = tree.parse(data, this.opts.modelParse)
-      this.tree.setModel(this.model)
+      if (this.opts.store) {
+        this.connectStore(this.opts.store)
+      } else {
+        this.model = tree.parse(data, this.opts.modelParse)
+        this.tree.setModel(this.model)
+      }
 
       if (this.loading) {
         this.loading = false
@@ -76,6 +80,55 @@ export default {
   },
 
   methods: {
+    connectStore (store) {
+      const { store: Store, key } = store
+      const tree = this.tree
+      const modelParse = this.opts.modelParse
+
+      const updateTree = data => {
+        this.model = tree.parse(data, modelParse)
+        this.tree.setModel(this.model)
+      }
+
+      const syncStates = (data, model) => {
+        data.forEach((el, i) => {
+          if (!model[i] || el.text != model[i].text) {
+            return
+          }
+
+          el.state = Object.assign({}, el.state, model[i].states)
+
+          if (el.children && el.children.length && model[i].children) {
+            syncStates(el.children, model[i].children)
+          }
+        })
+
+        return data
+      }
+
+      // actions must be an array
+      let { mutations } = this.opts.store
+
+      if (mutations && !mutations.length) {
+        mutations = null
+      }
+
+
+      Store.subscribe((action, state) => {
+        if (mutations && !mutations.includes(action.type)) {
+          return
+        }
+
+        const data = state[key]
+
+        updateTree(
+          syncStates(data, this.model)
+        )
+      })
+
+      updateTree(Store.state[key] || [])
+    },
+
     recurseDown(fn) {
       this.tree.recurseDown(fn)
     },

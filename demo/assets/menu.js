@@ -11,7 +11,8 @@
     { text: 'Sorting', href: 'sorting.html' },
     { text: 'Filtering', href: 'filtering.html' },
     { text: 'Editing', href: 'editing.html' },
-    { text: 'Custom theme', href: 'custom-theme.html' }
+    { text: 'Custom theme', href: 'custom-theme.html' },
+    { text: 'Vuex Integration', href: 'vuex.html' }
   ]
 
   function initMenu() {

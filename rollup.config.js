@@ -32,6 +32,7 @@ const config = {
       banner
     }
   ],
+  cache: false,
   plugins: [
     alias({
       resolve: ['.vue', '.js'],
