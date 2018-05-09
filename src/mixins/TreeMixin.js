@@ -107,7 +107,7 @@ export default {
       }
 
       // actions must be an array
-      let { mutations } = this.opts.store
+      let { mutations } = store
 
       if (mutations && !mutations.length) {
         mutations = null
