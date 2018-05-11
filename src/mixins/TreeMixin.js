@@ -106,6 +106,14 @@ export default {
         return data
       }
 
+      const applyState = (state) => {
+        const data = state[key]
+
+        updateTree(
+          syncStates(data, this.model)
+        )
+      }
+
       // actions must be an array
       let { mutations } = store
 
@@ -113,23 +121,18 @@ export default {
         mutations = null
       }
 
+      updateTree(Store.state[key] || [])
 
       Store.subscribe((action, state) => {
         if (mutations && !mutations.includes(action.type)) {
           return
         }
 
-        const data = state[key]
-
-        updateTree(
-          syncStates(data, this.model)
-        )
+        applyState(state)
       })
-
-      updateTree(Store.state[key] || [])
     },
 
-    recurseDown(fn) {
+    recurseDown (fn) {
       this.tree.recurseDown(fn)
     },
 

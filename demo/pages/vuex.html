@@ -65,6 +65,9 @@
 
           updateTree(state, newData) {
             state.tree = newData
+          },
+          tt(state, aaa) {
+            state.bb = aaa;
           }
         },
         actions: {
@@ -84,7 +87,7 @@
             store: {
               store: Store,
               key: 'tree',
-              mutations: []
+              mutations: ['initTree', 'updateTree']
             },
             checkbox: true
           }

@@ -1,7 +1,8 @@
 {
   "extends": ["plugin:vue-libs/recommended", "plugin:jest/recommended"],
   "rules": {
-      "no-cond-assign": 0
+      "no-cond-assign": 0,
+      "eqeqeq": 0
   },
   "plugins": ["jest"]
 }

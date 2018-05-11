@@ -47,7 +47,7 @@ export default class Tree {
   }
 
   _sort (source, compareFn, deep) {
-    if (false !== deep) {
+    if (deep !== false) {
       this.recurseDown(source, node => {
         if (node.hasChildren()) {
           sort(node.children, compareFn)

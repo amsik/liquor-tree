@@ -48,6 +48,10 @@
       href: "#Inline-Editing"
       title: Inline Editing
 
+    - id: Integration with Vuex
+      href: "#Integration-with-Vuex"
+      title: Integration with Vuex
+
 
 - title: Examples
   href: "#Examples"

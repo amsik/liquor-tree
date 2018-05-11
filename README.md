@@ -12,6 +12,8 @@ A Vue tree component that allows you to present hierarchically organized data in
 * multi selection
 * keyboard navigation
 * filtering
+* sorting
+* integration with Vuex
 
 ## Installation
 **Npm:**

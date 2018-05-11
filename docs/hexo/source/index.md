@@ -397,6 +397,71 @@ There are two ways to set an async data:
 
 In progress...
 
+### Integration with Vuex
+
+The library is allow to pass `store` options. Example:
+
+```javascript
+  const Store = new Vuex.Store({
+    state: {
+      treeStore: []
+    },
+    mutations: {
+      // ---
+    },
+    actions: {
+      // ---
+    }
+  })
+
+  // -------
+
+  new Vue({
+    el: '#app',
+    store: Store,
+    data: () => ({
+      options: {
+        store: {
+          store: Store,
+          key: 'treeStore',
+          mutations: [] // this property is not required
+        },
+        checkbox: true
+      }
+    })
+  })
+
+```
+
+Every changes in store will redraw the tree. You can pass `mutations` to the options to check whether to update a tree. Ex:
+
+```javascript
+  const Store = new Vuex.Store({
+    state: {
+      treeStore: []
+    },
+    mutations: {
+      initTree(state, treeData) {
+        state.tree.push(...treeData)
+      },
+
+      updateTree(state, newData) {
+        state.tree = newData
+      }
+    }
+  })
+
+  // tree options:
+  {
+    store: {
+      store: Store,
+      key: 'treeStore',
+      mutations: ['initTree', 'updateTree]
+    }
+  }
+```
+
+
 
 ## Examples
 
