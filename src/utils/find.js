@@ -3,38 +3,35 @@ const $div = document.createElement('div')
 function finder (criteria) {
   return function (node) {
     return Object.keys(criteria).every(key => {
-      // it is possible to pass 'states' or 'state'
-      if (key === 'state' || key === 'states') {
-        const states = criteria[key]
+      if (key === 'text') {
+        const c = criteria[key]
+        let val = node[key]
 
-        return Object.keys(states).every(s => node['states'][s] === states[s])
-      }
+        // remove html tags
+        $div.innerHTML = val
+        val = $div.innerText
 
-      let val = node[key]
-      const c = getRegExp(criteria[key])
-
-      if (key === 'states') {
-        const states = criteria[key]
-
-        return Object.keys(states).every(s => node[key][s] === states[s])
-      } else {
-        if (key === 'text') {
-          $div.innerHTML = val
-          val = $div.innerText
+        if (isRegExp(c)) {
+          return c.test(val)
+        } else {
+          return c === val
         }
-
-        return c.test(val)
       }
+
+      const states = criteria[key]
+
+      // it is possible to pass 'states' or 'state'
+      if (key === 'state') {
+        key = 'states'
+      }
+
+      return Object.keys(states).every(s => node[key][s] === states[s])
     })
   }
 }
 
-function getRegExp (val) {
-  if (val instanceof RegExp) {
-    return val
-  }
-
-  return new RegExp(`^${val}$`, 'g')
+function isRegExp (val) {
+  return val instanceof RegExp
 }
 
 function getAllChildren (source) {
