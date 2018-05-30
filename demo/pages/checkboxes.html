@@ -95,7 +95,10 @@
         return [
             {
                 text: 'Item 1',
-                id: 1
+                id: 1,
+                data: {
+                  c: 10
+                }
             },
 
             {
@@ -105,8 +108,8 @@
                   expanded: true
                 },
                 children: [
-                    {text: '<b>Item 2.1</b>', state: {checked: checked}},
-                    {text: 'Item 2.2'},
+                    {text: '<b>Item (2.1)</b>', state: {checked: checked}},
+                    {text: 'Item 2.2$$$'},
                     {
                         text: 'Item 2.3',
                         children: [

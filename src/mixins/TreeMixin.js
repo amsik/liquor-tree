@@ -81,7 +81,7 @@ export default {
 
   methods: {
     connectStore (store) {
-      const { store: Store, key } = store
+      const { store: Store, key, getter } = store
       const tree = this.tree
       const modelParse = this.opts.modelParse
 
@@ -90,7 +90,7 @@ export default {
         this.tree.setModel(this.model)
       }
 
-      const syncStates = (data, model) => {
+      const syncStates = (data = [], model) => {
         data.forEach((el, i) => {
           if (!model[i] || el.text != model[i].text) {
             return
@@ -107,11 +107,19 @@ export default {
       }
 
       const applyState = (state) => {
-        const data = state[key]
+        const data = readState(Store)
 
         updateTree(
           syncStates(data, this.model)
         )
+      }
+
+      const readState = (store, state) => {
+        if (getter) {
+          return store.getters[getter] || []
+        }
+
+        return store.state[key] || []
       }
 
       // actions must be an array
@@ -121,7 +129,7 @@ export default {
         mutations = null
       }
 
-      updateTree(Store.state[key] || [])
+      updateTree(readState(Store))
 
       Store.subscribe((action, state) => {
         if (mutations && !mutations.includes(action.type)) {

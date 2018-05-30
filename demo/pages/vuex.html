@@ -45,6 +45,25 @@
             </tree>
           </div>
         </div>
+
+        <div class="example">
+          <div class="example-description">
+              Using Vuex Modules.
+              <button @click="syncData1">Sync Data</button>
+              <br />It will update the <b>complexity</b> property randomly.
+          </div>
+          <div class="example-tree">
+            <tree
+              :options="options1"
+              ref="tree"
+            >
+              <div slot-scope="{ node }" class="node-info">
+                <span class="node-name">{{ node.text }}</span>
+                <span class="node-complexity">{{ node.data.complexity }}</span>
+              </div>
+            </tree>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -53,29 +72,58 @@
         return Math.floor(Math.random() * ( max - min + 1 ) + min)
       }
 
-
-      const Store = new Vuex.Store({
-        state: {
-          tree: []
+      let mutations = {
+        initTree(state, treeData) {
+          state.tree.push(...treeData)
         },
-        mutations: {
-          initTree(state, treeData) {
-            state.tree.push(...treeData)
-          },
 
-          updateTree(state, newData) {
-            state.tree = newData
-          },
-          tt(state, aaa) {
-            state.bb = aaa;
-          }
+        updateTree(state, newData) {
+          state.tree = newData
         },
-        actions: {
-          initTree(store) {
-            return fetch('/assets/data/filtering-custom.json')
-              .then(r => r.json())
-              .then(data => store.commit('initTree', data))
-          }
+        tt(state, aaa) {
+          state.bb = aaa;
+        }
+      }
+
+      let actions = {
+        initTree(store) {
+          return fetch('/assets/data/filtering-custom.json')
+            .then(r => r.json())
+            .then(data => store.commit('initTree', data))
+        }
+      }
+
+
+
+      const Store = new Vuex.Store(
+        Object.assign({
+            state: {
+              tree: []
+            }
+          }, {
+            actions
+          }, {
+            mutations
+          })
+      )
+
+      const StoreWithModules = new Vuex.Store({
+        modules: {
+          treeModule: Object.assign({
+            state: {
+              tree: []
+            }
+          }, {
+            actions
+          }, {
+            mutations
+          }, {
+            getters: {
+              tree(state) {
+                return state.tree
+              }
+            }
+          })
         }
       })
 
@@ -90,17 +138,24 @@
               mutations: ['initTree', 'updateTree']
             },
             checkbox: true
+          },
+          options1: {
+            store: {
+              store: StoreWithModules,
+              getter: 'tree',
+              mutations: ['initTree', 'updateTree']
+            }
           }
         }),
 
         mounted () {
           this.$store.dispatch('initTree')
+
+          StoreWithModules.dispatch('initTree')
         },
 
         methods: {
-          syncData () {
-            let { tree } = this.$store.state
-
+          randomComplexity(tree) {
             tree = tree.map(function updater(t) {
               t.data.complexity = random(-50, 50)
               t.children = !t.children ? [] : t.children.map(c => {
@@ -113,7 +168,17 @@
 
             tree.push({ text: 'Extra text ' + Math.random(), data: { complexity: 0 } })
 
-            this.$store.commit('updateTree', tree)
+            return tree
+          },
+
+          syncData () {
+            let { tree } = this.$store.state
+            this.$store.commit('updateTree', this.randomComplexity(tree))
+          },
+
+          syncData1 () {
+            let tree = StoreWithModules.getters.tree
+            StoreWithModules.commit('updateTree', this.randomComplexity(tree))
           }
         }
       })
