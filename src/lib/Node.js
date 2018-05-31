@@ -550,4 +550,13 @@ export default class Node {
   isRoot () {
     return this.parent === null
   }
+
+  toJSON () {
+    return {
+      text: this.text,
+      data: this.data,
+      state: this.states,
+      children: this.children
+    }
+  }
 }

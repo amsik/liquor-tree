@@ -61,8 +61,7 @@ export default {
       if (this.opts.store) {
         this.connectStore(this.opts.store)
       } else {
-        this.model = tree.parse(data, this.opts.modelParse)
-        this.tree.setModel(this.model)
+        this.tree.setModel(data)
       }
 
       if (this.loading) {
@@ -215,6 +214,12 @@ export default {
 
     sort (...args) {
       return this.tree.sort(...args)
+    },
+
+    toJSON () {
+      return JSON.parse(
+        JSON.stringify(this.model)
+      )
     }
   }
 

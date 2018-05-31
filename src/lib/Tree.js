@@ -205,8 +205,9 @@ export default class Tree {
     return this.fetch(node)
   }
 
-  setModel (model) {
-    this.model = model
+  setModel (data) {
+    this.model = this.parse(data, this.options.modelParse)
+    this.vm.model = this.model
 
     /**
     * VueJS transform properties to reactives when constructor is running
@@ -215,7 +216,7 @@ export default class Tree {
     this.selectedNodes = new List()
     this.checkedNodes = new List()
 
-    recurseDown(model, node => {
+    recurseDown(this.model, node => {
       node.tree = this
 
       if (node.selected()) {

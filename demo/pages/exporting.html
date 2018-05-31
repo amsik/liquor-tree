@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Basic Usage</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+      Basic Usage.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            <button @click="addRandomNode">Add Random Node</button>
+            <button @click="exportTree">Export & Copy Tree Data -></button>
+          </div>
+          <div class="example-tree">
+            <tree :data="treeData" ref="sourceTree" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">
+            Copied Tree from the right
+          </div>
+          <div class="example-tree">
+            <tree ref="targetTree" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let copyObject = obj => JSON.parse(JSON.stringify(obj))
+
+      new Vue({
+        el: '#app',
+        data: () => ({
+          treeData: getTreeData()
+        }),
+
+        methods: {
+          exportTree() {
+            let exportedTreeData = copyObject(
+              this.$refs.sourceTree.toJSON()
+            )
+
+            let targetTree = this.$refs.targetTree.tree
+
+            targetTree.setModel(exportedTreeData)
+          },
+
+          addRandomNode() {
+            this.$refs.sourceTree.append(
+              `New Node ${Math.random()}`
+            )
+          }
+        }
+      })
+
+      function getTreeData() {
+        return [{
+            text: 'Item 1',
+            state: {
+              selected: true
+            }
+          },
+
+          {
+            text: 'Item 2',
+            state: {
+              expanded: true
+            },
+            children: [{
+                text: '<b>Item 2.1</b>',
+                state: {
+                  checked: true
+                }
+              },
+              {
+                text: 'Item 2.2'
+              },
+              {
+                text: 'Item 2.3',
+                children: [{
+                    text: 'Item 2.2.3.1'
+                  },
+                  {
+                    text: 'Item 2.2.3.2'
+                  },
+                  {
+                    text: 'Item 2.2.3.3'
+                  },
+                  {
+                    text: 'Item 2.2.3.4',
+                    children: [{
+                        text: 'Item 2.2.3.4.1'
+                      },
+                      {
+                        text: 'Item 2.2.3.4.2'
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                text: 'Item 2.4'
+              }
+            ]
+          },
+
+          {
+            text: 'Item 3',
+            state: {
+              selected: true
+            }
+          },
+
+          {
+            text: 'Item 4'
+          },
+
+          {
+            text: 'Item 5',
+            state: {
+              expanded: true,
+              disabled: true
+            },
+            children: [{
+                text: 'Item 5.1'
+              },
+              {
+                text: 'Item 5.2'
+              },
+              {
+                text: 'Item 5.3'
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+  </body>
+</html>
