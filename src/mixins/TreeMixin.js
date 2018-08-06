@@ -85,8 +85,7 @@ export default {
       const modelParse = this.opts.modelParse
 
       const updateTree = data => {
-        this.model = tree.parse(data, modelParse)
-        this.tree.setModel(this.model)
+        this.tree.setModel(data)
       }
 
       const syncStates = (data = [], model) => {
