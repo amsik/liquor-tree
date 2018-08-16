@@ -19,7 +19,8 @@ const defaultPropertyNames = {
   children: 'children',
   state: 'state',
   data: 'data',
-  isBatch: 'isBatch'
+  isBatch: 'isBatch',
+  item: 'item'
 }
 
 function convertNames (obj, names) {
@@ -29,7 +30,8 @@ function convertNames (obj, names) {
     children: obj[names.children],
     state: obj[names.state],
     data: obj[names.data],
-    isBatch: obj[names.isBatch]
+    isBatch: obj[names.isBatch],
+    item: obj
   }
 }
 

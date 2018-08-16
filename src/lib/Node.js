@@ -11,6 +11,7 @@ export default class Node {
 
     this.id = item.id || uuidV4()
     this.states = item.state || {}
+    this.item = item.item
 
     this.showChildren = true
     this.children = item.children || []
@@ -556,6 +557,7 @@ export default class Node {
       text: this.text,
       data: this.data,
       state: this.states,
+      item: this.item,
       children: this.children
     }
   }

@@ -61,9 +61,7 @@
         state: this.node.states
       }
     },
-    created() {
-      console.log(JSON.parse(JSON.stringify(this.options)))
-    },
+
     computed: {
       paddingLeft() {
         return this.node.depth * this.options.paddingLeft + 'px'
