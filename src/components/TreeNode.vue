@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="e => options.selectedArrowOnly || select(e)">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
@@ -14,15 +14,14 @@
         @mouseup.stop="check">
       </i>
 
-      <a
-        href="javascript:void(0)"
+      <span
         class="tree-anchor"
         tabindex="1"
         ref="anchor"
         @focus="onNodeFocus"
         @dblclick="tree.$emit('node:dblclick', node)">
           <node-content :node="node" />
-      </a>
+      </span>
     </div>
 
     <transition name="l-fade">
@@ -62,7 +61,9 @@
         state: this.node.states
       }
     },
-
+    created() {
+      console.log(JSON.parse(JSON.stringify(this.options)))
+    },
     computed: {
       paddingLeft() {
         return this.node.depth * this.options.paddingLeft + 'px'

@@ -36,6 +36,7 @@
   import Tree from '@/lib/Tree'
 
   const defaults = {
+    selectedArrowOnly: false,
     multiple: true,
     checkbox: false,
     checkOnSelect: false,
