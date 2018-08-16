@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="e => options.selectedArrowOnly || select(e)">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
@@ -119,7 +119,7 @@
         }
 
         if (opts.checkbox && opts.checkOnSelect) {
-          if (!opts.parentSelect && this.hasChildren()) {
+          if (!opts.parentSelect && this.hasChildren() && !opts.selectedArrowOnly) {
             return this.toggleExpand()
           }
 
@@ -128,7 +128,7 @@
 
         // 'parentSelect' behaviour.
         // For nodes which has a children list we have to expand/collapse
-        if (!opts.parentSelect && this.hasChildren()) {
+        if (!opts.parentSelect && this.hasChildren() && !opts.selectedArrowOnly) {
           this.toggleExpand()
         }
 

@@ -31,7 +31,7 @@ function convertNames (obj, names) {
     state: obj[names.state],
     data: obj[names.data],
     isBatch: obj[names.isBatch],
-    item: obj
+    item: { ...obj, [names.children]: undefined }
   }
 }
 
