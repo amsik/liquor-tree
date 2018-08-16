@@ -119,7 +119,7 @@
         }
 
         if (opts.checkbox && opts.checkOnSelect) {
-          if (!opts.parentSelect && this.hasChildren() && !opts.selectedArrowOnly) {
+          if (!opts.parentSelect && this.hasChildren() && !opts.expandIconOnly) {
             return this.toggleExpand()
           }
 
@@ -128,7 +128,7 @@
 
         // 'parentSelect' behaviour.
         // For nodes which has a children list we have to expand/collapse
-        if (!opts.parentSelect && this.hasChildren() && !opts.selectedArrowOnly) {
+        if (!opts.parentSelect && this.hasChildren() && !opts.expandIconOnly) {
           this.toggleExpand()
         }
 
