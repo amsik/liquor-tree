@@ -25,7 +25,9 @@
     "vue-tree",
     "treeview"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "striptags": "^3.1.1"
+  },
   "files": [
     "src",
     "dist/*.js"
