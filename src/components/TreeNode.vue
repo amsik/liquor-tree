@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}" @click.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
