@@ -19,11 +19,11 @@
         tabindex="1"
         ref="anchor"
         @focus="onNodeFocus"
-        @dblclick="tree.$emit('node:dblclick', node)"
-        @mouseover="tree.$emit('node:hover', node)"
-        @mouseout="tree.$emit('node:unhover', node)"
-        @mousedown="tree.$emit('node:mousedown', node)"
-        @mouseup="tree.$emit('node:mouseup', node)">
+        @dblclick="tree.$emit('node:dblclick', node, $event)"
+        @mouseenter.stop="tree.$emit('node:hover', node, $event)"
+        @mouseleave.stop="tree.$emit('node:unhover', node, $event)"
+        @mousedown="tree.$emit('node:mousedown', node, $event)"
+        @mouseup="tree.$emit('node:mouseup', node, $event)">
           <node-content :node="node" />
       </span>
     </div>
@@ -312,6 +312,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    background: red;
   }
 
   .tree-node.selected .tree-anchor {
