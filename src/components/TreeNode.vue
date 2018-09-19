@@ -20,7 +20,10 @@
         ref="anchor"
         @focus="onNodeFocus"
         @dblclick="tree.$emit('node:dblclick', node)"
-        @mouseover="tree.$emit('node:hover', node)">
+        @mouseover="tree.$emit('node:hover', node)"
+        @mouseout="tree.$emit('node:unhover', node)"
+        @mousedown="tree.$emit('node:mousedown', node)"
+        @mouseup="tree.$emit('node:mouseup', node)">
           <node-content :node="node" />
       </span>
     </div>
