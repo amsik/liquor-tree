@@ -312,7 +312,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    background: red;
   }
 
   .tree-node.selected .tree-anchor {
