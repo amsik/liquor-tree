@@ -1,5 +1,5 @@
 <template>
-  <li class="tree-node" :class="nodeClass" @mousedown.stop="handleMouseDown">
+  <li class="tree-node" :data-id="node.id" :class="nodeClass" @mousedown.stop="handleMouseDown">
     <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
@@ -181,7 +181,7 @@
           return
         }
 
-        this.tree.vm.initDnd(this.node, event)
+        this.tree.vm.startDragging(this.node, event)
       }
     }
   }

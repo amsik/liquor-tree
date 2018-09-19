@@ -1,4 +1,17 @@
-// import striptags from 'striptags'
+
+function striptags(value) {
+  // ssr fix
+  if (false === !!document) {
+    return value
+  }
+
+  if (!striptags.__element) {
+    striptags.__element = document.createElement('div')
+  }
+
+  striptags.__element.innerHTML = value
+  return striptags.__element.innerText
+}
 
 function finder (criteria) {
   return function (node) {
@@ -8,7 +21,7 @@ function finder (criteria) {
         let val = node[key]
 
         // remove html tags
-        // val = striptags(val)
+        val = striptags(val)
 
         if (isRegExp(c)) {
           return c.test(val)
