@@ -139,6 +139,7 @@
         { name: 'node:hidden', args: ['Node'] },
         { name: 'node:dblclick', args: ['Node'] },
         { name: 'node:selected', args: ['Node'] },
+        { name: 'node:hover', args: ['Node'] },
         { name: 'node:unselected', args: ['Node'] },
         { name: 'node:checked', args: ['Node'] },
         { name: 'node:unchecked', args: ['Node'] },
@@ -162,6 +163,7 @@
           data: getData(),
           filter: null,
           opts: {
+            expandIconOnly: true,
             fetchData: '/assets/data/events/{id}.json',
             checkbox: true,
             filter: {
@@ -185,6 +187,9 @@
         mounted() {
           eventsList.forEach(e => {
             this.$refs.tree.$on(e.name, this.initEventViewer(e))
+          })
+          this.$refs.tree.$on('node:selected', e => {
+            console.log(JSON.parse(JSON.stringify(e)))
           })
         },
 
@@ -226,7 +231,7 @@
                 )
               )
 
-              console.log(arguments)
+              // console.log(arguments)
             }
           }
         }
@@ -239,7 +244,16 @@
               {
                 "text": "Introduction",
                 "isBatch": true,
-                "id": 1
+                "id": 1,
+                "bloublou": "asjdh",
+                "fields": ["akjhasdkjhda"],
+                "children": [
+                  {
+                    "text": "Introduction",
+                    "isBatch": true,
+                    "id": 1,
+                  }
+                ]
               },
               {
                 "text": "Part I: Fundamentals",

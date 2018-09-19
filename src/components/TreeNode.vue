@@ -19,7 +19,8 @@
         tabindex="1"
         ref="anchor"
         @focus="onNodeFocus"
-        @dblclick="tree.$emit('node:dblclick', node)">
+        @dblclick="tree.$emit('node:dblclick', node)"
+        @mouseover="tree.$emit('node:hover', node)">
           <node-content :node="node" />
       </span>
     </div>
