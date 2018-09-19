@@ -1,12 +1,12 @@
 <template>
-  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading}">
+  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
       <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
     </template>
     <template v-else>
       <ul class="tree-root">
         <template v-if="opts.filter.plainList && matches.length > 0">
-          <node
+          <TreeNode
             v-for="node in matches"
             v-if="node.visible()"
 
@@ -16,7 +16,7 @@
           />
         </template>
         <template v-else>
-          <node
+          <TreeNode
             v-for="node in model"
             v-if="node.visible()"
 
@@ -27,12 +27,16 @@
         </template>
       </ul>
     </template>
+
+    <DraggableNode v-if="draggableNode" :target="draggableNode" />
   </div>
 </template>
 
 <script>
   import TreeNode from '@/components/TreeNode'
+  import DraggableNode from '@/components/DraggableNode'
   import TreeMixin from '@/mixins/TreeMixin'
+  import TreeDnd from '@/mixins/DndMixin'
   import Tree from '@/lib/Tree'
 
   const defaults = {
@@ -46,6 +50,7 @@
     fetchData: null,
     propertyNames: null,
     deletion: false,
+    dnd: false,
     onFetchError: function(err) { throw err }
   }
 
@@ -61,10 +66,11 @@
   export default {
     name: 'Tree',
     components: {
-      'node': TreeNode
+      TreeNode,
+      DraggableNode
     },
 
-    mixins: [TreeMixin],
+    mixins: [TreeMixin, TreeDnd],
 
     provide: _ => ({
       tree: null
@@ -104,7 +110,8 @@
         tree: null,
         loading: false,
         opts,
-        matches: []
+        matches: [],
+        draggableNode: null
       }
     }
   }
@@ -125,5 +132,35 @@
   .tree > .tree-filter-empty {
     padding: 3px;
     box-sizing: border-box;
+  }
+
+  .tree.tree--draggable .tree-node:not(.selected) > .tree-content:hover {
+    background: transparent;
+  }
+
+  .tree.tree--draggable .tree-node.has-child > .tree-content:hover {
+    border: 1px solid #d7e3f3;
+  }
+
+  .drag-above::before {
+    top: 0;
+    transform: translateY(-50%);
+  }
+
+  .drag-above::before, .drag-below::after {
+    background-clip: padding-box;
+    background-color: red;
+    border: 3px solid red;
+    border-bottom-color: transparent;
+    border-radius: 0;
+    border-top-color: transparent;
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    height: 8px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 1;
   }
 </style>

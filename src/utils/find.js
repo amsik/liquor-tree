@@ -1,4 +1,4 @@
-import striptags from 'striptags'
+// import striptags from 'striptags'
 
 function finder (criteria) {
   return function (node) {
@@ -8,7 +8,7 @@ function finder (criteria) {
         let val = node[key]
 
         // remove html tags
-        val = striptags(val)
+        // val = striptags(val)
 
         if (isRegExp(c)) {
           return c.test(val)

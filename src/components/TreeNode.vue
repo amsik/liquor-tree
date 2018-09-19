@@ -1,5 +1,5 @@
 <template>
-  <li class="tree-node" :class="nodeClass">
+  <li class="tree-node" :class="nodeClass" @mousedown.stop="handleMouseDown">
     <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
@@ -14,15 +14,14 @@
         @mouseup.stop="check">
       </i>
 
-      <a
-        href="javascript:void(0)"
+      <span
         class="tree-anchor"
-        tabindex="1"
+        tabindex="-1"
         ref="anchor"
         @focus="onNodeFocus"
         @dblclick="tree.$emit('node:dblclick', node)">
           <node-content :node="node" />
-      </a>
+      </span>
     </div>
 
     <transition name="l-fade">
@@ -175,6 +174,14 @@
 
       stopEditing() {
         this.node.stopEditing()
+      },
+
+      handleMouseDown(event) {
+        if (!this.options.dnd) {
+          return
+        }
+
+        this.tree.vm.initDnd(this.node, event)
       }
     }
   }
