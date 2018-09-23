@@ -55,21 +55,6 @@
       new Vue({
         el: '#app',
         data: () => ({
-          /* example 0 */
-          selectedNode0: null,
-          treeData0: getTreeData0(),
-
-          /* example 1 */
-          treeData1: getTreeData1(),
-          treeOptions1: {
-            multiple: false,
-            keyboardNavigation: false,
-            parentSelect: true
-          },
-
-          /* example 2 */
-          treeData2: null,
-
           /* example 3 */
           treeData3: getTreeData2(),
           treeOptions3: {
@@ -96,102 +81,6 @@
         }
       })
 
-      function getTreeData0() {
-        return [
-          { text: 'Item 1' },
-          { text: 'Item 2', children: [
-            { text: 'Item 2.1' },
-            { text: 'Item 2.2' },
-            { text: 'Item 2.3' }
-          ]},
-          { text: 'Item 3' },
-          { text: 'Item 4' },
-          { text: 'Item 5' },
-        ]
-      }
-
-      function getTreeData1() {
-        return [{
-            text: 'Item 1',
-            state: {
-              selected: true
-            }
-          },
-
-          {
-            text: 'Item 2',
-            state: {
-              expanded: true
-            },
-            children: [{
-                text: '<b>Item 2.1</b>',
-                state: {
-                  checked: true
-                }
-              },
-              {
-                text: 'Item 2.2'
-              },
-              {
-                text: 'Item 2.3',
-                children: [{
-                    text: 'Item 2.2.3.1'
-                  },
-                  {
-                    text: 'Item 2.2.3.2'
-                  },
-                  {
-                    text: 'Item 2.2.3.3'
-                  },
-                  {
-                    text: 'Item 2.2.3.4',
-                    children: [{
-                        text: 'Item 2.2.3.4.1'
-                      },
-                      {
-                        text: 'Item 2.2.3.4.2'
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                text: 'Item 2.4'
-              }
-            ]
-          },
-
-          {
-            text: 'Item 3',
-            state: {
-              selected: true
-            }
-          },
-
-          {
-            text: 'Item 4'
-          },
-
-          {
-            text: 'Item 5',
-            state: {
-              expanded: true,
-              disabled: true
-            },
-            children: [{
-                text: 'Item 5.1'
-              },
-              {
-                text: 'Item 5.2'
-              },
-              {
-                text: 'Item 5.3'
-              }
-            ]
-          }
-        ]
-      }
-
       function getTreeData2() {
         return [
           {
@@ -200,6 +89,9 @@
             KIDS: [
               { MY_TEXT: 'Getting Started', OPTIONS: { checked: true } },
               { MY_TEXT: 'JavaScript Code Style', OPTIONS: { selected: true } },
+              { MY_TEXT: 'MVC Pattern' },
+              { MY_TEXT: 'MVP Pattern' },
+              { MY_TEXT: 'MVVM Pattern' },
               { MY_TEXT: 'The Good Parts', KIDS: [
                 { MY_TEXT: 'OBJECT ORIENTED', OPTIONS: { checked: true }  },
                 { MY_TEXT: 'ANONYMOUS FUNCTIONS', OPTIONS: { checked: true }  },

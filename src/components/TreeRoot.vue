@@ -4,7 +4,7 @@
       <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
     </template>
     <template v-else>
-      <ul class="tree-root">
+      <ul class="tree-root" @dragstart="onDragStart">
         <template v-if="opts.filter.plainList && matches.length > 0">
           <TreeNode
             v-for="node in matches"
@@ -137,9 +137,35 @@
   .tree.tree--draggable .tree-node:not(.selected) > .tree-content:hover {
     background: transparent;
   }
-
+/* 
   .tree.tree--draggable .tree-node.has-child > .tree-content:hover {
     border: 1px solid #d7e3f3;
+  } */
+
+  .drag-above,
+  .drag-below,
+  .drag-on {
+    position: relative;
+  }
+
+  .drag-on {
+    background: #cfe0f6;
+    outline: 1px solid #7baff2;
+  }
+
+  .drag-above::before, .drag-below::before {
+    background-color: rgb(51, 103, 214);
+    border: 3px solid rgb(51, 103, 214);
+    background-clip: padding-box;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-radius: 0;
+    box-sizing: border-box;
+    content: '';
+    display: block;
+    height: 8px;
+    width: 100%;
+    position: absolute;
   }
 
   .drag-above::before {
@@ -147,20 +173,8 @@
     transform: translateY(-50%);
   }
 
-  .drag-above::before, .drag-below::after {
-    background-clip: padding-box;
-    background-color: red;
-    border: 3px solid red;
-    border-bottom-color: transparent;
-    border-radius: 0;
-    border-top-color: transparent;
-    box-sizing: border-box;
-    content: '';
-    display: block;
-    height: 8px;
-    left: 0;
-    position: absolute;
-    right: 0;
-    z-index: 1;
+  .drag-below::before {
+    bottom: 0;
+    transform: translateY(50%);
   }
 </style>
