@@ -201,7 +201,7 @@
   .tree-content {
     display: flex;
     align-items: center;
-    padding: 4px;
+    padding: 3px;
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;

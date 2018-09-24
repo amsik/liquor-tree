@@ -28,5 +28,6 @@
     border-radius: 8px;
     background: #fff;
     transform: translate(-50%, -110%);
+    z-index: 10;
   }
 </style>
