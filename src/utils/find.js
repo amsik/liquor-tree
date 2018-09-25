@@ -1,4 +1,16 @@
-import striptags from 'striptags'
+function striptags (value) {
+  // ssr fix
+  if (!!document === false) {
+    return value
+  }
+
+  if (!striptags.__element) {
+    striptags.__element = document.createElement('div')
+  }
+
+  striptags.__element.innerHTML = value
+  return striptags.__element.innerText
+}
 
 function finder (criteria) {
   return function (node) {

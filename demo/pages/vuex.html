@@ -30,100 +30,86 @@
       <div class="examples">
         <div class="example">
           <div class="example-description">
-              <button @click="syncData">Sync Data</button>
-              <br />It will update the <b>complexity</b> property randomly.
+            Tree Module "A". Synchronizes with the neighbor (-------->)
           </div>
           <div class="example-tree">
             <tree
-              :options="options"
+              v-if="!loading"
+              :options="treeOptions1"
               ref="tree"
             >
-              <div slot-scope="{ node }" class="node-info">
-                <span class="node-name">{{ node.text }}</span>
-                <span class="node-complexity">{{ node.data.complexity }}</span>
-              </div>
             </tree>
+            <div v-else style="padding: 20px;">Loading...</div>
           </div>
         </div>
 
         <div class="example">
-          <div class="example-description">
-              Using Vuex Modules.
-              <button @click="syncData1">Sync Data</button>
-              <br />It will update the <b>complexity</b> property randomly.
+            <div class="example-description">
+              Tree Module "B". Does not synchronize with the neighbor (<-------)
+            </div>
+            <div class="example-tree">
+              <tree
+                :options="treeOptions2"
+                ref="tree"
+              >
+              </tree>
+            </div>
           </div>
-          <div class="example-tree">
-            <tree
-              :options="options1"
-              ref="tree"
-            >
-              <div slot-scope="{ node }" class="node-info">
-                <span class="node-name">{{ node.text }}</span>
-                <span class="node-complexity">{{ node.data.complexity }}</span>
-              </div>
-            </tree>
-          </div>
-        </div>
       </div>
     </div>
 
     <script>
-      const random = (max, min) => {
-        return Math.floor(Math.random() * ( max - min + 1 ) + min)
-      }
-
-      let mutations = {
-        initTree(state, treeData) {
-          state.tree.push(...treeData)
+      const moduleA = {
+        state: {
+          treeModuleA: []
         },
-
-        updateTree(state, newData) {
-          state.tree = newData
+        mutations: {
+          updateTreeModuleA(state, newTree) {
+            state.treeModuleA = newTree
+          }
         },
-        tt(state, aaa) {
-          state.bb = aaa;
+        actions: {
+          updateAllTrees(context, newTree) {
+            context.commit('updateTreeModuleA', newTree)
+          },
+          updateModuleA(context, newTree) {
+            context.commit('updateTreeModuleA', newTree)
+          }
+        },
+        getters: {
+          mySuperTreeA(state) {
+            return state.treeModuleA
+          }
         }
       }
 
-      let actions = {
-        initTree(store) {
-          return fetch('/assets/data/filtering-custom.json')
-            .then(r => r.json())
-            .then(data => store.commit('initTree', data))
+      const moduleB = {
+        state: {
+          treeModuleB: [{text: 123}]
+        },
+        mutations: {
+          updateTreeModuleB(state, newTree) {
+            state.treeModuleB = newTree
+          }
+        },  
+        actions: {
+          updateAllTrees(context, newTree) {
+            context.commit('updateTreeModuleB', newTree)
+          },
+          updateModuleB(context, newTree) {
+            context.commit('updateTreeModuleB', newTree)
+          }
+        },
+        getters: {
+          mySuperTreeB(state) {
+            return state.treeModuleB
+          }
         }
       }
 
-
-
-      const Store = new Vuex.Store(
-        Object.assign({
-            state: {
-              tree: []
-            }
-          }, {
-            actions
-          }, {
-            mutations
-          })
-      )
-
-      const StoreWithModules = new Vuex.Store({
+      const Store = new Vuex.Store({
         modules: {
-          treeModule: Object.assign({
-            state: {
-              tree: []
-            }
-          }, {
-            actions
-          }, {
-            mutations
-          }, {
-            getters: {
-              tree(state) {
-                return state.tree
-              }
-            }
-          })
+          moduleA, moduleB
         }
       })
 
@@ -131,55 +117,44 @@
         el: '#app',
         store: Store,
         data: () => ({
-          options: {
+          loading: true,
+
+          treeOptions1: {
             store: {
               store: Store,
-              key: 'tree',
-              mutations: ['initTree', 'updateTree']
-            },
-            checkbox: true
+              getter() {
+                return Store.getters.mySuperTreeA
+              },
+              dispatcher(tree) {
+                Store.dispatch('updateAllTrees', tree)
+              }
+            }
           },
-          options1: {
+
+          treeOptions2: {
             store: {
-              store: StoreWithModules,
-              getter: 'tree',
-              mutations: ['initTree', 'updateTree']
+              store: Store,
+              getter() {
+                return Store.getters.mySuperTreeB
+              },
+              dispatcher(tree) {
+                Store.dispatch('updateAllTrees', tree)
+              },
+              // (!!!!) to increase productivity
+              mutations: [
+                'updateTreeModuleA'
+              ]
             }
           }
         }),
 
-        mounted () {
-          this.$store.dispatch('initTree')
-
-          StoreWithModules.dispatch('initTree')
-        },
-
-        methods: {
-          randomComplexity(tree) {
-            tree = tree.map(function updater(t) {
-              t.data.complexity = random(-50, 50)
-              t.children = !t.children ? [] : t.children.map(c => {
-                c.data.complexity = random(-50, 50)
-                return c
-              })
-
-              return t
+        mounted() {
+          setTimeout(_ => {
+            fetch('/assets/data/filtering.json').then(r => r.json()).then(data => {
+              Store.dispatch('updateModuleA', data)
+              this.loading = false
             })
-
-            tree.push({ text: 'Extra text ' + Math.random(), data: { complexity: 0 } })
-
-            return tree
-          },
-
-          syncData () {
-            let { tree } = this.$store.state
-            this.$store.commit('updateTree', this.randomComplexity(tree))
-          },
-
-          syncData1 () {
-            let tree = StoreWithModules.getters.tree
-            StoreWithModules.commit('updateTree', this.randomComplexity(tree))
-          }
+          }, 1000)
         }
       })
     </script>
