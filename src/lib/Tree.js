@@ -44,6 +44,7 @@ export default class Tree {
 
   $emit (name, ...args) {
     this.vm.$emit(name, ...args)
+    this.vm.$emit('LIQUOR_NOISE')
   }
 
   _sort (source, compareFn, deep) {

@@ -1,4 +1,3 @@
-
 function striptags(value) {
   // ssr fix
   if (false === !!document) {

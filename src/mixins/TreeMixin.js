@@ -1,5 +1,6 @@
 import Tree from '@/lib/Tree'
 import initKeyboardNavigation from '@/utils/keyboardNavigation'
+import assert from '@/utils/assert'
 
 function initEvents (vm) {
   const { multiple, checkbox } = vm.opts
@@ -80,61 +81,29 @@ export default {
 
   methods: {
     connectStore (store) {
-      const { store: Store, key, getter } = store
-      const tree = this.tree
-      const modelParse = this.opts.modelParse
+      const { store: Store, mutations, getter, dispatcher } = store
 
-      const updateTree = data => {
-        this.tree.setModel(data)
+      assert(typeof getter === 'function', '`getter` must be a function')
+      assert(typeof dispatcher === 'function', '`dispatcher` must be a function')
+
+      if (undefined !== mutations) {
+        assert(Array.isArray(mutations), '`mutations` must be an array')
       }
-
-      const syncStates = (data = [], model) => {
-        data.forEach((el, i) => {
-          if (!model[i] || el.text != model[i].text) {
-            return
-          }
-
-          el.state = Object.assign({}, el.state, model[i].states)
-
-          if (el.children && el.children.length && model[i].children) {
-            syncStates(el.children, model[i].children)
-          }
-        })
-
-        return data
-      }
-
-      const applyState = (state) => {
-        const data = readState(Store)
-
-        updateTree(
-          syncStates(data, this.model)
-        )
-      }
-
-      const readState = (store, state) => {
-        if (getter) {
-          return store.getters[getter] || []
-        }
-
-        return store.state[key] || []
-      }
-
-      // actions must be an array
-      let { mutations } = store
-
-      if (mutations && !mutations.length) {
-        mutations = null
-      }
-
-      updateTree(readState(Store))
 
       Store.subscribe((action, state) => {
-        if (mutations && !mutations.includes(action.type)) {
-          return
+        if (!mutations) {
+          this.tree.setModel(getter())
+        } else if (mutations.includes(action.type)) {
+          this.tree.setModel(getter())
         }
+      })
 
-        applyState(state)
+      this.tree.setModel(getter())
+
+      this.$on('LIQUOR_NOISE', () => {
+        this.$nextTick(_ => {
+          dispatcher(this.toJSON())
+        })
       })
     },
 
