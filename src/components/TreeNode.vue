@@ -31,6 +31,15 @@
       </div>
     </div>
 
+    <div
+      @mouseenter.stop="tree.$emit('sa:hover', node, $event)"
+      @mouseleave.stop="tree.$emit('sa:unhover', node, $event)"
+      @mousedown="tree.$emit('sa:mousedown', node, $event)"
+      @mouseup="tree.$emit('sa:mouseup', node, $event)"
+      class="sub-area"
+      :style="{'margin-left': paddingLeft}">
+    </div>
+
     <transition name="l-fade">
       <ul
         v-if="hasChildren() && state.expanded"
@@ -46,14 +55,6 @@
           </node>
       </ul>
     </transition>
-
-    <div
-      @mouseenter.stop="tree.$emit('sa:hover', node, $event)"
-      @mouseleave.stop="tree.$emit('sa:unhover', node, $event)"
-      @mousedown="tree.$emit('sa:mousedown', node, $event)"
-      @mouseup="tree.$emit('sa:mouseup', node, $event)"
-      class="sub-area">
-    </div>
   </li>
 </template>
 
@@ -198,8 +199,9 @@
 
 <style>
   .sub-area {
-    width: 100%;
+    width: auto;
     height: 7px;
+    background: red;
   }
   .tree-node {
     white-space: nowrap;
