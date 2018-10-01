@@ -201,7 +201,6 @@
   .sub-area {
     width: auto;
     height: 7px;
-    background: red;
   }
   .tree-node {
     white-space: nowrap;
