@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :class="nodeClass">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @click.stop="select">
+    <div class="tree-content" :style="{'padding-left': paddingLeft}">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
@@ -14,18 +14,21 @@
         @mouseup.stop="check">
       </i>
 
-      <span
-        class="tree-anchor"
-        tabindex="1"
-        ref="anchor"
-        @focus="onNodeFocus"
-        @dblclick="tree.$emit('node:dblclick', node, $event)"
-        @mouseenter.stop="tree.$emit('node:hover', node, $event)"
-        @mouseleave.stop="tree.$emit('node:unhover', node, $event)"
-        @mousedown="tree.$emit('node:mousedown', node, $event)"
-        @mouseup="tree.$emit('node:mouseup', node, $event)">
-          <node-content :node="node" />
-      </span>
+      <div>
+        <span
+          class="tree-anchor"
+          tabindex="1"
+          ref="anchor"
+          @click.stop="select"
+          @focus="onNodeFocus"
+          @dblclick="tree.$emit('node:dblclick', node, $event)"
+          @mouseenter.stop="tree.$emit('node:hover', node, $event)"
+          @mouseleave.stop="tree.$emit('node:unhover', node, $event)"
+          @mousedown="tree.$emit('node:mousedown', node, $event)"
+          @mouseup="tree.$emit('node:mouseup', node, $event)">
+            <node-content :node="node" />
+        </span>
+      </div>
     </div>
 
     <transition name="l-fade">
@@ -43,6 +46,14 @@
           </node>
       </ul>
     </transition>
+
+    <div
+      @mouseenter.stop="tree.$emit('sa:hover', node, $event)"
+      @mouseleave.stop="tree.$emit('sa:unhover', node, $event)"
+      @mousedown="tree.$emit('sa:mousedown', node, $event)"
+      @mouseup="tree.$emit('sa:mouseup', node, $event)"
+      class="sub-area">
+    </div>
   </li>
 </template>
 
@@ -186,6 +197,10 @@
 </script>
 
 <style>
+  .sub-area {
+    width: 100%;
+    height: 7px;
+  }
   .tree-node {
     white-space: nowrap;
     display: flex;
