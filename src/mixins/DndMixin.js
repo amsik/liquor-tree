@@ -8,7 +8,7 @@ function isMovingStarted(event, start) {
   return Math.abs(event.clientX - start[0]) > 5 || Math.abs(event.clientY - start[1]) > 5
 }
 
-function getSelectedNode({path, target}) {
+function getSelectedNode({path}) {
   let className
   let i = 0
 
@@ -50,8 +50,22 @@ function updateHelperClasses(target, classes) {
     className += " " + classes
   }
 
-
   target.className = className.replace(/\s+/g, ' ')
+}
+
+function highlightDropDestination(e, element) {
+  const coords = element.getBoundingClientRect()
+  const nodeSection = coords.height / 3
+
+  let dropPosition = DropPosition.ON
+
+  if (coords.top + nodeSection >= e.clientY) {
+    dropPosition = DropPosition.ABOVE
+  } else if (coords.top + nodeSection * 2 <= e.clientY) (
+    dropPosition = DropPosition.BELOW
+  )
+
+  updateHelperClasses(element, dropPosition)
 }
 
 export default {
@@ -61,23 +75,31 @@ export default {
     },
 
     startDragging(node, event) {
-      this.__startDragPosition = [event.clientX, event.clientY]
-      this.__possibleDragNode = node
+      this.$$startDragPosition = [event.clientX, event.clientY]
+      this.$$possibleDragNode = node
 
       this.initDragListeners()
     },
 
     initDragListeners() {
       let onMouseUp = (e) => {
-        if (!this.__startDragPosition) {
+        if (!this.$$startDragPosition) {
           e.stopPropagation()
         }
 
-        if (this.__dropDestination) {
-          updateHelperClasses(this.__dropDestination)
+        if (this.$$dropDestination) {
+          updateHelperClasses(this.$$dropDestination.vm.$el, null)
+
+          const draggableNode = this.draggableNode.node.toJSON()
+          draggableNode.state.selected = false
+
+          this.$$dropDestination.append(draggableNode)
+          this.$$dropDestination = null
+
+          this.draggableNode.node.remove()
         }
 
-        this.__possibleDragNode = null
+        this.$$possibleDragNode = null
         this.$set(this, 'draggableNode', null)
 
         window.removeEventListener('mouseup', onMouseUp, true)
@@ -85,15 +107,16 @@ export default {
       }
 
       let onMouseMove = (e) => {
-        if (this.__startDragPosition && !isMovingStarted(e, this.__startDragPosition)) {
+        if (this.$$startDragPosition && !isMovingStarted(e, this.$$startDragPosition)) {
           return
         } else {
-          this.__startDragPosition = null
+          this.$$startDragPosition = null
         }
 
-        if (this.__possibleDragNode) {
-          this.$set(this, 'draggableNode', { node: this.__possibleDragNode, left: 0, top: 0 })
-          this.__possibleDragNode = null
+        if (this.$$possibleDragNode) {
+          this.$set(this, 'draggableNode', { node: this.$$possibleDragNode, left: 0, top: 0 })
+          this.$$possibleDragNode.select()
+          this.$$possibleDragNode = null
         }
 
         this.draggableNode.left = e.clientX
@@ -101,33 +124,27 @@ export default {
 
         const dropDestination = getDropDestination(e)
 
-        updateHelperClasses(this.__dropDestination, null)
+        if (this.$$dropDestination) {
+          updateHelperClasses(this.$$dropDestination.vm.$el, null)
+        }
 
-        this.__dropDestination = dropDestination
-        this.highlightDropDestination(e)
+        if (dropDestination) {
+          const dropDestinationId = dropDestination.getAttribute('data-id')
+
+          if (this.draggableNode.node.id === dropDestinationId) {
+            return
+          }
+
+          if (!this.$$dropDestination || this.$$dropDestination.id !== dropDestinationId) {
+            this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
+          }
+
+          highlightDropDestination(e, dropDestination)
+        }
       }
 
       window.addEventListener('mouseup', onMouseUp, true)
       window.addEventListener('mousemove', onMouseMove, true)
-    },
-
-    highlightDropDestination(e) {
-      if (!this.__dropDestination) {
-        return
-      }
-
-      const coords = this.__dropDestination.getBoundingClientRect()
-      const nodeSection = coords.height / 3
-
-      let dropPosition = DropPosition.ON
-
-      if (coords.top + nodeSection >= e.clientY) {
-        dropPosition = DropPosition.ABOVE
-      } else if (coords.top + nodeSection * 2 <= e.clientY) (
-        dropPosition = DropPosition.BELOW
-      )
-
-      updateHelperClasses(this.__dropDestination, dropPosition)
     }
   }
 };

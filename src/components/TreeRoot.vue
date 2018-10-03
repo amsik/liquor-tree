@@ -145,12 +145,12 @@
     z-index: 1;
   }
 
-  .drag-on {
+  .drag-on > .tree-content {
     background: #cfe0f6;
     outline: 1px solid #7baff2;
   }
 
-  .drag-above::before, .drag-below::after {
+  .drag-above > .tree-content::before, .drag-below > .tree-content::after {
     display: block;
     content: '';
     position: absolute;
@@ -167,7 +167,7 @@
     border-radius: 0;
   }
 
-  .drag-above::before {
+  .drag-above > .tree-content::before {
     top: 0;
     transform: translateY(-50%);
   }

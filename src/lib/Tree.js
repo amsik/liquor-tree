@@ -643,6 +643,19 @@ export default class Tree {
     return new Selection(this, [result[0]])
   }
 
+  getNodeById (id) {
+    let targetNode = null
+
+    recurseDown(this.model, node => {
+      if (node.id === id) {
+        targetNode = node
+        return false
+      }
+    })
+
+    return targetNode
+  }
+
   getNode (node) {
     if (node instanceof Node) {
       return node
