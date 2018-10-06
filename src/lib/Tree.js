@@ -43,6 +43,10 @@ export default class Tree {
   }
 
   $emit (name, ...args) {
+    if (this.__silence) {
+      return
+    }
+
     this.vm.$emit(name, ...args)
     this.vm.$emit('LIQUOR_NOISE')
   }
@@ -524,9 +528,10 @@ export default class Tree {
       node
     )
 
+    node.parent = targetNode.parent
     this.$emit('node:added', node)
 
-    return sourceNode
+    return node
   }
 
   after (targetNode, sourceNode) {
@@ -545,9 +550,10 @@ export default class Tree {
       node
     )
 
+    node.parent = targetNode.parent
     this.$emit('node:added', node)
 
-    return sourceNode
+    return node
   }
 
   addNode (node) {

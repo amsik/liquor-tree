@@ -66,6 +66,8 @@ function highlightDropDestination(e, element) {
   )
 
   updateHelperClasses(element, dropPosition)
+
+  return dropPosition
 }
 
 export default {
@@ -82,6 +84,8 @@ export default {
     },
 
     initDragListeners() {
+      let dropPosition
+
       let onMouseUp = (e) => {
         if (!this.$$startDragPosition) {
           e.stopPropagation()
@@ -89,14 +93,17 @@ export default {
 
         if (this.$$dropDestination) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
+          this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
 
-          const draggableNode = this.draggableNode.node.toJSON()
-          draggableNode.state.selected = false
-
-          this.$$dropDestination.append(draggableNode)
           this.$$dropDestination = null
 
-          this.draggableNode.node.remove()
+          // const draggableNode = this.draggableNode.node.toJSON()
+          // draggableNode.state.selected = false
+
+          // this.$$dropDestination.append(draggableNode)
+          // this.$$dropDestination = null
+
+          // this.draggableNode.node.remove()
         }
 
         this.$$possibleDragNode = null
@@ -115,7 +122,7 @@ export default {
 
         if (this.$$possibleDragNode) {
           this.$set(this, 'draggableNode', { node: this.$$possibleDragNode, left: 0, top: 0 })
-          this.$$possibleDragNode.select()
+          this.$$possibleDragNode.startDragging()
           this.$$possibleDragNode = null
         }
 
@@ -139,7 +146,7 @@ export default {
             this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
           }
 
-          highlightDropDestination(e, dropDestination)
+          dropPosition = highlightDropDestination(e, dropDestination)
         }
       }
 

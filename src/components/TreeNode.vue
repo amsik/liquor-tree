@@ -75,7 +75,8 @@
           'expanded': hasChildren && state.expanded,
           'selected': state.selected,
           'disabled': state.disabled,
-          'matched': state.matched
+          'matched': state.matched,
+          'dragging': state.dragging
         }
 
         if (this.options.checkbox) {
@@ -328,6 +329,11 @@
     opacity: .6;
     cursor: default;
     outline: none;
+  }
+
+  .tree-node.dragging > .tree-content {
+    background: transparent;
+    opacity: 0.5;
   }
 
   .tree-input {

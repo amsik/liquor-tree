@@ -391,6 +391,37 @@ export default class Node {
     return this.expand()
   }
 
+  startDragging () {
+    if (this.disabled() || false === this.state('draggable') || this.state('dragging')) {
+      return false
+    }
+
+    this.state('dragging', true)
+    this.$emit('dragging:start')
+
+    return true
+  }
+
+  finishDragging (destination, destinationPosition) {
+    this.tree.__silence = true
+
+    const clone = this.clone()
+
+    if ('drag-on' === destinationPosition) {
+      this.tree.append(destination, clone)
+    } else if ('drag-below' === destinationPosition) {
+      this.tree.after(destination, clone)
+    } else if ('drag-above' === destinationPosition) {
+      this.tree.before(destination, clone)
+    }
+
+    clone.parent = destination.parent
+
+    this.remove()
+    this.tree.__silence = false
+    this.state('dragging', false)
+  }
+
   startEditing () {
     if (this.disabled()) {
       return false
@@ -551,12 +582,27 @@ export default class Node {
     return this.parent === null
   }
 
+  clone () {
+    const node = new Node(
+      this.tree,
+      this.toJSON()
+    )
+
+    node.children = node.children.map(child => {
+      const c = new Node(this.tree, child)
+      c.parent = node
+      return c
+    })
+
+    return node
+  }
+
   toJSON () {
     return {
       text: this.text,
       data: this.data,
       state: this.states,
-      children: this.children
+      children: this.children.map(node => node.toJSON())
     }
   }
 }

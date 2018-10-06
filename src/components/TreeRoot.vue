@@ -146,7 +146,7 @@
   }
 
   .drag-on > .tree-content {
-    background: #cfe0f6;
+    background: #fafcff;
     outline: 1px solid #7baff2;
   }
 
@@ -172,7 +172,7 @@
     transform: translateY(-50%);
   }
 
-  .drag-below::after {
+  .drag-below > .tree-content::after {
     bottom: 0;
     transform: translateY(50%);
   }
