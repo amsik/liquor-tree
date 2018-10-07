@@ -24,7 +24,7 @@
   .tree-dragnode {
     padding: 10px;
     border: 1px solid #e7eef7;
-    position: absolute;
+    position: fixed;
     border-radius: 8px;
     background: #fff;
     transform: translate(-50%, -110%);

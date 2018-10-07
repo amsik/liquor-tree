@@ -48,7 +48,10 @@ export default class Tree {
     }
 
     this.vm.$emit(name, ...args)
-    this.vm.$emit('LIQUOR_NOISE')
+
+    if (this.options.store) {
+      this.vm.$emit('LIQUOR_NOISE')
+    }
   }
 
   _sort (source, compareFn, deep) {

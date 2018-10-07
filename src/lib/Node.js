@@ -392,10 +392,16 @@ export default class Node {
   }
 
   startDragging () {
-    if (this.disabled() || false === this.state('draggable') || this.state('dragging')) {
+    if (this.disabled() || this.state('draggable') === false || this.state('dragging')) {
       return false
     }
 
+    // root element
+    if (this.isRoot() && this.tree.model.length === 1) {
+      return false
+    }
+
+    this.select()
     this.state('dragging', true)
     this.$emit('dragging:start')
 
@@ -403,23 +409,33 @@ export default class Node {
   }
 
   finishDragging (destination, destinationPosition) {
-    this.tree.__silence = true
-
+    const tree = this.tree
     const clone = this.clone()
+    const parent = this.parent
 
-    if ('drag-on' === destinationPosition) {
-      this.tree.append(destination, clone)
-    } else if ('drag-below' === destinationPosition) {
-      this.tree.after(destination, clone)
-    } else if ('drag-above' === destinationPosition) {
-      this.tree.before(destination, clone)
+    tree.__silence = true
+
+    if (destinationPosition === 'drag-on') {
+      tree.append(destination, clone)
+    } else if (destinationPosition === 'drag-below') {
+      tree.after(destination, clone)
+    } else if (destinationPosition === 'drag-above') {
+      tree.before(destination, clone)
     }
 
-    clone.parent = destination.parent
+    if (clone.state('selected')) {
+      tree.selectedNodes.remove(this)
+      tree.selectedNodes.add(clone)
+    }
+
+    destination.refreshIndeterminateState()
 
     this.remove()
-    this.tree.__silence = false
+
+    parent.refreshIndeterminateState()
+    tree.__silence = false
     this.state('dragging', false)
+    this.$emit('dragging:finish')
   }
 
   startEditing () {
@@ -591,6 +607,7 @@ export default class Node {
     node.children = node.children.map(child => {
       const c = new Node(this.tree, child)
       c.parent = node
+      c.children = c.children.map(child => new Node(this.tree, child))
       return c
     })
 

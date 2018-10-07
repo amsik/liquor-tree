@@ -1,6 +1,6 @@
-function striptags(value) {
+function striptags (value) {
   // ssr fix
-  if (false === !!document) {
+  if (!!document === false) {
     return value
   }
 

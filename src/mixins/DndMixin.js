@@ -4,15 +4,15 @@ const DropPosition = {
   ON: 'drag-on'
 }
 
-function isMovingStarted(event, start) {
+function isMovingStarted (event, start) {
   return Math.abs(event.clientX - start[0]) > 5 || Math.abs(event.clientY - start[1]) > 5
 }
 
-function getSelectedNode({path}) {
+function getSelectedNode ({ path }) {
   let className
   let i = 0
 
-  for (; i < path.length; i++ ) {
+  for (; i < path.length; i++) {
     className = path[i].className || ''
 
     if (/tree-node/.test(className)) {
@@ -23,7 +23,7 @@ function getSelectedNode({path}) {
   return null
 }
 
-function getDropDestination(e) {
+function getDropDestination (e) {
   const selectedNode = getSelectedNode(e)
 
   if (!selectedNode) {
@@ -33,7 +33,7 @@ function getDropDestination(e) {
   return selectedNode
 }
 
-function updateHelperClasses(target, classes) {
+function updateHelperClasses (target, classes) {
   if (!target) {
     return
   }
@@ -41,19 +41,19 @@ function updateHelperClasses(target, classes) {
   let className = target.className
 
   if (!classes) {
-    for (let i in DropPosition) {
+    for (const i in DropPosition) {
       className = className.replace(DropPosition[i], '')
     }
 
     className.replace('dragging', '')
   } else if (!new RegExp(classes).test(className)) {
-    className += " " + classes
+    className += ' ' + classes
   }
 
   target.className = className.replace(/\s+/g, ' ')
 }
 
-function highlightDropDestination(e, element) {
+function highlightDropDestination (e, element) {
   const coords = element.getBoundingClientRect()
   const nodeSection = coords.height / 3
 
@@ -61,9 +61,11 @@ function highlightDropDestination(e, element) {
 
   if (coords.top + nodeSection >= e.clientY) {
     dropPosition = DropPosition.ABOVE
-  } else if (coords.top + nodeSection * 2 <= e.clientY) (
-    dropPosition = DropPosition.BELOW
-  )
+  } else if (coords.top + nodeSection * 2 <= e.clientY) {
+    (
+      dropPosition = DropPosition.BELOW
+    )
+  }
 
   updateHelperClasses(element, dropPosition)
 
@@ -72,38 +74,30 @@ function highlightDropDestination(e, element) {
 
 export default {
   methods: {
-    onDragStart(e) {
+    onDragStart (e) {
       e.preventDefault()
     },
 
-    startDragging(node, event) {
+    startDragging (node, event) {
       this.$$startDragPosition = [event.clientX, event.clientY]
       this.$$possibleDragNode = node
 
       this.initDragListeners()
     },
 
-    initDragListeners() {
+    initDragListeners () {
       let dropPosition
 
-      let onMouseUp = (e) => {
+      const onMouseUp = (e) => {
         if (!this.$$startDragPosition) {
           e.stopPropagation()
         }
 
         if (this.$$dropDestination) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
+
           this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
-
           this.$$dropDestination = null
-
-          // const draggableNode = this.draggableNode.node.toJSON()
-          // draggableNode.state.selected = false
-
-          // this.$$dropDestination.append(draggableNode)
-          // this.$$dropDestination = null
-
-          // this.draggableNode.node.remove()
         }
 
         this.$$possibleDragNode = null
@@ -113,7 +107,7 @@ export default {
         window.removeEventListener('mousemove', onMouseMove, true)
       }
 
-      let onMouseMove = (e) => {
+      const onMouseMove = (e) => {
         if (this.$$startDragPosition && !isMovingStarted(e, this.$$startDragPosition)) {
           return
         } else {
@@ -154,4 +148,4 @@ export default {
       window.addEventListener('mousemove', onMouseMove, true)
     }
   }
-};
+}

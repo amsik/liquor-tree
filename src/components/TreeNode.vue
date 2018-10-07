@@ -331,11 +331,6 @@
     outline: none;
   }
 
-  .tree-node.dragging > .tree-content {
-    background: transparent;
-    opacity: 0.5;
-  }
-
   .tree-input {
     display: block;
     width: 100%;

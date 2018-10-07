@@ -8,9 +8,10 @@ const nodeStates = {
   expanded: false,
   disabled: false,
   visible: true,
-  matched: false,
   indeterminate: false,
-  editable: true
+  matched: false,
+  editable: true,
+  dragging: false
 }
 
 const tree = {}

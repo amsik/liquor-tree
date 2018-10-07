@@ -9,7 +9,7 @@ export function recurseDown (obj, fn) {
   res = fn(obj)
 
   // Recurse children
-  if (res !== false && obj.hasChildren()) {
+  if (res !== false && obj.children && obj.children.length) {
     res = recurseDown(obj.children, fn)
   }
 
