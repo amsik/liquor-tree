@@ -391,6 +391,53 @@ export default class Node {
     return this.expand()
   }
 
+  startDragging () {
+    if (this.disabled() || this.state('draggable') === false || this.state('dragging')) {
+      return false
+    }
+
+    // root element
+    if (this.isRoot() && this.tree.model.length === 1) {
+      return false
+    }
+
+    this.select()
+    this.state('dragging', true)
+    this.$emit('dragging:start')
+
+    return true
+  }
+
+  finishDragging (destination, destinationPosition) {
+    const tree = this.tree
+    const clone = this.clone()
+    const parent = this.parent
+
+    tree.__silence = true
+
+    if (destinationPosition === 'drag-on') {
+      tree.append(destination, clone)
+    } else if (destinationPosition === 'drag-below') {
+      tree.after(destination, clone)
+    } else if (destinationPosition === 'drag-above') {
+      tree.before(destination, clone)
+    }
+
+    if (clone.state('selected')) {
+      tree.selectedNodes.remove(this)
+      tree.selectedNodes.add(clone)
+    }
+
+    destination.refreshIndeterminateState()
+
+    this.remove()
+
+    parent.refreshIndeterminateState()
+    tree.__silence = false
+    this.state('dragging', false)
+    this.$emit('dragging:finish')
+  }
+
   startEditing () {
     if (this.disabled()) {
       return false
@@ -551,12 +598,28 @@ export default class Node {
     return this.parent === null
   }
 
+  clone () {
+    const node = new Node(
+      this.tree,
+      this.toJSON()
+    )
+
+    node.children = node.children.map(child => {
+      const c = new Node(this.tree, child)
+      c.parent = node
+      c.children = c.children.map(child => new Node(this.tree, child))
+      return c
+    })
+
+    return node
+  }
+
   toJSON () {
     return {
       text: this.text,
       data: this.data,
       state: this.states,
-      children: this.children
+      children: this.children.map(node => node.toJSON())
     }
   }
 }

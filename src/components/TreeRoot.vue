@@ -1,12 +1,12 @@
 <template>
-  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading}">
+  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
       <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
     </template>
     <template v-else>
-      <ul class="tree-root">
+      <ul class="tree-root" @dragstart="onDragStart">
         <template v-if="opts.filter.plainList && matches.length > 0">
-          <node
+          <TreeNode
             v-for="node in matches"
             v-if="node.visible()"
 
@@ -16,7 +16,7 @@
           />
         </template>
         <template v-else>
-          <node
+          <TreeNode
             v-for="node in model"
             v-if="node.visible()"
 
@@ -27,12 +27,16 @@
         </template>
       </ul>
     </template>
+
+    <DraggableNode v-if="draggableNode" :target="draggableNode" />
   </div>
 </template>
 
 <script>
   import TreeNode from '@/components/TreeNode'
+  import DraggableNode from '@/components/DraggableNode'
   import TreeMixin from '@/mixins/TreeMixin'
+  import TreeDnd from '@/mixins/DndMixin'
   import Tree from '@/lib/Tree'
 
   const defaults = {
@@ -46,6 +50,7 @@
     fetchData: null,
     propertyNames: null,
     deletion: false,
+    dnd: false,
     onFetchError: function(err) { throw err }
   }
 
@@ -61,10 +66,11 @@
   export default {
     name: 'Tree',
     components: {
-      'node': TreeNode
+      TreeNode,
+      DraggableNode
     },
 
-    mixins: [TreeMixin],
+    mixins: [TreeMixin, TreeDnd],
 
     provide: _ => ({
       tree: null
@@ -104,7 +110,8 @@
         tree: null,
         loading: false,
         opts,
-        matches: []
+        matches: [],
+        draggableNode: null
       }
     }
   }
@@ -125,5 +132,48 @@
   .tree > .tree-filter-empty {
     padding: 3px;
     box-sizing: border-box;
+  }
+
+  .tree.tree--draggable .tree-node:not(.selected) > .tree-content:hover {
+    background: transparent;
+  }
+
+  .drag-above,
+  .drag-below,
+  .drag-on {
+    position: relative;
+    z-index: 1;
+  }
+
+  .drag-on > .tree-content {
+    background: #fafcff;
+    outline: 1px solid #7baff2;
+  }
+
+  .drag-above > .tree-content::before, .drag-below > .tree-content::after {
+    display: block;
+    content: '';
+    position: absolute;
+    height: 8px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    background-color: #3367d6;
+    border: 3px solid #3367d6;
+    background-clip: padding-box;
+    border-bottom-color: transparent;
+    border-top-color: transparent;
+    border-radius: 0;
+  }
+
+  .drag-above > .tree-content::before {
+    top: 0;
+    transform: translateY(-50%);
+  }
+
+  .drag-below > .tree-content::after {
+    bottom: 0;
+    transform: translateY(50%);
   }
 </style>

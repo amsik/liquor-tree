@@ -35,7 +35,7 @@
             </p>
 
             <p v-if="treeModel">
-              <b>Checked: </b>  {{ treeModel.checked.map(el => el.text) }}
+              <b>Checked: </b>  {{ treeModel.checked.map(el => getFullPath(el)) }}
             </p>
           </div>
           <div class="example-tree">
@@ -80,6 +80,16 @@
             autoCheckChildren: false
           },
         }),
+
+        methods: {
+          getFullPath(node) {
+            const fullPath = [node.text]
+
+            node.recurseUp(parentEl => fullPath.unshift(parentEl.text))
+
+            return fullPath.join('->')
+          }
+        },
 
         mounted() {
           const tree1 = this.$refs.tree1

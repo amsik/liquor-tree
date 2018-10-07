@@ -43,8 +43,15 @@ export default class Tree {
   }
 
   $emit (name, ...args) {
+    if (this.__silence) {
+      return
+    }
+
     this.vm.$emit(name, ...args)
-    this.vm.$emit('LIQUOR_NOISE')
+
+    if (this.options.store) {
+      this.vm.$emit('LIQUOR_NOISE')
+    }
   }
 
   _sort (source, compareFn, deep) {
@@ -524,9 +531,10 @@ export default class Tree {
       node
     )
 
+    node.parent = targetNode.parent
     this.$emit('node:added', node)
 
-    return sourceNode
+    return node
   }
 
   after (targetNode, sourceNode) {
@@ -545,9 +553,10 @@ export default class Tree {
       node
     )
 
+    node.parent = targetNode.parent
     this.$emit('node:added', node)
 
-    return sourceNode
+    return node
   }
 
   addNode (node) {
@@ -641,6 +650,19 @@ export default class Tree {
     }
 
     return new Selection(this, [result[0]])
+  }
+
+  getNodeById (id) {
+    let targetNode = null
+
+    recurseDown(this.model, node => {
+      if (node.id === id) {
+        targetNode = node
+        return false
+      }
+    })
+
+    return targetNode
   }
 
   getNode (node) {

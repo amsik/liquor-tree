@@ -1,5 +1,5 @@
 <template>
-  <li class="tree-node" :class="nodeClass">
+  <li class="tree-node" :data-id="node.id" :class="nodeClass" @mousedown.stop="handleMouseDown">
     <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
       <i
         class="tree-arrow"
@@ -14,15 +14,14 @@
         @mouseup.stop="check">
       </i>
 
-      <a
-        href="javascript:void(0)"
+      <span
         class="tree-anchor"
-        tabindex="1"
+        tabindex="-1"
         ref="anchor"
         @focus="onNodeFocus"
         @dblclick="tree.$emit('node:dblclick', node)">
           <node-content :node="node" />
-      </a>
+      </span>
     </div>
 
     <transition name="l-fade">
@@ -76,7 +75,8 @@
           'expanded': hasChildren && state.expanded,
           'selected': state.selected,
           'disabled': state.disabled,
-          'matched': state.matched
+          'matched': state.matched,
+          'dragging': state.dragging
         }
 
         if (this.options.checkbox) {
@@ -175,6 +175,14 @@
 
       stopEditing() {
         this.node.stopEditing()
+      },
+
+      handleMouseDown(event) {
+        if (!this.options.dnd) {
+          return
+        }
+
+        this.tree.vm.startDragging(this.node, event)
       }
     }
   }
@@ -194,7 +202,7 @@
   .tree-content {
     display: flex;
     align-items: center;
-    padding: 4px;
+    padding: 3px;
     cursor: pointer;
     width: 100%;
     box-sizing: border-box;

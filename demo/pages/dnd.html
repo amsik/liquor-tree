@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Liquor Tree: Drag & Drop</title>
+    <link rel="stylesheet" href="../assets/style.css">
+    <script src="../assets/menu.js"></script>
+
+    <!-- first import Vue -->
+    <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+    <script src="../assets/vue.js"></script>
+    <script src="/liquor-tree.umd.js"></script>
+
+
+    <style>
+      .demo-tree {
+        width: 50%;
+      }
+
+      .tree.tree-loading {
+        width: 300px;
+        height: 300px;
+        background: #fff no-repeat url(/assets/img/loading.gif) center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="hello">
+        Drag & Drop.
+    </div>
+
+    <div id="app">
+      <div class="examples">
+        <div class="example">
+          <div class="example-description">
+            <p>Overriding default structure of tree data</p>
+          </div>
+
+          <div class="example-tree">
+            <tree
+              :data="treeData3"
+              :options="treeOptions3"
+            >
+              <div class="tree-scope" slot-scope="{ node }">
+                - {{ node.text }} -
+              </div>
+            </tree>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      new Vue({
+        el: '#app',
+        data: () => ({
+          /* example 3 */
+          treeData3: getTreeData2(),
+          treeOptions3: {
+            propertyNames: {
+              text: 'MY_TEXT',
+              children: 'KIDS',
+              state: 'OPTIONS'
+            },
+            deletion: true,
+            dnd: true,
+            checkbox: true
+          }
+        }),
+
+        methods: {
+          initTree2() {
+            this.treeData2 = new Promise(resolve => {
+              setTimeout(() => resolve(getTreeData1()), 2600)
+            })
+
+            this.treeData2.then(data => {
+              data[0].state = {}
+            })
+          }
+        }
+      })
+
+      function getTreeData2() {
+        return [
+          {
+            MY_TEXT: 'JS: The Right Way',
+            OPTIONS: { expanded: true },
+            KIDS: [
+              { MY_TEXT: 'Getting Started', OPTIONS: { checked: true, draggable: false } },
+              { MY_TEXT: 'JavaScript Code Style', OPTIONS: { selected: true } },
+              { MY_TEXT: 'MVC Pattern' },
+              { MY_TEXT: 'MVP Pattern' },
+              { MY_TEXT: 'MVVM Pattern' },
+              { MY_TEXT: 'The Good Parts', KIDS: [
+                { MY_TEXT: 'OBJECT ORIENTED', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'ANONYMOUS FUNCTIONS', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'FUNCTIONS AS FIRST-CLASS OBJECTS', OPTIONS: { checked: true }  },
+                { MY_TEXT: 'LOOSE TYPING', OPTIONS: { checked: true }  }
+              ]},
+              { MY_TEXT: 'Patterns', KIDS: [
+                { MY_TEXT: 'DESIGN PATTERNS', OPTIONS: { expanded: true }, KIDS: [
+                  { MY_TEXT: 'Creational Design Patterns', KIDS: [
+                    { MY_TEXT: 'Factory' },
+                    { MY_TEXT: 'Prototype' },
+                    { MY_TEXT: 'Mixin' },
+                    { MY_TEXT: 'Singleton' }
+                  ]},
+                  { MY_TEXT: 'Structural Design Patterns'}
+                ]},
+                { MY_TEXT: 'MV* PATTERNS', cildren: [
+                  { MY_TEXT: 'MVC Pattern' },
+                  { MY_TEXT: 'MVP Pattern' },
+                  { MY_TEXT: 'MVVM Pattern' }
+                ]}
+              ]}
+            ]
+          }
+        ]
+      }
+    </script>
+
+  </body>
+</html>

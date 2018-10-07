@@ -1,11 +1,11 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.33",
+  "version": "0.2.34",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "library": "LiquorTree",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rollup -c -w rollup.config.js",
+    "dev": "cross-env NODE_ENV=development rollup -w -c rollup.config.js",
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "lint": "eslint --fix src test",
     "test": "npm run lint && npm run unit",
@@ -31,29 +31,29 @@
     "dist/*.js"
   ],
   "devDependencies": {
-    "@storybook/addon-notes": "^3.4.0",
-    "@storybook/addon-options": "^3.4.0",
-    "@storybook/vue": "^3.3.15",
-    "@vue/test-utils": "^1.0.0-beta.12",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.4.3",
+    "@storybook/addon-notes": "^3.4.11",
+    "@storybook/addon-options": "^3.4.11",
+    "@storybook/vue": "^3.4.11",
+    "@vue/test-utils": "^1.0.0-beta.25",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^22.4.4",
     "babel-plugin-transform-builtin-extend": "^1.1.2",
-    "babel-preset-env": "^1.6.1",
-    "cross-env": "^5.1.3",
+    "babel-preset-env": "^1.7.0",
+    "cross-env": "^5.2.0",
     "eslint": "^4.19.1",
-    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jest": "^21.22.1",
     "eslint-plugin-vue-libs": "^2.1.0",
-    "jest": "^22.4.3",
-    "rollup": "^0.55.5",
+    "jest": "^22.4.4",
+    "rollup": "^0.66.2",
     "rollup-plugin-alias": "^1.4.0",
-    "rollup-plugin-buble": "^0.19.1",
+    "rollup-plugin-buble": "^0.19.2",
     "rollup-plugin-serve": "^0.4.2",
     "rollup-plugin-uglify": "^3.0.0",
     "rollup-plugin-vue": "^3.0.0",
-    "vue": "^2.5.16",
-    "vue-jest": "^2.3.0",
-    "vue-loader": "^14.2.2",
-    "vue-template-compiler": "^2.5.16"
+    "vue": "^2.5.17",
+    "vue-jest": "^2.6.0",
+    "vue-loader": "^14.2.3",
+    "vue-template-compiler": "^2.5.17"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -66,6 +66,7 @@
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
       ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    }
+    },
+    "testEnvironment": "node"
   }
 }
