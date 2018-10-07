@@ -5,8 +5,8 @@ id: index
 
 ## Introduction
 
-This library allows you to present hierarchically organized data in a nice and logical manner based on [VueJS](http://vuejs.org) framework.
-There are lots of libraries but always something was missing (in my humble opinion). It is an attempt to make a __perfect__ tree.
+This library allows you to present hierarchically organized data in a nice and logical manner based on the [VueJS](http://vuejs.org) framework.
+There are lots of libraries but there was always something from each (in my humble opinion). It is an attempt to make a __perfect__ tree.
 
 `Just try it. The tree you were waiting for!`
 
@@ -30,13 +30,12 @@ There are lots of libraries but always something was missing (in my humble opini
 - npm: `$ npm install --save liquor-tree`
 - Yarn: `$ yarn add liquor-tree`
 
-It has to be installed to VueJS instance. Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if it needs of course).
+It has to be installed to the VueJS instance. Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if needed, of course).
 
-You no need to care about styles, they are automatically appended to the document.
+You don't need to care about styles, they are automatically appended to the document.
 
-
-**When used with a module system there are 3 ways to registrate the component (maybe more... I don't know).
-Okay. It's our ways:**
+__When used with a module system there are 3 ways to register the component (maybe more... I don't know).
+Okay. It's our ways:__
 
 ``` javascript
 import Vue from 'Vue'
@@ -64,9 +63,9 @@ export default {
 }
 ```
 
-To registrate the library you can choose between 3 ways I mentioned before.
+To register the library you can choose between the 3 methods I mention above.
 
-**When used directly in browser you are able to include `liquor-tree` via CND:**
+**When used directly in browser you can include `liquor-tree` via CND:**
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
@@ -76,14 +75,14 @@ To registrate the library you can choose between 3 ways I mentioned before.
 
 | Name                   | Type         |  Default  | Description |
 |------------------------|:------------:|:---------:|-------------|
-| **multiple**           | Boolean   | true    | Allows to select more that one node.  |
-| **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every nodes            |
-| **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicking either text or checkbox |
-| **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same 'checked' state as their parent. |
+| **multiple**           | Boolean   | true    | Allows to select more than one node.  |
+| **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every node           |
+| **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicks either text or checkbox |
+| **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same `checked` state as their parent. |
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
-| **propertyNames**      | Object    | -       | This options allows to redefine default tree's structure. [See example above](#Redefine-Structure) |
-| **deletion**           | Boolean	&#124; Function | false | If **keyboardNavigation** is false - this property is ignoring. This property defined deletion behaviour. [See example](#Keyboard-Navigation) |
+| **propertyNames**      | Object    | -       | This options allows the default tree's structure to be redefined. [See example](#Redefine-Structure) |
+| **deletion**           | Boolean	&#124; Function | false | If **keyboardNavigation** is false this property is ignored. This property defines deletion behaviour. [See example](#Keyboard-Navigation) |
 | **fetchData**         | Object | - | See [guide](#Async-Data) |
 
 
@@ -91,8 +90,8 @@ To registrate the library you can choose between 3 ways I mentioned before.
 
 ### Structure
 
-The component has only two props: **data** and **options**. More about props read [VueJS documentation](https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props)
-Actually more. See [filtering](#Filtering)
+The component has only two props: **data** and **options**. For more information about props read [VueJS documentation](https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props).
+Additionally, see [filtering](#Filtering).
 
 - property **options** - This property defines tree behavior. See [Component Options](#Component-Options)
 - property **data** - Array-like object that defines tree nodes
@@ -101,7 +100,7 @@ Property **data** has its own structure for every node:
 
 ``` javascript
 {
-  "id": Int,
+  "id": Number,
   "text": String,
   "data": Object,
   "children": Array,
@@ -110,13 +109,13 @@ Property **data** has its own structure for every node:
 ```
 
 
-* `id`: By default if node didn't have an id it will be generated randomly
+* `id`: By default if node didn't have an `id` it will be generated randomly
 * `text`: Label for Node
-* `data`: Intermediate data for each node. It can be everything you want. This objects creates for every node and VueJS makes this property reactive.
-* `children`: List of children nodes.
+* `data`: Intermediate data for each node. It can be anything you want. This object is created for every node and VueJS makes this property reactive.
+* `children`: List of child nodes.
 * `state`: Allows user to set Node's state.
 
-By default Node has states: 
+By default a Node has the following states: 
   ```javascript
   {
     "selected": false,
@@ -130,7 +129,7 @@ By default Node has states:
     "editable": true
   }
   ```
-It is not necessary to pass all the states for every Node. It will automatically merged with default states object
+It is not necessary to pass all the states for every Node. It will automatically merged with the default states object.
 
 Initial **data** example:
 
@@ -186,7 +185,7 @@ Initial **data** example:
 
 #### If you are using CDN that's all you need to build your first app (I mean app that using `VueTree` library)
 
-In this way you no need to registrate the library as a component.
+The following example illustrates linking to the `VueTree` library without having to register the library as a component:
 
 ```html
 <!DOCTYPE html>
@@ -232,7 +231,7 @@ This example demonstrates default behaviour of tree without any configurations. 
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-You able to select multiple nodes with Ctrl key. The same behavior as we are used to ;)
+You able to select multiple nodes with `Ctrl` key. The same behavior as we are used to ;)
 
 ### Checkboxes
 
@@ -247,7 +246,7 @@ The example above is default mode. You can switch it to `checkbox` mode. To do i
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
-> States of node like **checked** and **selected** are not interchangeable. They can be uses together.
+> States of node like **checked** and **selected** are not interchangeable. They can be used together.
 
 
 ### Redefine Structure
@@ -277,14 +276,14 @@ You just need to add `propertyNames` options to **Component Options**:
  }
 ```
 
-Then your data will be transformed to readable tree format. Awesome! See [example](#Redefine-Structure-Example) below
+Then your data will be transformed to a readable tree format. Awesome! See [example](#Redefine-Structure-Example) below.
 
 
 ### Keyboard Navigation
 
-By default **keyboardNavigation** options is true. It allows user to navigate tree using keyboard. Navigation is implemented in the usual way (i.e Windows Navigation pane). Disabled Nodes are ignoring.
+By default **keyboardNavigation** options is true. It allows user to navigate the tree using a keyboard. Navigation is implemented in the usual way (i.e Windows Navigation pane). Disabled Nodes are ignored.
 
-Also you have abillity to define condition to remove Node. To do this, determine the **deletion** component option.
+You also have the abillity to define condition to remove Node. To do this, determine the **deletion** component option.
 It receives Boolean object (default is false) or Function.
 
   - If this property received a `true` it will remove selected Node
@@ -301,7 +300,7 @@ Ohh, too hard. See example:
     />
 ```
 
-- In this case if Node doesn't has a children it will be removed
+- In this case if Node doesn't have children it will be removed
 
 ```javascript
     <tree
@@ -309,7 +308,7 @@ Ohh, too hard. See example:
       :options="{ deletion: node => !node.hasChildren() }"
     />
 ```
-Try [example above](#Checkboxes) to remove ONLY nodes that has `checked` state (use DEL code on your keyboard) 
+The [example above](#Checkboxes) removes ONLY nodes that has `checked` state (use DEL code on your keyboard).
 
 ### Filtering
 
@@ -329,10 +328,10 @@ So we decided to provide a powerfull API to handle it (the library don't know ab
 }
 ```
 
-- **emptyText** - shows when nothing found
+- **emptyText** - shows when nothing is found
 - **showChildren** - this property hides the children of the node if they are available
 - **matcher** - this function determines whether the node is suitable for condition
-- **plainList** - this property brokes the tree structure and shows plain list of matched results (but it easy to fix the structure by clearing filter :-D)
+- **plainList** - this property breaks the tree structure and shows a plain list of matched results (but it easy to fix the structure by clearing filter :-D)
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/o7v4a2nL/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -340,13 +339,13 @@ So we decided to provide a powerfull API to handle it (the library don't know ab
 ### Async Data
 
 There are two ways to set an async data:
-- **data** property as a Promise. You can pass it as an array (a lot of examples above) or as a Promise-like object (object what has the **then** method)
-- **fetchData** options. This options is flexible. See examples below.
+- **data** property as a Promise. You can pass it as an array (a lot of examples above) or as a Promise-like object (object that has the **then** method)
+- **fetchData** options. This option is flexible. See examples below.
 
 
 **fetchData** options: 
 
-- As a string. It is like an a pattern. The construction in curly brackets is replaced with similar values in the node object
+- As a string. It is like a pattern. The construction in curly brackets is replaced with similar values in the node object
   
 ```javascript
   {
@@ -477,7 +476,7 @@ In plans:
 
 ### Custom Node
 
-This example shows how to replace default content. It's allows you to control a content in any way. It possible thanks to VueJS scoped slots.
+This example shows how to replace default content. It allows you to control content in any way. It is possible thanks to VueJS scoped slots.
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/6jm2b1dq/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
@@ -534,7 +533,7 @@ To have directly access to the Tree API you have to use `ref` property of compon
     state: { checked: true, selected: true }
   })
 ```
-By default this method finding the first found node. You can add the second parameter and this function will return all found nodes. 
+By default this method finds the first found node. You can add the second parameter and this function will return all found nodes. 
 
 
 #### [Tree.findAll(criteria)](#Tree-findAll-criteria)
@@ -547,7 +546,7 @@ By default this method finding the first found node. You can add the second para
 
 - **Usage:**
 
-This method "syntactic sugar" of `Tree.find(criteria, true)`
+This method is "syntactic sugar" of `Tree.find(criteria, true)`
 
 
 
@@ -604,21 +603,21 @@ This method "syntactic sugar" of `Tree.find(criteria, true)`
 
 - **Usage:**
 
-  This method has behaviour the same as `Tree.append`. But insertion place will be different (**in the start** of the list)
+  This method has the same behaviour as `Tree.append`, but the point of insertion will be different (**in the start** of the list).
 
 
 #### [Tree.before(criteria, node)](#Tree-before-criteria-node)
 
 - **Usage:**
 
-  This method has behaviour the same as `Tree.append`. But insertion place will be different (**before** found node or the start of the list (as root))
+  This method has behaviour the same as `Tree.append`, but the point of insertion will be different (**before** found node or the start of the list (as root)).
 
 
 #### [Tree.after(criteria, node)](#Tree-after-criteria-node)
 
 - **Usage:**
 
-  This method has behaviour the same as `Tree.append`. But insertion place will be different (**after** found node or the end of the list (as root))
+  This method has behaviour the same as `Tree.append`, but the point of insertion will be different (**after** found node or the end of the list (as root)).
 
 
 #### [Tree.remove(criteria, multiple = false)](#Tree-remove-criteria-multiple)
@@ -637,7 +636,7 @@ This method "syntactic sugar" of `Tree.find(criteria, true)`
 
 ### Selection API
 
-This array-like object has all array methods (forEach, map and so on). Because it inherits `Array` object. This collection has very similar behaviour with jQuery. `All actions apply to all items in the collection.` I'm going to show one example in more details and other methods have similar logic.
+This array-like object has all array methods (forEach, map and so on) because it inherits `Array` object. This collection has very similar behaviour with jQuery. __All actions apply to all items in the collection.__ I'm going to show one example in more details and other methods have similar logic.
 
 
 #### [Selection.select(extendList)](#Selection-select-extendList)
@@ -683,8 +682,8 @@ Methods list:
 
 ### Node API
 
-A Tree component consists of Nodes. Every Node is a VueJS component witch has `node` property linked to Node class.
-It is desirable not to work with the VueJS Node component directly. You have API that returns Node (not VueJS compoenent).
+A Tree component consists of Nodes. Every Node is a VueJS component, which has a `node` property linked to the Node class.
+It is desirable not to work with the VueJS Node component directly. You have an API that returns a Node (not VueJS compoenent).
 **The tree mapping is based on the node states**. Here are list of default states:
 
 ```javascript
@@ -698,44 +697,44 @@ const nodeStates = {
   indeterminate: false
 }
 ```
-I hope that every state speaks of itself.
+I hope that every state speaks for itself.
 
 To check state you can use:
-  - Node.selected()
-  - Node.checked()
-  - Node.hidden()
-  - Node.visible()
-  - Node.enabled()
-  - Node.disabled()
-  - Node.expanded()
-  - Node.collapsed()
-  - Node.indeterminate()
+  - `Node.selected()`
+  - `Node.checked()`
+  - `Node.hidden()`
+  - `Node.visible()`
+  - `Node.enabled()`
+  - `Node.disabled()`
+  - `Node.expanded()`
+  - `Node.collapsed()`
+  - `Node.indeterminate()`
 
-**Node.indeterminate()** - If Node has more than one checked Node it will return `true`. Otherwise it returns `false`
+**Node.indeterminate()** - If a Node has more than one checked Node it will return `true`. Otherwise it returns `false`
 
 
 We have reverse state checks and **this is done purely for convenience**:
-  - Node.hidden() and Node.visible()
-  - Node.enabled() and Node.disabled()
-  - Node.collapsed() and Node.expanded()
+  - `Node.hidden()` and `Node.visible()`
+  - `Node.enabled()` and `Node.disabled()`
+  - `Node.collapsed()` and `Node.expanded()`
 
 
 
 To change Node state:
-  - Node.select(extendList)
-  - Node.unselect()
-  - Node.check()
-  - Node.uncheck()
-  - Node.show()
-  - Node.hide()
-  - Node.expand()
-  - Node.disable()
-  - Node.collapse()
-  - Node.enable()
-  - Node.toggleCollapse()
-  - Node.toggleExpand()
+  - `Node.select(extendList)`
+  - `Node.unselect()`
+  - `Node.check()`
+  - `Node.uncheck()`
+  - `Node.show()`
+  - `Node.hide()`
+  - `Node.expand()`
+  - `Node.disable()`
+  - `Node.collapse()`
+  - `Node.enable()`
+  - `Node.toggleCollapse()`
+  - `Node.toggleExpand()`
 
-For instance Node is checked. When you call Node.check() **it will not** check Node again and not call 'node:checked' event. This condition applies to all of the above methods. You no need to do:
+For instance Node is checked. When you call `Node.check()` **it will not** check Node again and not call `node.checked` event. This condition applies to all of the above methods. You don't need to:
 
 
 ```javascript
@@ -746,7 +745,7 @@ For instance Node is checked. When you call Node.check() **it will not** check N
   ...
 ```
 
-We have only 1 method which receive a parameter. It is a Node.select(extendList). It this case if tree option `multiple` is true it will be added to `selectionNodes` list and user will see more than one selected Nodes. Example:
+We have only 1 method which receives a single parameter. It is a `Node.select(extendList)`. It this case if tree option `multiple` is true it will be added to `selectionNodes` list and user will see more than one selected Nodes. Example:
 
 ```javascript
   // In our example we have one selected node. Using API we are able to find Node: 
@@ -760,16 +759,16 @@ We have only 1 method which receive a parameter. It is a Node.select(extendList)
 
 You probably know jQuery and how it works with DOM objects. It is very similar.
 
-  - Node.append(node) // Node.addChild() is alias
-  - Node.prepend(node)
-  - Node.after(node)
-  - Node.before(node)
+  - `Node.append(node) `// `Node.addChild()` is an alias
+  - `Node.prepend(node)`
+  - `Node.after(node)`
+  - `Node.before(node)`
 
 These methods add children or insert nodes before/after. 
 
 Argument `node` can be:
   - simple text - it will be Node name with default states
-  - structuraized node object ( See [Node Structure](#Structure) )
+  - structured node object ( See [Node Structure](#Structure) )
   - Node object
 
 Examples:
@@ -799,7 +798,7 @@ Examples:
 | Name | Type | Description |
 | --- | -- | ---- |
 | **Node.parent** | { Object &#124; null } | Link to parent ** For root node it will be `null` |
-| **Node.text** | String | Node text. It is able to be as html |
+| **Node.text** | String | Node text. It can be HTML |
 | **Node.depth** | Int | Node depth. Depth for root nodes is 0 |
 | **Node.tree** | Object | Link to a Tree instance (not Vue component) |
 | **Node.vm** | Object | Link to a VueJS component |
@@ -808,6 +807,6 @@ Examples:
 
 ### Events
 
-This example shows every possible events for the tree.
+This example shows every possible event for the tree.
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/cuseo1j7/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
