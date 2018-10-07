@@ -5,6 +5,7 @@ A Vue tree component that allows you to present hierarchically organized data in
 [documentation](https://amsik.github.io/liquor-tree/) | [demos](https://amsik.github.io/liquor-tree/#Examples)
 
 ## Features
+* drag&drop
 * mobile friendly
 * events for every action
 * flexible configuration
