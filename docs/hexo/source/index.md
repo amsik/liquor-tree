@@ -460,6 +460,12 @@ Every changes in store will redraw the tree. You can pass `mutations` to the opt
   }
 ```
 
+### Drag & Drop
+
+Now there is only basic functionality of DND includes events (dragging:start, dragging:finish). Just add `dnd` property to the tree options.
+To more details see the [Issue](https://github.com/amsik/liquor-tree/issues/55) 
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/h1z2n05k/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 ## Examples

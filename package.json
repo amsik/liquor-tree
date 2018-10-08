@@ -1,9 +1,10 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.34",
+  "version": "0.2.35",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "library": "LiquorTree",
+  "home": "https://amsik.github.io/liquor-tree/",
   "scripts": {
     "dev": "cross-env NODE_ENV=development rollup -w -c rollup.config.js",
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",

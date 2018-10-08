@@ -52,6 +52,10 @@
       href: "#Integration-with-Vuex"
       title: Integration with Vuex
 
+    - id: Drag and Drop
+      href: "#Drag-amp-Drop"
+      title: Drag & Drop      
+
 
 - title: Examples
   href: "#Examples"
