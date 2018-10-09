@@ -6,6 +6,10 @@ export class List extends Array {
     return this
   }
 
+  has (item) {
+    return this.includes(item)
+  }
+
   add (...items) {
     this.push(...items)
 

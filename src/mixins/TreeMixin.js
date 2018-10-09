@@ -4,6 +4,7 @@ import assert from '@/utils/assert'
 
 function initEvents (vm) {
   const { multiple, checkbox } = vm.opts
+  const tree = vm.tree
 
   const emitter = (obj) => {
     const selected = vm.selected()
@@ -18,20 +19,31 @@ function initEvents (vm) {
     }
   }
 
-  vm.tree.$on('node:selected', node => {
-    if (multiple) {
-      emitter(vm.selected())
-    } else {
-      emitter(node)
-    }
-  })
+  emitter()
 
-  vm.tree.$on('node:unselected', emitter)
+  tree.$on('node:selected', emitter)
+  tree.$on('node:unselected', emitter)
 
   if (checkbox) {
-    vm.tree.$on('node:checked', emitter)
-    vm.tree.$on('node:unchecked', emitter)
+    tree.$on('node:checked', emitter)
+    tree.$on('node:unchecked', emitter)
   }
+
+  tree.$on('node:added', (targetNode, newNode) => {
+    if (checkbox) {
+      if (newNode.state('checked') && !tree.checkedNodes.has(newNode)) {
+        tree.checkedNodes.add(newNode)
+      }
+
+      newNode.refreshIndeterminateState()
+    }
+
+    if (newNode.state('selected') && !tree.selectedNodes.has(newNode)) {
+      tree.select(newNode)
+    }
+
+    emitter()
+  })
 }
 
 export default {
@@ -70,13 +82,13 @@ export default {
       }
 
       this.$emit('tree:mounted', this)
+
+      initEvents(this)
     })
 
     if (this.opts.keyboardNavigation !== false) {
       initKeyboardNavigation(tree)
     }
-
-    initEvents(this)
   },
 
   methods: {
