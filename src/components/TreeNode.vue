@@ -58,7 +58,8 @@
       this.node.vm = this
 
       return {
-        state: this.node.states
+        state: this.node.states,
+        loading: false
       }
     },
 
@@ -76,7 +77,8 @@
           'selected': state.selected,
           'disabled': state.disabled,
           'matched': state.matched,
-          'dragging': state.dragging
+          'dragging': state.dragging,
+          'loading': this.loading
         }
 
         if (this.options.checkbox) {
@@ -371,5 +373,50 @@
     height: 11px;
     width: 5px;
   }
+
+
+  .tree-node.has-child.loading > .tree-content > .tree-arrow,
+  .tree-node.has-child.loading > .tree-content > .tree-arrow:after {
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    border: 0;
+  }
+  .tree-node.has-child.loading > .tree-content > .tree-arrow {
+    font-size: 3px;
+    position: relative;
+    border-top: 1.1em solid rgba(45,45,45, 0.2);
+    border-right: 1.1em solid rgba(45,45,45, 0.2);
+    border-bottom: 1.1em solid rgba(45,45,45, 0.2);
+    border-left: 1.1em solid #2d2d2d;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    left: 5px;
+    -webkit-animation: loading 1.1s infinite linear;
+    animation: loading 1.1s infinite linear;
+    margin-right: 8px;
+  }
+  @-webkit-keyframes loading {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loading {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+      transform: rotate(360deg);
+    }
+  }
+
 
 </style>

@@ -47,6 +47,7 @@
     parentSelect: false,
     keyboardNavigation: true,
     paddingLeft: 24,
+    minFetchDelay: 0,
     fetchData: null,
     propertyNames: null,
     deletion: false,

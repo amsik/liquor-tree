@@ -196,6 +196,12 @@ export default {
       return this.tree.sort(...args)
     },
 
+    getRootNode () {
+      return this.tree.model.length === 1
+        ? this.tree.model[0]
+        : this.tree.model
+    },
+
     toJSON () {
       return JSON.parse(
         JSON.stringify(this.model)

@@ -8,6 +8,7 @@ import { TreeParser } from '@/utils/treeParser'
 import { recurseDown } from '@/utils/recurse'
 import { get, createTemplate } from '@/utils/request'
 import sort from '@/utils/sort'
+import fetchDelay from '@/utils/fetchDelay'
 
 export default class Tree {
   constructor (vm) {
@@ -171,6 +172,10 @@ export default class Tree {
 
     this.$emit('tree:data:fetch', node)
 
+    if (this.options.minFetchDelay > 0) {
+      node.vm.loading = true
+    }
+
     const result = this.fetch(node)
       .then(children => {
         node.append(children)
@@ -185,7 +190,13 @@ export default class Tree {
         this.$emit('tree:data:received', node)
       })
 
-    return result
+    return Promise.all([
+      fetchDelay(this.options.minFetchDelay),
+      result
+    ]).then(_ => {
+      node.vm.loading = false
+      return result
+    })
   }
 
   fetch (node) {

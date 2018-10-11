@@ -48,6 +48,15 @@
               <tree :options="fetchExample0" />
           </div>
         </div>
+
+        <div class="example">
+          <div class="example-description">
+            Loading indicator and delay (5000ms)
+          </div>
+          <div class="example-tree">
+              <tree :options="fetchExample1" :data="treeData1" />
+          </div>
+        </div>
       </div>
     </div>
 
@@ -65,6 +74,11 @@
         el: '#app',
         data: () => ({
           treeData: $store.dispatch('FETCH-TREE'),
+          treeData1: [{
+            text: 'Root node',
+            id: 'root',
+            isBatch: true
+          }],
 
           fetchExample0: {
             /*
@@ -83,6 +97,14 @@
               return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).catch(e => console.log(e))
             }
           },
+
+          fetchExample1: {
+            minFetchDelay: 5000,
+            fetchData(node) {
+              // return Promise object
+              return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).catch(e => console.log(e))
+            }
+          }
 
         })
       })
