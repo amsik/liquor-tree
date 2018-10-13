@@ -79,6 +79,10 @@ export default {
     },
 
     startDragging (node, event) {
+      if (!node.isDraggable()) {
+        return
+      }
+
       this.$$startDragPosition = [event.clientX, event.clientY]
       this.$$possibleDragNode = node
 
@@ -87,6 +91,11 @@ export default {
 
     initDragListeners () {
       let dropPosition
+
+      const removeListeners = () => {
+        window.removeEventListener('mouseup', onMouseUp, true)
+        window.removeEventListener('mousemove', onMouseMove, true)
+      }
 
       const onMouseUp = (e) => {
         if (!this.$$startDragPosition) {
@@ -103,8 +112,7 @@ export default {
         this.$$possibleDragNode = null
         this.$set(this, 'draggableNode', null)
 
-        window.removeEventListener('mouseup', onMouseUp, true)
-        window.removeEventListener('mousemove', onMouseMove, true)
+        removeListeners()
       }
 
       const onMouseMove = (e) => {
@@ -138,6 +146,11 @@ export default {
 
           if (!this.$$dropDestination || this.$$dropDestination.id !== dropDestinationId) {
             this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
+
+            if (!this.$$dropDestination.isDropable()) {
+              this.$$dropDestination = null
+              return
+            }
           }
 
           dropPosition = highlightDropDestination(e, dropDestination)

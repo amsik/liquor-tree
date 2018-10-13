@@ -391,6 +391,14 @@ export default class Node {
     return this.expand()
   }
 
+  isDropable () {
+    return this.enabled() && this.state('dropable')
+  }
+
+  isDraggable () {
+    return this.enabled() && this.state('draggable')
+  }
+
   startDragging () {
     if (this.disabled() || this.state('draggable') === false || this.state('dragging')) {
       return false
@@ -409,6 +417,10 @@ export default class Node {
   }
 
   finishDragging (destination, destinationPosition) {
+    if (!destination.isDropable()) {
+      return
+    }
+
     const tree = this.tree
     const clone = this.clone()
     const parent = this.parent
@@ -432,8 +444,9 @@ export default class Node {
 
     this.remove()
 
-    parent.refreshIndeterminateState()
+    parent && parent.refreshIndeterminateState()
     tree.__silence = false
+
     this.state('dragging', false)
     this.$emit('dragging:finish')
   }
@@ -574,7 +587,7 @@ export default class Node {
   }
 
   find (criteria, deep) {
-    if (criteria instanceof Node) {
+    if (this.tree.isNode(criteria)) {
       return criteria
     }
 
@@ -599,19 +612,7 @@ export default class Node {
   }
 
   clone () {
-    const node = new Node(
-      this.tree,
-      this.toJSON()
-    )
-
-    node.children = node.children.map(child => {
-      const c = new Node(this.tree, child)
-      c.parent = node
-      c.children = c.children.map(child => new Node(this.tree, child))
-      return c
-    })
-
-    return node
+    return this.tree.objectToNode(this.toJSON())
   }
 
   toJSON () {
@@ -619,7 +620,7 @@ export default class Node {
       text: this.text,
       data: this.data,
       state: this.states,
-      children: this.children.map(node => node.toJSON())
+      children: this.children.map(node => this.tree.objectToNode(node).toJSON())
     }
   }
 }

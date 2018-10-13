@@ -11,7 +11,9 @@ const nodeStates = {
   indeterminate: false,
   matched: false,
   editable: true,
-  dragging: false
+  dragging: false,
+  draggable: true,
+  dropable: true
 }
 
 const tree = {}

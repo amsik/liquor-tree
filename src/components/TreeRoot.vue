@@ -18,7 +18,7 @@
         <template v-else>
           <TreeNode
             v-for="node in model"
-            v-if="node.visible()"
+            v-if="node && node.visible()"
 
             :key="node.id"
             :node="node"

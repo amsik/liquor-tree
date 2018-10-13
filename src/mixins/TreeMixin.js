@@ -30,16 +30,18 @@ function initEvents (vm) {
   }
 
   tree.$on('node:added', (targetNode, newNode) => {
+    const node = newNode || targetNode
+
     if (checkbox) {
-      if (newNode.state('checked') && !tree.checkedNodes.has(newNode)) {
-        tree.checkedNodes.add(newNode)
+      if (node.state('checked') && !tree.checkedNodes.has(node)) {
+        tree.checkedNodes.add(node)
       }
 
-      newNode.refreshIndeterminateState()
+      node.refreshIndeterminateState()
     }
 
-    if (newNode.state('selected') && !tree.selectedNodes.has(newNode)) {
-      tree.select(newNode)
+    if (node.state('selected') && !tree.selectedNodes.has(node)) {
+      tree.select(node)
     }
 
     emitter()

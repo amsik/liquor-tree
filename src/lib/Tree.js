@@ -646,7 +646,7 @@ export default class Tree {
   }
 
   find (criteria, multiple) {
-    if (criteria instanceof Node) {
+    if (this.isNode(criteria)) {
       return criteria
     }
 
@@ -677,7 +677,7 @@ export default class Tree {
   }
 
   getNode (node) {
-    if (node instanceof Node) {
+    if (this.isNode(node)) {
       return node
     }
 

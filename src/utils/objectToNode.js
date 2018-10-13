@@ -14,7 +14,9 @@ const nodeStates = {
   indeterminate: false,
   matched: false,
   editable: true,
-  dragging: false
+  dragging: false,
+  draggable: true,
+  dropable: true
 }
 
 function merge (state = {}) {

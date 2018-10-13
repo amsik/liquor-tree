@@ -30,7 +30,7 @@
         class="tree-children">
           <node
             v-for="child in node.children"
-            v-if="child.visible()"
+            v-if="child && child.visible()"
 
             :key="child.id"
             :node="child"
