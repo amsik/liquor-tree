@@ -64,7 +64,14 @@
               state: 'OPTIONS'
             },
             deletion: true,
-            dnd: true,
+            dnd: {
+              onDragStart(node) {
+                return node.data.isNotDraggable !== true
+              },
+              onDragFinish(targetNode, destinationNode) {
+                return destinationNode.data.isNotDroppable !== true
+              }
+            },
             checkbox: true
           }
         }),
@@ -109,11 +116,18 @@
                   ]},
                   { MY_TEXT: 'Structural Design Patterns'}
                 ]},
-                { MY_TEXT: 'MV* PATTERNS', cildren: [
+                { MY_TEXT: 'MV* PATTERNS', KIDS: [
                   { MY_TEXT: 'MVC Pattern' },
                   { MY_TEXT: 'MVP Pattern' },
                   { MY_TEXT: 'MVVM Pattern' }
                 ]}
+              ]},
+              { MY_TEXT: 'NOT Draggable VIA function', data: { isNotDraggable: true } },
+              { MY_TEXT: 'Game Engines', OPTIONS: { expanded: true }, KIDS: [
+                { MY_TEXT: 'MelonJS' },
+                { MY_TEXT: 'ImpactJS' },
+                { MY_TEXT: 'LimeJS' },
+                { MY_TEXT: 'NOT DROPPADBLE VIA function', data: { isNotDroppable: true } },
               ]}
             ]
           }

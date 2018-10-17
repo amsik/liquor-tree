@@ -400,7 +400,7 @@ export default class Node {
   }
 
   startDragging () {
-    if (this.disabled() || this.state('draggable') === false || this.state('dragging')) {
+    if (!this.isDraggable() || this.state('dragging')) {
       return false
     }
 

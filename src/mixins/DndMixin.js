@@ -72,6 +72,14 @@ function highlightDropDestination (e, element) {
   return dropPosition
 }
 
+function callDndCb (args, opts, method) {
+  if (!opts || !opts[method] || typeof opts[method] !== 'function') {
+    return
+  }
+
+  return !!opts[method](...args)
+}
+
 export default {
   methods: {
     onDragStart (e) {
@@ -79,7 +87,7 @@ export default {
     },
 
     startDragging (node, event) {
-      if (!node.isDraggable()) {
+      if (!node.isDraggable() || callDndCb([node], this.tree.options.dnd, 'onDragStart') === false) {
         return
       }
 
@@ -102,7 +110,7 @@ export default {
           e.stopPropagation()
         }
 
-        if (this.$$dropDestination) {
+        if (this.$$dropDestination && this.tree.isNode(this.$$dropDestination)) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
 
           this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
@@ -147,7 +155,13 @@ export default {
           if (!this.$$dropDestination || this.$$dropDestination.id !== dropDestinationId) {
             this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
 
-            if (!this.$$dropDestination.isDropable()) {
+            const cbResult = callDndCb(
+              [this.draggableNode.node, this.$$dropDestination],
+              this.tree.options.dnd,
+              'onDragFinish'
+            )
+
+            if (!this.$$dropDestination.isDropable() || cbResult === false) {
               this.$$dropDestination = null
               return
             }
