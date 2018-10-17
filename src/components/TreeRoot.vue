@@ -52,6 +52,7 @@
     propertyNames: null,
     deletion: false,
     dnd: false,
+    editing: false,
     onFetchError: function(err) { throw err }
   }
 

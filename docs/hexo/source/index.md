@@ -12,6 +12,7 @@ There are lots of libraries but there was always something from each (in my humb
 
 
 ### Features
+* drag&drop
 * mobile friendly
 * events for every action
 * flexible configuration
@@ -19,7 +20,8 @@ There are lots of libraries but there was always something from each (in my humb
 * multi selection
 * keyboard navigation
 * filtering
-* inline editing
+* sorting
+* integration with Vuex
 
 
 
@@ -27,7 +29,7 @@ There are lots of libraries but there was always something from each (in my humb
 
 ### Installation
 
-- npm: `$ npm install --save liquor-tree`
+- npm: `$ npm install liquor-tree`
 - Yarn: `$ yarn add liquor-tree`
 
 It has to be installed to the VueJS instance. Please take a look at the [official documentation](https://vuejs.org/v2/guide/components.html) to understand how to use VueJS components (if needed, of course).
@@ -56,7 +58,6 @@ import LiquorTree from 'liquor-tree'
 export default {
   name: 'your-awesome-component',
   components: {
-    // you can name tree as you wish
     [LiquorTree.name]: LiquorTree
   },
   ...
@@ -65,7 +66,7 @@ export default {
 
 To register the library you can choose between the 3 methods I mention above.
 
-**When used directly in browser you can include `liquor-tree` via CND:**
+**When used directly in browser you can include `liquor-tree` via CND (it is a latest version of the library):**
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"></script>
@@ -84,6 +85,8 @@ To register the library you can choose between the 3 methods I mention above.
 | **propertyNames**      | Object    | -       | This options allows the default tree's structure to be redefined. [See example](#Redefine-Structure) |
 | **deletion**           | Boolean	&#124; Function | false | If **keyboardNavigation** is false this property is ignored. This property defines deletion behaviour. [See example](#Keyboard-Navigation) |
 | **fetchData**         | Object | - | See [guide](#Async-Data) |
+| **dnd**         | Object | - | See [guide](#Drag-amp-Drop) |
+| **editing**         | Object | - | See [guide](#Inline-Editing) |
 
 
 
@@ -126,7 +129,10 @@ By default a Node has the following states:
     "visible": true,
     "indeterminate": false,
     "matched": false,
-    "editable": true
+    "editable": true,
+    "dragging": false,
+    "draggable": true,
+    "dropable": true
   }
   ```
 It is not necessary to pass all the states for every Node. It will automatically merged with the default states object.
@@ -342,6 +348,7 @@ There are two ways to set an async data:
 - **data** property as a Promise. You can pass it as an array (a lot of examples above) or as a Promise-like object (object that has the **then** method)
 - **fetchData** options. This option is flexible. See examples below.
 
+**minFetchDelay** option - this option provides a minimum delay before rendering the children list. For example request takes 15 ms and you will not see the loading indicator. To see the indicator you need to set this property to 1000 (for example).
 
 **fetchData** options: 
 
@@ -350,6 +357,7 @@ There are two ways to set an async data:
 ```javascript
   {
     treeOptions: {
+      minFetchDelay: 1000,
       fetchData: `/assets/data/fetch0/data-{id}.json`,
       // fetchData: `/data?id={id}&text={text}`
     }
@@ -394,11 +402,37 @@ There are two ways to set an async data:
 
 ### Inline Editing
 
-In progress...
+By default, when editing, a text box appears with the value of the node.
+When you press Esc, the changes are canceled. When you press Enter or click on any area of the page, the changes are applied. 
+Events: [check below](#Events)
+
+#### Manual editing (calls node API)
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/fLsw8vog/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+#### Editing via options
+
+Just add an option `editing` to the tree options.
+You can add a state `editable` for node to prevent editing:
+
+```javascript
+  {
+    "text": "Not editable node",
+    "state": {
+      "editable": false
+    }
+  }
+```
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/pn5x3tub/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Integration with Vuex
 
-The library is allow to pass `store` options. Example:
+The library is allow to pass `store` options. The tree is not update partially. It updates the whole tree items. 
+You must implement `dispatcher` to update the tree.
+Working with **modules** is identical. Vuex forbids to have more than 1 `getter` with same name.
+
+Example:
 
 ```javascript
   const Store = new Vuex.Store({
@@ -406,10 +440,19 @@ The library is allow to pass `store` options. Example:
       treeStore: []
     },
     mutations: {
-      // ---
+      updateTreeStore(state, newTree) {
+        state.treeStore = newTree
+      }
     },
     actions: {
-      // ---
+      updateTree(context, tree) {
+        context.commit('updateTreeStore', tree)
+      }
+    },
+    getters: {
+      tree(state) {
+        return state.treeStore
+      }
     }
   })
 
@@ -422,47 +465,24 @@ The library is allow to pass `store` options. Example:
       options: {
         store: {
           store: Store,
-          key: 'treeStore',
-          mutations: [] // this property is not required
+          getter: () => {
+            return Store.getters.tree
+          },
+          dispatcher(tree) {
+            Store.dispatch('updateTree', tree)
+          }
         },
         checkbox: true
       }
     })
   })
-
 ```
 
-Every changes in store will redraw the tree. You can pass `mutations` to the options to check whether to update a tree. Ex:
 
-```javascript
-  const Store = new Vuex.Store({
-    state: {
-      treeStore: []
-    },
-    mutations: {
-      initTree(state, treeData) {
-        state.tree.push(...treeData)
-      },
-
-      updateTree(state, newData) {
-        state.tree = newData
-      }
-    }
-  })
-
-  // tree options:
-  {
-    store: {
-      store: Store,
-      key: 'treeStore',
-      mutations: ['initTree', 'updateTree]
-    }
-  }
-```
 
 ### Drag & Drop
 
-Now there is only basic functionality of DND includes events (dragging:start, dragging:finish). Just add `dnd` property to the tree options.
+Now there is only basic functionality of DND includes events (`dragging:start`, `dragging:finish`). Just add `dnd` property to the tree options.
 To more details see the [Issue](https://github.com/amsik/liquor-tree/issues/55) 
 
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/h1z2n05k/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
