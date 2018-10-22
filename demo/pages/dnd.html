@@ -48,6 +48,23 @@
             </tree>
           </div>
         </div>
+
+        <div class="example" style="height: 250px; overflow-y: auto">
+          <div class="example-description">
+            <p>Auto-scrolling</p>
+          </div>
+
+          <div class="example-tree">
+            <tree
+              :data="treeData3"
+              :options="treeOptions3"
+            >
+              <div class="tree-scope" slot-scope="{ node }">
+                - {{ node.text }} -
+              </div>
+            </tree>
+          </div>
+        </div>
       </div>
     </div>
 
