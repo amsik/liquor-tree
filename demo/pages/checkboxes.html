@@ -48,11 +48,20 @@
         </div>
 
         <div class="example">
-          <div class="example-description">Test autoCheckChildren option</div>
+          <div class="example-description">Test <b>autoCheckChildren</b> option</div>
           <div class="example-tree">
               <tree
                 :data="treeData2"
                 :options="treeOptions2" />
+          </div>
+        </div>
+
+        <div class="example">
+          <div class="example-description">Test <b>checkOnSelect</b> option</div>
+          <div class="example-tree">
+              <tree
+                :data="treeData2"
+                :options="treeOptions3" />
           </div>
         </div>
       </div>
@@ -78,6 +87,11 @@
           treeOptions2: {
             checkbox: true,
             autoCheckChildren: false
+          },
+
+          treeOptions3: {
+            checkbox: true,
+            checkOnSelect: true
           },
         }),
 

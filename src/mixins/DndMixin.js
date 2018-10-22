@@ -110,6 +110,10 @@ export default {
           e.stopPropagation()
         }
 
+        if (this.draggableNode) {
+          this.draggableNode.node.state('dragging', false)
+        }
+
         if (this.$$dropDestination && this.tree.isNode(this.$$dropDestination)) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
 
@@ -131,8 +135,14 @@ export default {
         }
 
         if (this.$$possibleDragNode) {
+          if (this.$$possibleDragNode.startDragging() === false) {
+            removeListeners()
+            this.$$possibleDragNode = null
+
+            return
+          }
+
           this.$set(this, 'draggableNode', { node: this.$$possibleDragNode, left: 0, top: 0 })
-          this.$$possibleDragNode.startDragging()
           this.$$possibleDragNode = null
         }
 

@@ -667,7 +667,7 @@ export default class Tree {
     let targetNode = null
 
     recurseDown(this.model, node => {
-      if (node.id === id) {
+      if ('' + node.id === id) {
         targetNode = node
         return false
       }

@@ -119,7 +119,7 @@ export default class Node {
         }
       })
 
-      if (checked === childrenCount - disabled) {
+      if (checked > 0 && checked === childrenCount - disabled) {
         if (!this.checked()) {
           this.state('checked', true)
           this.tree.check(this)
@@ -396,7 +396,7 @@ export default class Node {
   }
 
   isDraggable () {
-    return this.enabled() && this.state('draggable')
+    return this.enabled() && this.state('draggable') && !this.isEditing
   }
 
   startDragging () {
@@ -440,13 +440,14 @@ export default class Node {
       tree.selectedNodes.add(clone)
     }
 
-    destination.refreshIndeterminateState()
-
     this.remove()
+
+    destination.refreshIndeterminateState()
 
     parent && parent.refreshIndeterminateState()
     tree.__silence = false
 
+    clone.state('dragging', false)
     this.state('dragging', false)
     this.$emit('dragging:finish')
   }
