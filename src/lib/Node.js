@@ -56,8 +56,10 @@ export default class Node {
   set text (text) {
     const oldText = this.text
 
-    this.data.text = text
-    this.$emit('text:changed', text, oldText)
+    if (oldText !== text) {
+      this.data.text = text
+      this.$emit('text:changed', text, oldText)
+    }
   }
 
   state (name, value) {
