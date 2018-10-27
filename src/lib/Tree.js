@@ -640,6 +640,10 @@ export default class Tree {
 
     node.parent = null
 
+    if (node.id === this.activeElement.id) {
+      this.activeElement = null
+    }
+
     this.$emit('node:removed', node)
 
     this.selectedNodes.remove(node)
