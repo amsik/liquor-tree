@@ -1,7 +1,7 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.39",
+  "version": "0.2.40",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "library": "LiquorTree",
   "homepage": "https://amsik.github.io/liquor-tree/",
