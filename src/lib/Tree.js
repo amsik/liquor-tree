@@ -622,6 +622,12 @@ export default class Tree {
       }
     }
 
+    if (this.activeElement !== null) {
+      if (node.id === this.activeElement.id) {
+        this.activeElement = null
+      }
+    }
+
     node.parent = null
 
     this.$emit('node:removed', node)
