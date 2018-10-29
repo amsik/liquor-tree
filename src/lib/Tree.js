@@ -504,6 +504,8 @@ export default class Tree {
     })
 
     this.$emit('node:added', node)
+
+    return node
   }
 
   append (criteria, node) {
@@ -617,6 +619,12 @@ export default class Tree {
     if (node.parent) {
       if (node.parent.indeterminate() && !node.parent.hasChildren()) {
         node.parent.state('indeterminate', false)
+      }
+    }
+
+    if (this.activeElement !== null) {
+      if (node.id === this.activeElement.id) {
+        this.activeElement = null
       }
     }
 
