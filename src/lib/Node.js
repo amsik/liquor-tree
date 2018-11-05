@@ -19,9 +19,9 @@ export default class Node {
     this.isBatch = item.isBatch || false
     this.isEditing = false
 
-    this.data = Object.assign({}, {
+    this.data = Object.assign({}, item.data || {}, {
       text: item.text
-    }, item.data || {})
+    })
 
     if (!tree) {
       throw new Error('Node must has a Tree context!')
@@ -427,6 +427,7 @@ export default class Node {
     const clone = this.clone()
     const parent = this.parent
 
+    clone.id = this.id
     tree.__silence = true
 
     if (destinationPosition === 'drag-on') {

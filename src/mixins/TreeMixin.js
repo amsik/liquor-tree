@@ -198,6 +198,10 @@ export default {
       return this.tree.sort(...args)
     },
 
+    setModel (data) {
+      return this.tree.setModel(data)
+    },
+
     getRootNode () {
       return this.tree.model.length === 1
         ? this.tree.model[0]
