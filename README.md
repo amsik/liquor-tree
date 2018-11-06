@@ -54,9 +54,9 @@ There are a lot of examples for you. All sources of stories are located in `liqu
 
   <script>
     import Vue from 'Vue'
-    import VueTree from 'vue-tree'
+    import LiquorTree from 'liquor-tree'
 
-    Vue.use(VueTree)
+    Vue.use(LiquorTree)
 
     export default {
       ...
