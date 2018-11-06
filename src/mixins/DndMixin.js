@@ -8,9 +8,43 @@ function isMovingStarted (event, start) {
   return Math.abs(event.clientX - start[0]) > 5 || Math.abs(event.clientY - start[1]) > 5
 }
 
-function getSelectedNode ({ path }) {
+function composedPath (event) {
+  let el = event.target
+  const path = []
+
+  while (el) {
+    path.push(el)
+
+    if (el.tagName === 'HTML') {
+      path.push(document)
+      path.push(window)
+
+      return path
+    }
+
+    el = el.parentElement
+  }
+
+  return path
+}
+
+function getPath (event) {
+  if (event.path) {
+    return event.path
+  }
+
+  if (event.composedPath) {
+    return event.composedPath()
+  }
+
+  return composedPath(event)
+}
+
+function getSelectedNode (event) {
   let className
   let i = 0
+
+  const path = getPath(event)
 
   for (; i < path.length; i++) {
     className = path[i].className || ''
