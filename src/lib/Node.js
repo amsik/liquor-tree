@@ -34,6 +34,21 @@ export default class Node {
     this.tree.$emit(`node:${evnt}`, this, ...args)
   }
 
+  getPath () {
+    if (!this.parent) {
+      return [this]
+    }
+
+    const path = [this]
+    let el = this
+
+    while ((el = el.parent) !== null) {
+      path.push(el)
+    }
+
+    return path
+  }
+
   get key () {
     return this.id + this.text
   }

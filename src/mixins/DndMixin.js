@@ -198,6 +198,15 @@ export default {
             this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
           }
 
+          if (this.$$dropDestination && this.draggableNode.node) {
+            const path = this.$$dropDestination.getPath()
+
+            if (path.includes(this.draggableNode.node)) {
+              this.$$dropDestination = null
+              return
+            }
+          }
+
           const cbResult = callDndCb(
             [this.draggableNode.node, this.$$dropDestination],
             this.tree.options.dnd,
