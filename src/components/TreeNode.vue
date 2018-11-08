@@ -26,7 +26,7 @@
 
     <transition name="l-fade">
       <ul
-        v-if="hasChildren() && state.expanded"
+        v-if="hasChildren() && node.states.expanded"
         class="tree-children">
           <node
             v-for="child in node.children"
@@ -58,7 +58,6 @@
       this.node.vm = this
 
       return {
-        state: this.node.states,
         loading: false
       }
     },
@@ -69,7 +68,7 @@
       },
 
       nodeClass() {
-        let state = this.state
+        let state = this.node.states
         let hasChildren = this.hasChildren()
         let classes = {
           'has-child': hasChildren,

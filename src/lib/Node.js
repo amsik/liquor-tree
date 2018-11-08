@@ -34,6 +34,10 @@ export default class Node {
     this.tree.$emit(`node:${evnt}`, this, ...args)
   }
 
+  get key () {
+    return this.id + this.text
+  }
+
   get depth () {
     let depth = 0
     let parent = this.parent
@@ -419,7 +423,7 @@ export default class Node {
   }
 
   finishDragging (destination, destinationPosition) {
-    if (!destination.isDropable()) {
+    if (!destination.isDropable() && destinationPosition === 'drag-on') {
       return
     }
 
@@ -438,11 +442,6 @@ export default class Node {
       tree.before(destination, clone)
     }
 
-    if (clone.state('selected')) {
-      tree.selectedNodes.remove(this)
-      tree.selectedNodes.add(clone)
-    }
-
     this.remove()
 
     destination.refreshIndeterminateState()
@@ -453,6 +452,14 @@ export default class Node {
     clone.state('dragging', false)
     this.state('dragging', false)
     this.$emit('dragging:finish')
+
+    if (clone.state('selected')) {
+      tree.selectedNodes.remove(this)
+      tree.selectedNodes.add(clone)
+
+      tree.vm.$set(this.state, 'selected', false)
+      tree.vm.$set(clone.state, 'selected', true)
+    }
   }
 
   startEditing () {

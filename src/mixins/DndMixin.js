@@ -87,7 +87,7 @@ function updateHelperClasses (target, classes) {
   target.className = className.replace(/\s+/g, ' ')
 }
 
-function highlightDropDestination (e, element) {
+function getDropPosition (e, element) {
   const coords = element.getBoundingClientRect()
   const nodeSection = coords.height / 3
 
@@ -100,8 +100,6 @@ function highlightDropDestination (e, element) {
       dropPosition = DropPosition.BELOW
     )
   }
-
-  updateHelperClasses(element, dropPosition)
 
   return dropPosition
 }
@@ -148,7 +146,7 @@ export default {
           this.draggableNode.node.state('dragging', false)
         }
 
-        if (this.$$dropDestination && this.tree.isNode(this.$$dropDestination)) {
+        if (this.$$dropDestination && this.tree.isNode(this.$$dropDestination) && this.$$dropDestination.vm) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
 
           this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
@@ -185,7 +183,7 @@ export default {
 
         const dropDestination = getDropDestination(e)
 
-        if (this.$$dropDestination) {
+        if (this.$$dropDestination && this.$$dropDestination.vm) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
         }
 
@@ -198,20 +196,23 @@ export default {
 
           if (!this.$$dropDestination || this.$$dropDestination.id !== dropDestinationId) {
             this.$$dropDestination = this.tree.getNodeById(dropDestinationId)
-
-            const cbResult = callDndCb(
-              [this.draggableNode.node, this.$$dropDestination],
-              this.tree.options.dnd,
-              'onDragFinish'
-            )
-
-            if (!this.$$dropDestination.isDropable() || cbResult === false) {
-              this.$$dropDestination = null
-              return
-            }
           }
 
-          dropPosition = highlightDropDestination(e, dropDestination)
+          const cbResult = callDndCb(
+            [this.draggableNode.node, this.$$dropDestination],
+            this.tree.options.dnd,
+            'onDragFinish'
+          )
+
+          const isDropable = this.$$dropDestination.isDropable() && cbResult !== false
+
+          dropPosition = getDropPosition(e, dropDestination)
+
+          if (!isDropable && dropPosition === DropPosition.ON) {
+            dropPosition = null
+          }
+
+          updateHelperClasses(dropDestination, dropPosition)
         }
       }
 

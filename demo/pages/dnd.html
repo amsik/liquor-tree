@@ -115,7 +115,7 @@
               { MY_TEXT: 'Getting Started (NOT DRAGGABLE)', OPTIONS: { checked: true, draggable: false } },
               { MY_TEXT: 'JavaScript Code Style', OPTIONS: { selected: true } },
               { MY_TEXT: 'MVC Pattern (NOT DROPABLE)', OPTIONS: {dropable: false} },
-              { MY_TEXT: 'MVP Pattern' },
+              { MY_TEXT: 'MVP Pattern (NOT DROPABLE)', OPTIONS: {dropable: false} },
               { MY_TEXT: 'MVVM Pattern' },
               { MY_TEXT: 'The Good Parts', KIDS: [
                 { MY_TEXT: 'OBJECT ORIENTED', OPTIONS: { checked: true }  },
@@ -139,15 +139,15 @@
                   { MY_TEXT: 'MVVM Pattern' }
                 ]}
               ]},
-              { MY_TEXT: 'NOT Draggable VIA function', data: { isNotDraggable: true } },
-              { MY_TEXT: 'Game Engines', OPTIONS: { expanded: true }, KIDS: [
-                { MY_TEXT: 'MelonJS' },
-                { MY_TEXT: 'ImpactJS' },
-                { MY_TEXT: 'LimeJS' },
-                { MY_TEXT: 'NOT DROPPADBLE VIA function', data: { isNotDroppable: true } },
-              ]}
+              { MY_TEXT: 'NOT Draggable VIA function', data: { isNotDraggable: true } }
             ]
-          }
+          },
+          { MY_TEXT: 'Game Engines', OPTIONS: { expanded: true }, KIDS: [
+            { MY_TEXT: 'MelonJS' },
+            { MY_TEXT: 'ImpactJS' },
+            { MY_TEXT: 'LimeJS' },
+            { MY_TEXT: 'NOT DROPPADBLE VIA function', data: { isNotDroppable: true } },
+          ]}
         ]
       }
     </script>
