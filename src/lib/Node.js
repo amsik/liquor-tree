@@ -430,9 +430,15 @@ export default class Node {
       return false
     }
 
+    if (this.tree.options.store) {
+      this.tree.__silence = true
+    }
+
     this.select()
     this.state('dragging', true)
     this.$emit('dragging:start')
+
+    this.tree.__silence = false
 
     return true
   }
@@ -474,6 +480,10 @@ export default class Node {
 
       tree.vm.$set(this.state, 'selected', false)
       tree.vm.$set(clone.state, 'selected', true)
+    }
+
+    if (this.tree.options.store) {
+      this.tree.vm.$emit('LIQUOR_NOISE')
     }
   }
 
