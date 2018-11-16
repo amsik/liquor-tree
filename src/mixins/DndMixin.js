@@ -112,6 +112,16 @@ function callDndCb (args, opts, method) {
   return !!opts[method](...args)
 }
 
+function clearDropClasses(parent) {
+  for (let key in DropPosition) {
+    const el = parent.querySelectorAll(`.${DropPosition[key]}`)
+
+    for (let i = 0; i < el.length; i++) {
+      updateHelperClasses(el[i])
+    }
+  }
+}
+
 export default {
   methods: {
     onDragStart (e) {
@@ -155,7 +165,7 @@ export default {
             'onDragFinish'
           )
 
-          if (cbResult !== false) {
+          if (cbResult !== false && !(!this.$$dropDestination.isDropable() && dropPosition === DropPosition.ON || !dropPosition)) {
             this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
           }
 
@@ -192,9 +202,7 @@ export default {
 
         const dropDestination = getDropDestination(e)
 
-        if (this.$$dropDestination && this.$$dropDestination.vm) {
-          updateHelperClasses(this.$$dropDestination.vm.$el, null)
-        }
+        clearDropClasses(this.$el)
 
         if (dropDestination) {
           const dropDestinationId = dropDestination.getAttribute('data-id')
