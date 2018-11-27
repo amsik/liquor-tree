@@ -67,8 +67,8 @@ There are a lot of examples for you. All sources of stories are located in `liqu
             {text: 'Item 1'},
             {text: 'Item 2'},
             {text: 'Item 3', children: [
-              {text: Item 3.1},
-              {text: Item 3.2}
+              {text: 'Item 3.1'},
+              {text: 'Item 3.2'}
             ]}
           ],
           options: {
