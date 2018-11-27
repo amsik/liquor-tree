@@ -35,6 +35,7 @@ To run that demo on your own computer:
 
 * Clone this repository
 * `npm install`
+* `npm run build` 
 * `npm run storybook` 
 * Visit `http://localhost:9001/`
 
