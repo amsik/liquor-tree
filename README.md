@@ -35,6 +35,7 @@ To run that demo on your own computer:
 
 * Clone this repository
 * `npm install`
+* `npm run build` 
 * `npm run storybook` 
 * Visit `http://localhost:9001/`
 
@@ -66,8 +67,8 @@ There are a lot of examples for you. All sources of stories are located in `liqu
             {text: 'Item 1'},
             {text: 'Item 2'},
             {text: 'Item 3', children: [
-              {text: Item 3.1},
-              {text: Item 3.2}
+              {text: 'Item 3.1'},
+              {text: 'Item 3.2'}
             ]}
           ],
           options: {
