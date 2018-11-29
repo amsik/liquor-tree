@@ -72,6 +72,9 @@
     - id: custom-theme
       href: "#Custom-Theme"
       title: Custom Theme
+    - id: accordion
+      href: "#Accordion"
+      title: Accordion
 
 - title: API
   href: "#API"

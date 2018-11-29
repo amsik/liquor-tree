@@ -498,13 +498,13 @@ In plans:
 - to reveal all the possibilities of slots
 - process in real time
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/mknwyqjc/embedded/html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/mknwyqjc/embedded/result,html,css/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Custom Node
 
 This example shows how to replace default content. It allows you to control content in any way. It is possible thanks to VueJS scoped slots.
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/6jm2b1dq/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/6jm2b1dq/embedded/result,html/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 ### Redefine Structure Example
 
@@ -520,14 +520,20 @@ In this example we have structure:
 A library doesn't know this format. But we can add `propertyNames` options and redefine structure. See example
 
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/y7190jkd/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/y7190jkd/embedded/result,html/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 ### Custom Theme
 
 This example shows how to use tree in real life
 
-<iframe width="100%" height="500" src="//jsfiddle.net/amsik/qka5pxdm/embedded/js,html,css,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/qka5pxdm/embedded/result,js,html,css/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+### Accordion
+
+The library doesn't have a such property. It uses provided API.
+
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/p8mqhng2/embedded/result,html/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
 ## API
