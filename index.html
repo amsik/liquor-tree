@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charSet='utf-8' />
+  <title>Liquor Tree</title>
+  <link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/4.0.0/normalize.min.css' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,300,700' rel='stylesheet' type='text/css'>
+  <link href='css/docs.css' rel='stylesheet'>
+</head>
+<body>
+  <div class='menu'>
+    <div class='logo'>
+      <img src="img/vue-logo.png" alt="">
+      <span>LiquorTree</span>
+    </div>
+    <nav class='menu-nav'>
+      
+        <ul class='nav'>
+          <a href='#Introduction'><span>Introduction</span></a>
+          
+        </ul>
+      
+        <ul class='nav'>
+          <a href='#Getting-Started'><span>Getting Started</span></a>
+          
+            <ul class='nav'>
+              
+                <li>
+                  <a href='#Installation'>Installation</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Component-Options'>Component Options</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Structure'>Structure</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Basic-Usage'>Basic Usage</a>
+
+                  
+                </li>
+              
+            </ul>
+          
+        </ul>
+      
+        <ul class='nav'>
+          <a href='#Guides'><span>Guides</span></a>
+          
+            <ul class='nav'>
+              
+                <li>
+                  <a href='#Basic-Features'>Basic Features</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Checkboxes'>Checkboxes</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Redefine-Structure'>Redefine Structure</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Keyboard-Navigation'>Keyboard Navigation</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Filtering'>Filtering</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Async-Data'>Async Data</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Inline-Editing'>Inline Editing</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Integration-with-Vuex'>Integration with Vuex</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Drag-amp-Drop'>Drag & Drop</a>
+
+                  
+                </li>
+              
+            </ul>
+          
+        </ul>
+      
+        <ul class='nav'>
+          <a href='#Examples'><span>Examples</span></a>
+          
+            <ul class='nav'>
+              
+                <li>
+                  <a href='#JSON-Viewer'>JSON Viewer</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Custom-Node'>Custom Node</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Redefine-Structure-Example'>Redefine Structure Example</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Custom-Theme'>Custom Theme</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Accordion'>Accordion</a>
+
+                  
+                </li>
+              
+            </ul>
+          
+        </ul>
+      
+        <ul class='nav'>
+          <a href='#API'><span>API</span></a>
+          
+            <ul class='nav'>
+              
+                <li>
+                  <a href='#Tree-API'>Tree API</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Selection-API'>Selection API</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Node-API'>Node API</a>
+
+                  
+                </li>
+              
+                <li>
+                  <a href='#Events'>Events</a>
+
+                  
+                </li>
+              
+            </ul>
+          
+        </ul>
+      
+    </nav>
+  </div>
+  <div class='page'>
+    <div class='page-content'>
+      <h1></h1>
+      <h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>This library allows you to present hierarchically organized data in a nice and logical manner based on the <a href="http://vuejs.org" target="_blank" rel="noopener">VueJS</a> framework.<br>There are lots of libraries but there was always something from each (in my humble opinion). It is an attempt to make a <strong>perfect</strong> tree.</p>
+<p><code>Just try it. The tree you were waiting for!</code></p>
+<h3 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h3><ul>
+<li>drag&amp;drop</li>
+<li>mobile friendly</li>
+<li>events for every action</li>
+<li>flexible configuration</li>
+<li>any number of instances per page</li>
+<li>multi selection</li>
+<li>keyboard navigation</li>
+<li>filtering</li>
+<li>sorting</li>
+<li>integration with Vuex</li>
+</ul>
+<h2 id="Getting-Started"><a href="#Getting-Started" class="headerlink" title="Getting Started"></a>Getting Started</h2><h3 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h3><ul>
+<li>npm: <code>$ npm install liquor-tree</code></li>
+<li>Yarn: <code>$ yarn add liquor-tree</code></li>
+</ul>
+<p>It has to be installed to the VueJS instance. Please take a look at the <a href="https://vuejs.org/v2/guide/components.html" target="_blank" rel="noopener">official documentation</a> to understand how to use VueJS components (if needed, of course).</p>
+<p>You don’t need to care about styles, they are automatically appended to the document.</p>
+<p><strong>When used with a module system there are 3 ways to register the component (maybe more… I don’t know).<br>Okay. It’s our ways:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'Vue'</span></span><br><span class="line"><span class="keyword">import</span> LiquorTree <span class="keyword">from</span> <span class="string">'liquor-tree'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// global registration</span></span><br><span class="line">Vue.use(LiquorTree)</span><br><span class="line"></span><br><span class="line"><span class="comment">// or</span></span><br><span class="line">Vue.component(LiquorTree.name, LiquorTree)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> LiquorTree <span class="keyword">from</span> <span class="string">'liquor-tree'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// local registration</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  name: <span class="string">'your-awesome-component'</span>,</span><br><span class="line">  components: &#123;</span><br><span class="line">    [LiquorTree.name]: LiquorTree</span><br><span class="line">  &#125;,</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>To register the library you can choose between the 3 methods I mention above.</p>
+<p><strong>When used directly in browser you can include <code>liquor-tree</code> via CND (it is a latest version of the library):</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Component-Options"><a href="#Component-Options" class="headerlink" title="Component Options"></a>Component Options</h3><table>
+<thead>
+<tr>
+<th>Name</th>
+<th style="text-align:center">Type</th>
+<th style="text-align:center">Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>multiple</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true</td>
+<td>Allows to select more than one node.</td>
+</tr>
+<tr>
+<td><strong>checkbox</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">false</td>
+<td><code>checkbox</code> mode. It shows checkboxes for every node</td>
+</tr>
+<tr>
+<td><strong>checkOnSelect</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">false</td>
+<td>For <code>checkbox</code> mode only. Node will have <code>checked</code> state when user clicks either text or checkbox</td>
+</tr>
+<tr>
+<td><strong>autoCheckChildren</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true</td>
+<td>For <code>checkbox</code> mode only. Children will have the same <code>checked</code> state as their parent.</td>
+</tr>
+<tr>
+<td><strong>parentSelect</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">false</td>
+<td>By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text</td>
+</tr>
+<tr>
+<td><strong>keyboardNavigation</strong></td>
+<td style="text-align:center">Boolean</td>
+<td style="text-align:center">true</td>
+<td>Allows user to navigate tree using keyboard</td>
+</tr>
+<tr>
+<td><strong>propertyNames</strong></td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">-</td>
+<td>This options allows the default tree’s structure to be redefined. <a href="#Redefine-Structure">See example</a></td>
+</tr>
+<tr>
+<td><strong>deletion</strong></td>
+<td style="text-align:center">Boolean    &#124; Function</td>
+<td style="text-align:center">false</td>
+<td>If <strong>keyboardNavigation</strong> is false this property is ignored. This property defines deletion behaviour. <a href="#Keyboard-Navigation">See example</a></td>
+</tr>
+<tr>
+<td><strong>fetchData</strong></td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">-</td>
+<td>See <a href="#Async-Data">guide</a></td>
+</tr>
+<tr>
+<td><strong>dnd</strong></td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">-</td>
+<td>See <a href="#Drag-amp-Drop">guide</a></td>
+</tr>
+<tr>
+<td><strong>editing</strong></td>
+<td style="text-align:center">Object</td>
+<td style="text-align:center">-</td>
+<td>See <a href="#Inline-Editing">guide</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="Structure"><a href="#Structure" class="headerlink" title="Structure"></a>Structure</h3><p>The component has only two props: <strong>data</strong> and <strong>options</strong>. For more information about props read <a href="https://vuejs.org/v2/guide/components.html#Passing-Data-with-Props" target="_blank" rel="noopener">VueJS documentation</a>.<br>Additionally, see <a href="#Filtering">filtering</a>.</p>
+<ul>
+<li>property <strong>options</strong> - This property defines tree behavior. See <a href="#Component-Options">Component Options</a></li>
+<li>property <strong>data</strong> - Array-like object that defines tree nodes</li>
+</ul>
+<p>Property <strong>data</strong> has its own structure for every node:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"id"</span>: <span class="built_in">Number</span>,</span><br><span class="line">  <span class="string">"text"</span>: <span class="built_in">String</span>,</span><br><span class="line">  <span class="string">"data"</span>: <span class="built_in">Object</span>,</span><br><span class="line">  <span class="string">"children"</span>: <span class="built_in">Array</span>,</span><br><span class="line">  <span class="string">"state"</span>: <span class="built_in">Object</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>id</code>: By default if node didn’t have an <code>id</code> it will be generated randomly</li>
+<li><code>text</code>: Label for Node</li>
+<li><code>data</code>: Intermediate data for each node. It can be anything you want. This object is created for every node and VueJS makes this property reactive.</li>
+<li><code>children</code>: List of child nodes.</li>
+<li><code>state</code>: Allows user to set Node’s state.</li>
+</ul>
+<p>By default a Node has the following states:<br>  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"selected"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"selectable"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">"checked"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"expanded"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"disabled"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"visible"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">"indeterminate"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"matched"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"editable"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">"dragging"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="string">"draggable"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="string">"dropable"</span>: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>It is not necessary to pass all the states for every Node. It will automatically merged with the default states object.</p>
+<p>Initial <strong>data</strong> example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> treeData = [</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'Item 1'</span>, <span class="attr">state</span>: &#123; <span class="attr">visible</span>: <span class="literal">false</span> &#125; &#125;,</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'Item 2'</span>, <span class="attr">data</span>: &#123; <span class="attr">customProp</span>: <span class="string">'AAAAAAAAAAAAAAAAAAAA'</span> &#125; &#125;,</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'Item 3'</span>, <span class="attr">state</span>: &#123; <span class="attr">selected</span>: <span class="literal">true</span> &#125; &#125;,</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'Item 4'</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'Item 5'</span>, <span class="attr">children</span>: [</span><br><span class="line">    &#123; <span class="attr">text</span>: <span class="string">'Item 5.1'</span>, <span class="attr">state</span>: &#123; <span class="attr">disabled</span>: <span class="literal">true</span> &#125; &#125;,</span><br><span class="line">    &#123; <span class="attr">text</span>: <span class="string">'Item 5.2'</span>, <span class="attr">state</span>: &#123; <span class="attr">selectable</span>: <span class="literal">false</span> &#125; &#125;</span><br><span class="line">  ]&#125;</span><br><span class="line">  <span class="comment">// and so on ...</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h3 id="Basic-Usage"><a href="#Basic-Usage" class="headerlink" title="Basic Usage"></a>Basic Usage</h3><h4 id="ES6-using-vue-loader"><a href="#ES6-using-vue-loader" class="headerlink" title="ES6 (using vue-loader)"></a>ES6 (using vue-loader)</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div id=<span class="string">"app"</span>&gt;</span><br><span class="line">    &lt;tree</span><br><span class="line">      :data=<span class="string">"treeData"</span></span><br><span class="line">    /&gt;</span><br><span class="line">  &lt;<span class="regexp">/div&gt;</span></span><br><span class="line"><span class="regexp">&lt;/</span>template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'Vue'</span></span><br><span class="line">  <span class="keyword">import</span> LiquorTree <span class="keyword">from</span> <span class="string">'liquor-tree'</span></span><br><span class="line"></span><br><span class="line">  Vue.use(LiquorTree)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">    name: <span class="string">'awesome-component'</span>,</span><br><span class="line">    data: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">      treeData: [</span><br><span class="line">        &#123; <span class="attr">text</span>: <span class="string">'Item 1'</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">text</span>: <span class="string">'Item 2'</span> &#125;,</span><br><span class="line">        &#123; <span class="attr">text</span>: <span class="string">'Item 3'</span>, <span class="attr">state</span>: &#123; <span class="attr">selected</span>: <span class="literal">true</span> &#125; &#125;,</span><br><span class="line">        &#123; <span class="attr">text</span>: <span class="string">'Item 4'</span> &#125;</span><br><span class="line">      ]</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="If-you-are-using-CDN-that’s-all-you-need-to-build-your-first-app-I-mean-app-that-using-VueTree-library"><a href="#If-you-are-using-CDN-that’s-all-you-need-to-build-your-first-app-I-mean-app-that-using-VueTree-library" class="headerlink" title="If you are using CDN that’s all you need to build your first app (I mean app that using VueTree library)"></a>If you are using CDN that’s all you need to build your first app (I mean app that using <code>VueTree</code> library)</h4><p>The following example illustrates linking to the <code>VueTree</code> library without having to register the library as a component:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">tree</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:data</span>=<span class="string">"treeData"</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:options</span>=<span class="string">"treeOptions"</span></span></span><br><span class="line"><span class="tag">    /&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- first import Vue --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/vue/dist/vue.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- import JavaScript --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://cdn.jsdelivr.net/npm/liquor-tree/dist/liquor-tree.umd.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">    <span class="keyword">new</span> Vue(&#123;</span></span><br><span class="line"><span class="javascript">      el: <span class="string">'#app'</span>,</span></span><br><span class="line"><span class="javascript">      data: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></span><br><span class="line"><span class="javascript">        <span class="keyword">return</span> &#123;</span></span><br><span class="line"><span class="undefined">          treeData: [</span></span><br><span class="line"><span class="javascript">            <span class="comment">// see above the format of data</span></span></span><br><span class="line"><span class="undefined">          ],</span></span><br><span class="line"><span class="undefined">          treeOptions: &#123;</span></span><br><span class="line"><span class="javascript">            miltiple: <span class="literal">false</span></span></span><br><span class="line"><span class="undefined">          &#125;</span></span><br><span class="line"><span class="undefined">        &#125;</span></span><br><span class="line"><span class="undefined">      &#125;</span></span><br><span class="line"><span class="undefined">    &#125;)</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Guides"><a href="#Guides" class="headerlink" title="Guides"></a>Guides</h2><h3 id="Basic-Features"><a href="#Basic-Features" class="headerlink" title="Basic Features"></a>Basic Features</h3><p>This example demonstrates default behaviour of tree without any configurations. Each node from received data has its <strong>own states properties</strong> (<a href="#node-atata">view full list</a>)</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/25bv7nh0/embedded/html,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<p>You able to select multiple nodes with <code>Ctrl</code> key. The same behavior as we are used to ;)</p>
+<h3 id="Checkboxes"><a href="#Checkboxes" class="headerlink" title="Checkboxes"></a>Checkboxes</h3><p>The example above is default mode. You can switch it to <code>checkbox</code> mode. To do it just add the tree’s option <code>checkbox</code>:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">tree</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:data</span>=<span class="string">"treeData"</span></span></span><br><span class="line"><span class="tag">  <span class="attr">:options</span>=<span class="string">"&#123; checkbox: true &#125;"</span></span></span><br><span class="line"><span class="tag">/&gt;</span></span><br></pre></td></tr></table></figure>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/ewcy3jee/embedded/html,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<blockquote>
+<p>States of node like <strong>checked</strong> and <strong>selected</strong> are not interchangeable. They can be used together.</p>
+</blockquote>
+<h3 id="Redefine-Structure"><a href="#Redefine-Structure" class="headerlink" title="Redefine Structure"></a>Redefine Structure</h3><p>  This component has <code>strict</code> structure. But! You can easily <strong>redefine</strong> this format. Yeah… Sometimes you don’t want to change your server-side code and you have very different format for tree. To do this you just need to send the object:</p>
+<p>For instance you have data:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line"> &#123; <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>: <span class="string">'Item 1'</span> &#125;,</span><br><span class="line"> &#123; <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>: <span class="string">'Item 2'</span> &#125;,</span><br><span class="line"> &#123; <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>: <span class="string">'Item 3'</span>, <span class="string">'kids'</span>: [</span><br><span class="line">  &#123; <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>: <span class="string">'Item 3.1'</span> &#125;,</span><br><span class="line">  &#123; <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>: <span class="string">'Item 3.2'</span> &#125;</span><br><span class="line"> ]&#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>You just need to add <code>propertyNames</code> options to <strong>Component Options</strong>:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"> <span class="string">'text'</span>: <span class="string">'SOME-AWESOME-PROPERTY-FOR-TEXT'</span>,</span><br><span class="line"> <span class="string">'children'</span>: <span class="string">'kids'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Then your data will be transformed to a readable tree format. Awesome! See <a href="#Redefine-Structure-Example">example</a> below.</p>
+<h3 id="Keyboard-Navigation"><a href="#Keyboard-Navigation" class="headerlink" title="Keyboard Navigation"></a>Keyboard Navigation</h3><p>By default <strong>keyboardNavigation</strong> options is true. It allows user to navigate the tree using a keyboard. Navigation is implemented in the usual way (i.e Windows Navigation pane). Disabled Nodes are ignored.</p>
+<p>You also have the abillity to define condition to remove Node. To do this, determine the <strong>deletion</strong> component option.<br>It receives Boolean object (default is false) or Function.</p>
+<ul>
+<li>If this property received a <code>true</code> it will remove selected Node</li>
+<li>If this property revieved a <code>function</code> it will remove Node <strong>IF</strong> the <code>function</code> return <code>true</code></li>
+</ul>
+<p>Ohh, too hard. See example:</p>
+<ul>
+<li>In this case Node will be removed</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;tree</span><br><span class="line">  :data=<span class="string">"treeData"</span></span><br><span class="line">  :options=<span class="string">"&#123; deletion: true &#125;"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>In this case if Node doesn’t have children it will be removed</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;tree</span><br><span class="line">  :data=<span class="string">"treeData"</span></span><br><span class="line">  :options=<span class="string">"&#123; deletion: node =&gt; !node.hasChildren() &#125;"</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
+<p>The <a href="#Checkboxes">example above</a> removes ONLY nodes that has <code>checked</code> state (use DEL code on your keyboard).</p>
+<h3 id="Filtering"><a href="#Filtering" class="headerlink" title="Filtering"></a>Filtering</h3><p>We do not know where to show the field for filtering, how to stylize it and so on… It depends on a situation.<br>So we decided to provide a powerfull API to handle it (the library don’t know about other components on the page and this is not necessary). See examples to understand ;)</p>
+<p><strong>Default props:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  emptyText: <span class="string">'Nothing found!'</span>,</span><br><span class="line">  matcher(query, node) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">RegExp</span>(query, <span class="string">'i'</span>).test(node.text)</span><br><span class="line">  &#125;,</span><br><span class="line">  plainList: <span class="literal">false</span>,</span><br><span class="line">  showChildren: <span class="literal">true</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>emptyText</strong> - shows when nothing is found</li>
+<li><strong>showChildren</strong> - this property hides the children of the node if they are available</li>
+<li><strong>matcher</strong> - this function determines whether the node is suitable for condition</li>
+<li><strong>plainList</strong> - this property breaks the tree structure and shows a plain list of matched results (but it easy to fix the structure by clearing filter :-D)</li>
+</ul>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/o7v4a2nL/embedded/js,html,css,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+<h3 id="Async-Data"><a href="#Async-Data" class="headerlink" title="Async Data"></a>Async Data</h3><p>There are two ways to set an async data:</p>
+<ul>
+<li><strong>data</strong> property as a Promise. You can pass it as an array (a lot of examples above) or as a Promise-like object (object that has the <strong>then</strong> method)</li>
+<li><strong>fetchData</strong> options. This option is flexible. See examples below.</li>
+</ul>
+<p><strong>minFetchDelay</strong> option - this option provides a minimum delay before rendering the children list. For example request takes 15 ms and you will not see the loading indicator. To see the indicator you need to set this property to 1000 (for example).</p>
+<p><strong>fetchData</strong> options: </p>
+<ul>
+<li>As a string. It is like a pattern. The construction in curly brackets is replaced with similar values in the node object</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  treeOptions: &#123;</span><br><span class="line">    minFetchDelay: <span class="number">1000</span>,</span><br><span class="line">    fetchData: <span class="string">`/assets/data/fetch0/data-&#123;id&#125;.json`</span>,</span><br><span class="line">    <span class="comment">// fetchData: `/data?id=&#123;id&#125;&amp;text=&#123;text&#125;`</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>As a function that returns a string. The same as above. It is run for each request.</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  treeOptions: &#123;</span><br><span class="line">    fetchData(node) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`/assets/data/fetch0/data-<span class="subst">$&#123;node.id&#125;</span>.json`</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>As a function that returns a promise-like object. You can do a request to server as you wish</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  treeOptions: &#123;</span><br><span class="line">    fetchData(node) &#123;</span><br><span class="line">      <span class="keyword">return</span> fetch(<span class="string">`/assets/data/fetch0/data-<span class="subst">$&#123;node.id&#125;</span>.json`</span>)</span><br><span class="line">        .then(<span class="function"><span class="params">r</span> =&gt;</span> r.json())</span><br><span class="line">        .catch(<span class="function"><span class="params">e</span> =&gt;</span> <span class="built_in">console</span>.log(e))</span><br><span class="line">    &#125;,</span><br><span class="line"></span><br><span class="line">    <span class="comment">// or</span></span><br><span class="line">    fetchData(node) &#123;</span><br><span class="line">      <span class="keyword">return</span> axios.get(<span class="string">'/user'</span>, &#123;</span><br><span class="line">        params: &#123;</span><br><span class="line">          ID: node.id</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Inline-Editing"><a href="#Inline-Editing" class="headerlink" title="Inline Editing"></a>Inline Editing</h3><p>By default, when editing, a text box appears with the value of the node.<br>When you press Esc, the changes are canceled. When you press Enter or click on any area of the page, the changes are applied.<br>Events: <a href="#Events">check below</a></p>
+<h4 id="Manual-editing-calls-node-API"><a href="#Manual-editing-calls-node-API" class="headerlink" title="Manual editing (calls node API)"></a>Manual editing (calls node API)</h4><iframe width="100%" height="500" src="//jsfiddle.net/amsik/fLsw8vog/embedded/html,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h4 id="Editing-via-options"><a href="#Editing-via-options" class="headerlink" title="Editing via options"></a>Editing via options</h4><p>Just add an option <code>editing</code> to the tree options.<br>You can add a state <code>editable</code> for node to prevent editing:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">"text"</span>: <span class="string">"Not editable node"</span>,</span><br><span class="line">  <span class="string">"state"</span>: &#123;</span><br><span class="line">    <span class="string">"editable"</span>: <span class="literal">false</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/pn5x3tub/embedded/html,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3 id="Integration-with-Vuex"><a href="#Integration-with-Vuex" class="headerlink" title="Integration with Vuex"></a>Integration with Vuex</h3><p>The library is allow to pass <code>store</code> options. The tree is not update partially. It updates the whole tree items.<br>You must implement <code>dispatcher</code> to update the tree.<br>Working with <strong>modules</strong> is identical. Vuex forbids to have more than 1 <code>getter</code> with same name.</p>
+<p>Example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Store = <span class="keyword">new</span> Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line">    treeStore: []</span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    updateTreeStore(state, newTree) &#123;</span><br><span class="line">      state.treeStore = newTree</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line">    updateTree(context, tree) &#123;</span><br><span class="line">      context.commit(<span class="string">'updateTreeStore'</span>, tree)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  getters: &#123;</span><br><span class="line">    tree(state) &#123;</span><br><span class="line">      <span class="keyword">return</span> state.treeStore</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// -------</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  el: <span class="string">'#app'</span>,</span><br><span class="line">  store: Store,</span><br><span class="line">  data: <span class="function"><span class="params">()</span> =&gt;</span> (&#123;</span><br><span class="line">    options: &#123;</span><br><span class="line">      store: &#123;</span><br><span class="line">        store: Store,</span><br><span class="line">        getter: <span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">return</span> Store.getters.tree</span><br><span class="line">        &#125;,</span><br><span class="line">        dispatcher(tree) &#123;</span><br><span class="line">          Store.dispatch(<span class="string">'updateTree'</span>, tree)</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;,</span><br><span class="line">      checkbox: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="Drag-amp-Drop"><a href="#Drag-amp-Drop" class="headerlink" title="Drag &amp; Drop"></a>Drag &amp; Drop</h3><p>Now there is only basic functionality of DND includes events (<code>dragging:start</code>, <code>dragging:finish</code>). Just add <code>dnd</code> property to the tree options.<br>To more details see the <a href="https://github.com/amsik/liquor-tree/issues/55" target="_blank" rel="noopener">Issue</a> </p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/h1z2n05k/embedded/html,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><h3 id="JSON-Viewer"><a href="#JSON-Viewer" class="headerlink" title="JSON Viewer"></a>JSON Viewer</h3><p>I did this in 40 min … do not judge me strictly :)<br>In plans:</p>
+<ul>
+<li>online editor</li>
+<li>to reveal all the possibilities of slots</li>
+<li>process in real time</li>
+</ul>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/mknwyqjc/embedded/result,html,css/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3 id="Custom-Node"><a href="#Custom-Node" class="headerlink" title="Custom Node"></a>Custom Node</h3><p>This example shows how to replace default content. It allows you to control content in any way. It is possible thanks to VueJS scoped slots.</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/6jm2b1dq/embedded/result,html/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3 id="Redefine-Structure-Example"><a href="#Redefine-Structure-Example" class="headerlink" title="Redefine Structure Example"></a>Redefine Structure Example</h3><p>For instance: we had a super-tree-component with its own structure (never mind, just for test). And we have a lot of dependencies to that component. This example shows how to apply data from server without a headache.</p>
+<p>In this example we have structure:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  MY_TEXT: <span class="string">'some text'</span>, <span class="attr">KIDS</span>: []</span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>A library doesn’t know this format. But we can add <code>propertyNames</code> options and redefine structure. See example</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/y7190jkd/embedded/result,html/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+<h3 id="Custom-Theme"><a href="#Custom-Theme" class="headerlink" title="Custom Theme"></a>Custom Theme</h3><p>This example shows how to use tree in real life</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/qka5pxdm/embedded/result,js,html,css/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+<h3 id="Accordion"><a href="#Accordion" class="headerlink" title="Accordion"></a>Accordion</h3><p>The library doesn’t have a such property. It uses provided API.</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/p8mqhng2/embedded/result,html/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+
+
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><h3 id="Tree-API"><a href="#Tree-API" class="headerlink" title="Tree API"></a>Tree API</h3><p>To have directly access to the Tree API you have to use <code>ref</code> property of component. See more <a href="https://vuejs.org/v2/guide/components.html#Child-Component-Refs" target="_blank" rel="noopener">Child-Component-Refs</a>.</p>
+<h4 id="Tree-find-criteria-multiple-false"><a href="#Tree-find-criteria-multiple-false" class="headerlink" title="Tree.find(criteria, [multiple = false])"></a><a href="#Tree-find-criteria-multiple-false">Tree.find(criteria, [multiple = false])</a></h4><ul>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{ Object | String } criteria</code></li>
+<li><code>{ Boolean } multiple</code></li>
+</ul>
+</li>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>This method uses in every methods where you can find node by criteria. If <code>criteria</code> is passed as string it will be transformed like <code>{ text: criteria }</code>.<br>Examples:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$refs.tree.find(<span class="string">'Node Text'</span>) <span class="comment">// It will find Node that has text 'Node Text'</span></span><br><span class="line"><span class="keyword">this</span>.$refs.tree.find(<span class="regexp">/Node Text/</span>) <span class="comment">// Using RegExp. It will find: Node Text ATAT, ATATA Node Text and so on...</span></span><br><span class="line"><span class="keyword">this</span>.$refs.tree.find(&#123;</span><br><span class="line">  text: <span class="regexp">/^Item 2/</span>,</span><br><span class="line">  state: &#123; <span class="attr">checked</span>: <span class="literal">true</span>, <span class="attr">selected</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>By default this method finds the first found node. You can add the second parameter and this function will return all found nodes. </p>
+<h4 id="Tree-findAll-criteria"><a href="#Tree-findAll-criteria" class="headerlink" title="Tree.findAll(criteria)"></a><a href="#Tree-findAll-criteria">Tree.findAll(criteria)</a></h4><ul>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{ Object | String } criteria</code></li>
+</ul>
+</li>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+</li>
+</ul>
+<p>This method is “syntactic sugar” of <code>Tree.find(criteria, true)</code></p>
+<h4 id="Tree-selected"><a href="#Tree-selected" class="headerlink" title="Tree.selected()"></a><a href="#Tree-selected">Tree.selected()</a></h4><ul>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>You can get access to <code>selected</code> nodes and do everything you want with NodeAPI</p>
+</li>
+</ul>
+<h4 id="Tree-checked"><a href="#Tree-checked" class="headerlink" title="Tree.checked()"></a><a href="#Tree-checked">Tree.checked()</a></h4><ul>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>You can get access to <code>checked</code> nodes and do everything you want with NodeAPI</p>
+</li>
+</ul>
+<h4 id="Tree-append-criteria-node"><a href="#Tree-append-criteria-node" class="headerlink" title="Tree.append(criteria, node)"></a><a href="#Tree-append-criteria-node">Tree.append(criteria, node)</a></h4><ul>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{ Object | Node } criteria</code>  (see <a href="#Tree-find-criteria-multiple-false">find method</a>)</li>
+<li><code>{ Object | String } node</code></li>
+</ul>
+</li>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li>Appended Node</li>
+<li>null</li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>This method allows you to append (add to the end of the list) new Node to the Tree.<br>There are <strong>2 types of insertion:</strong></p>
+<ul>
+<li><p>Set criteria and new Node. It will try to find Node (using criteria) and append as children of this Node. Example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$refs.tree.append(</span><br><span class="line">  &#123; <span class="attr">text</span>: <span class="string">'My super Text'</span> &#125;,              <span class="comment">// search criteria</span></span><br><span class="line">  <span class="string">'New CHILD Node for "My super Text"'</span>    <span class="comment">// this string will be converted to Node object with default state parameters</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Set only one argument (Node). In this way it will add new Node as <code>root</code> element. (Yeah, we are able to have more than one root element)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">this</span>.$refs.tree.append(&#123;</span><br><span class="line">  text: <span class="string">'My NEW Node'</span>,</span><br><span class="line">  state: &#123; <span class="attr">selected</span>: <span class="literal">true</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="Tree-prepend-criteria-node"><a href="#Tree-prepend-criteria-node" class="headerlink" title="Tree.prepend(criteria, node)"></a><a href="#Tree-prepend-criteria-node">Tree.prepend(criteria, node)</a></h4><ul>
+<li><p><strong>Usage:</strong></p>
+<p>This method has the same behaviour as <code>Tree.append</code>, but the point of insertion will be different (<strong>in the start</strong> of the list).</p>
+</li>
+</ul>
+<h4 id="Tree-before-criteria-node"><a href="#Tree-before-criteria-node" class="headerlink" title="Tree.before(criteria, node)"></a><a href="#Tree-before-criteria-node">Tree.before(criteria, node)</a></h4><ul>
+<li><p><strong>Usage:</strong></p>
+<p>This method has behaviour the same as <code>Tree.append</code>, but the point of insertion will be different (<strong>before</strong> found node or the start of the list (as root)).</p>
+</li>
+</ul>
+<h4 id="Tree-after-criteria-node"><a href="#Tree-after-criteria-node" class="headerlink" title="Tree.after(criteria, node)"></a><a href="#Tree-after-criteria-node">Tree.after(criteria, node)</a></h4><ul>
+<li><p><strong>Usage:</strong></p>
+<p>This method has behaviour the same as <code>Tree.append</code>, but the point of insertion will be different (<strong>after</strong> found node or the end of the list (as root)).</p>
+</li>
+</ul>
+<h4 id="Tree-remove-criteria-multiple-false"><a href="#Tree-remove-criteria-multiple-false" class="headerlink" title="Tree.remove(criteria, multiple = false)"></a><a href="#Tree-remove-criteria-multiple">Tree.remove(criteria, multiple = false)</a></h4><ul>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{ Object | String } criteria</code> (see <a href="#Tree-find-criteria-multiple-false">find method</a>)</li>
+<li><code>{ Boolean } multiple</code></li>
+</ul>
+</li>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>Remove Node by criteria.</p>
+</li>
+</ul>
+<h3 id="Selection-API"><a href="#Selection-API" class="headerlink" title="Selection API"></a>Selection API</h3><p>This array-like object has all array methods (forEach, map and so on) because it inherits <code>Array</code> object. This collection has very similar behaviour with jQuery. <strong>All actions apply to all items in the collection.</strong> I’m going to show one example in more details and other methods have similar logic.</p>
+<h4 id="Selection-select-extendList"><a href="#Selection-select-extendList" class="headerlink" title="Selection.select(extendList)"></a><a href="#Selection-select-extendList">Selection.select(extendList)</a></h4><ul>
+<li><p><strong>Arguments:</strong></p>
+<ul>
+<li><code>{ Boolean } extendList</code> - in <code>multiple</code> mode it will add selected Node</li>
+</ul>
+</li>
+<li><p><strong>Returns:</strong></p>
+<ul>
+<li><a href="#Selection-API">Selection</a></li>
+</ul>
+</li>
+<li><p><strong>Usage:</strong></p>
+<p>It calls method <code>select</code> for <code>all Nodes</code> in the collection. For instance:</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Let's find Nodes which text starts with 'Java' and it's not disabled</span></span><br><span class="line"><span class="keyword">let</span> selection = <span class="keyword">this</span>.$refs.tree.findAll(&#123; <span class="attr">text</span>: <span class="regexp">/^Java/</span>, <span class="attr">state</span>: &#123; <span class="attr">disabled</span>: <span class="literal">false</span> &#125; &#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// or you can use (the second parametes is true):</span></span><br><span class="line"><span class="comment">// let selection = this.$refs.tree.find(&#123; text: /^Java/, state: &#123; disabled: false &#125; &#125;, true)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Here we want to select all nodes in our collection.</span></span><br><span class="line"><span class="comment">// For single mode (multiple: false) it will do for ALL nodes:</span></span><br><span class="line"><span class="comment">//  - unselect node</span></span><br><span class="line"><span class="comment">//  - select node</span></span><br><span class="line"><span class="comment">// For multiple mode it will select ALL nodes in the collection</span></span><br><span class="line">selection.select(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+<p>I think I should not explain behaviour of all methods. I hope it clear how it works. </p>
+<p>Methods list:</p>
+<ul>
+<li><strong>Selection.select()</strong> - select all nodes</li>
+<li><strong>Selection.unselect()</strong> - unselect all nodes</li>
+<li><strong>Selection.check()</strong> - check all nodes (if <code>checkbox</code> mode)</li>
+<li><strong>Selection.uncheck()</strong> - uncheck all nodes (if <code>checkbox</code> mode) </li>
+<li><strong>Selection.expand()</strong> - expand nodes (if node has children)</li>
+<li><strong>Selection.collapse()</strong> - collapse nodes (if node has children)</li>
+<li><strong>Selection.remove()</strong> - remove nodes</li>
+</ul>
+<h3 id="Node-API"><a href="#Node-API" class="headerlink" title="Node API"></a>Node API</h3><p>A Tree component consists of Nodes. Every Node is a VueJS component, which has a <code>node</code> property linked to the Node class.<br>It is desirable not to work with the VueJS Node component directly. You have an API that returns a Node (not VueJS compoenent).<br><strong>The tree mapping is based on the node states</strong>. Here are list of default states:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> nodeStates = &#123;</span><br><span class="line">  selected: <span class="literal">false</span>,</span><br><span class="line">  selectable: <span class="literal">true</span>,</span><br><span class="line">  checked: <span class="literal">false</span>,</span><br><span class="line">  expanded: <span class="literal">false</span>,</span><br><span class="line">  disabled: <span class="literal">false</span>,</span><br><span class="line">  visible: <span class="literal">true</span>,</span><br><span class="line">  indeterminate: <span class="literal">false</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>I hope that every state speaks for itself.</p>
+<p>To check state you can use:</p>
+<ul>
+<li><code>Node.selected()</code></li>
+<li><code>Node.checked()</code></li>
+<li><code>Node.hidden()</code></li>
+<li><code>Node.visible()</code></li>
+<li><code>Node.enabled()</code></li>
+<li><code>Node.disabled()</code></li>
+<li><code>Node.expanded()</code></li>
+<li><code>Node.collapsed()</code></li>
+<li><code>Node.indeterminate()</code></li>
+</ul>
+<p><strong>Node.indeterminate()</strong> - If a Node has more than one checked Node it will return <code>true</code>. Otherwise it returns <code>false</code></p>
+<p>We have reverse state checks and <strong>this is done purely for convenience</strong>:</p>
+<ul>
+<li><code>Node.hidden()</code> and <code>Node.visible()</code></li>
+<li><code>Node.enabled()</code> and <code>Node.disabled()</code></li>
+<li><code>Node.collapsed()</code> and <code>Node.expanded()</code></li>
+</ul>
+<p>To change Node state:</p>
+<ul>
+<li><code>Node.select(extendList)</code></li>
+<li><code>Node.unselect()</code></li>
+<li><code>Node.check()</code></li>
+<li><code>Node.uncheck()</code></li>
+<li><code>Node.show()</code></li>
+<li><code>Node.hide()</code></li>
+<li><code>Node.expand()</code></li>
+<li><code>Node.disable()</code></li>
+<li><code>Node.collapse()</code></li>
+<li><code>Node.enable()</code></li>
+<li><code>Node.toggleCollapse()</code></li>
+<li><code>Node.toggleExpand()</code></li>
+</ul>
+<p>For instance Node is checked. When you call <code>Node.check()</code> <strong>it will not</strong> check Node again and not call <code>node.checked</code> event. This condition applies to all of the above methods. You don’t need to:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">if</span> (!node.checked()) &#123;</span><br><span class="line">  node.check()</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>We have only 1 method which receives a single parameter. It is a <code>Node.select(extendList)</code>. It this case if tree option <code>multiple</code> is true it will be added to <code>selectionNodes</code> list and user will see more than one selected Nodes. Example:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// In our example we have one selected node. Using API we are able to find Node: </span></span><br><span class="line"><span class="keyword">let</span> someCoolNode = <span class="keyword">this</span>.$refs.tree.find(<span class="string">'Awesome NODE'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// It will select found Node and we will have 2 selected Nodes</span></span><br><span class="line">someCoolNode.select(<span class="literal">true</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="Adding-removing-finding-Nodes"><a href="#Adding-removing-finding-Nodes" class="headerlink" title="Adding, removing, finding Nodes"></a>Adding, removing, finding Nodes</h4><p>You probably know jQuery and how it works with DOM objects. It is very similar.</p>
+<ul>
+<li><code>Node.append(node)</code>// <code>Node.addChild()</code> is an alias</li>
+<li><code>Node.prepend(node)</code></li>
+<li><code>Node.after(node)</code></li>
+<li><code>Node.before(node)</code></li>
+</ul>
+<p>These methods add children or insert nodes before/after. </p>
+<p>Argument <code>node</code> can be:</p>
+<ul>
+<li>simple text - it will be Node name with default states</li>
+<li>structured node object ( See <a href="#Structure">Node Structure</a> )</li>
+<li>Node object</li>
+</ul>
+<p>Examples:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// In this example we DO NOT using Selection API...</span></span><br><span class="line"><span class="keyword">let</span> myAwesomeNode = <span class="keyword">this</span>.$refs.tree.find(&#123;<span class="attr">state</span>: &#123; <span class="attr">selected</span>: <span class="literal">true</span> &#125; &#125;)[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (myAwesomeNode) &#123;</span><br><span class="line">  myAwesomeNode.append(<span class="string">'LAST Child of Awesome Node'</span>) <span class="comment">// to the end of the list</span></span><br><span class="line">  myAwesomeNode.prepend(<span class="string">'FIRST Child of Awesome Node'</span>) <span class="comment">// to the start of the list</span></span><br><span class="line"></span><br><span class="line">  myAwesomeNode.before(&#123;</span><br><span class="line">    text: <span class="string">'Heey!!'</span>,</span><br><span class="line">    state: &#123;</span><br><span class="line">      checked: <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Node-properties"><a href="#Node-properties" class="headerlink" title="Node properties"></a>Node properties</h4><table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Node.parent</strong></td>
+<td>{ Object &#124; null }</td>
+<td>Link to parent ** For root node it will be <code>null</code></td>
+</tr>
+<tr>
+<td><strong>Node.text</strong></td>
+<td>String</td>
+<td>Node text. It can be HTML</td>
+</tr>
+<tr>
+<td><strong>Node.depth</strong></td>
+<td>Int</td>
+<td>Node depth. Depth for root nodes is 0</td>
+</tr>
+<tr>
+<td><strong>Node.tree</strong></td>
+<td>Object</td>
+<td>Link to a Tree instance (not Vue component)</td>
+</tr>
+<tr>
+<td><strong>Node.vm</strong></td>
+<td>Object</td>
+<td>Link to a VueJS component</td>
+</tr>
+</tbody>
+</table>
+<h3 id="Events"><a href="#Events" class="headerlink" title="Events"></a>Events</h3><p>This example shows every possible event for the tree.</p>
+<iframe width="100%" height="500" src="//jsfiddle.net/amsik/cuseo1j7/embedded/js,html,css,result/dark/" allowpaymentrequest="" allowfullscreen="allowfullscreen" frameborder="0"></iframe>
+    </div>
+  </div>
+</body>
+</html>
