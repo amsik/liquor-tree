@@ -1,5 +1,5 @@
 <template>
-  <div role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
+  <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
       <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
     </template>
@@ -29,7 +29,7 @@
     </template>
 
     <DraggableNode v-if="draggableNode" :target="draggableNode" />
-  </div>
+  </component>
 </template>
 
 <script>
@@ -86,7 +86,12 @@
         default: _ => ({})
       },
 
-      filter: String
+      filter: String,
+
+      tag: {
+        type: String,
+        default: 'div'
+      }
     },
 
     watch: {
