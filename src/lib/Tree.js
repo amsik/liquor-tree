@@ -184,7 +184,7 @@ export default class Tree {
         if (this.options.autoCheckChildren) {
           if (node.checked()) {
             node.recurseDown(child => {
-              child.check()
+              child.state('checked', true)
             })
           }
         }
