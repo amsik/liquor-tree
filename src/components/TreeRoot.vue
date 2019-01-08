@@ -47,7 +47,6 @@
     autoCheckChildren: true,
     parentSelect: false,
     keyboardNavigation: true,
-    paddingLeft: 24,
     nodeIndent: 24,
     minFetchDelay: 0,
     fetchData: null,
