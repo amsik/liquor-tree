@@ -1,6 +1,6 @@
 <template>
   <li class="tree-node" :data-id="node.id" :class="nodeClass" @mousedown.stop="handleMouseDown">
-    <div class="tree-content" :style="{'padding-left': paddingLeft}" @mouseup.stop="select">
+    <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @mouseup.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
@@ -63,8 +63,8 @@
     },
 
     computed: {
-      paddingLeft() {
-        return this.node.depth * this.options.paddingLeft + 'px'
+      padding() {
+        return this.node.depth * (this.options.paddingLeft ? this.options.paddingLeft : this.options.nodeIndent) + 'px'
       },
 
       nodeClass() {
