@@ -109,7 +109,7 @@ function callDndCb (args, opts, method) {
     return
   }
 
-  return !!opts[method](...args)
+  return opts[method](...args) === false ? false : true
 }
 
 function clearDropClasses(parent) {
@@ -227,7 +227,7 @@ export default {
           const cbResult = callDndCb(
             [this.draggableNode.node, this.$$dropDestination],
             this.tree.options.dnd,
-            'onDragFinish'
+            'onDragOn'
           )
 
           const isDropable = this.$$dropDestination.isDropable() && cbResult !== false

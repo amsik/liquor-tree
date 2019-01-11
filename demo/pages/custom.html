@@ -22,6 +22,20 @@
         height: 300px;
         background: #fff no-repeat url(/assets/img/loading.gif) center;
       }
+
+      .tree-text {
+        display: flex;
+        width: 100%;
+      }
+
+      .tree-text__text {
+        flex-grow: 2;
+      }
+
+      .tree-text__controls > span {
+        color: #0505ff;
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
@@ -57,16 +71,15 @@
               Custom icons. Using `data` property for Nodes.
             </div>
             <div class="example-tree">
-              <tree :data="treeData1" >
+              <tree :data="treeData1">
                 <span class="tree-text" slot-scope="{ node }">
-                  <template v-if="!node.data.icon">
+                  <span class="tree-text__text">
                     {{ node.text }}
-                  </template>
+                  </span>
 
-                  <template v-else>
-                    <i :class="node.data.icon"></i>
-                    {{ node.text }}
-                  </template>
+                  <div class="tree-text__controls">
+                    <span @mouseup="addChild($event, node)">Add child</span>
+                  </div>
                 </span>
               </tree>
             </div>
@@ -80,7 +93,14 @@
         data: () => ({
           treeData0: getTreeData0(),
           treeData1: getTreeData1()
-        })
+        }),
+        methods: {
+          addChild(event, node) {
+            event.stopPropagation()
+
+            console.log(node)
+          }
+        }
       })
 
       function getTreeData0() {
