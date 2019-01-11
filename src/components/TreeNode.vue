@@ -320,11 +320,11 @@
     user-select: none;
   }
 
-  .tree-node.selected .tree-anchor {
+  .tree-node.selected > .tree-content > .tree-anchor {
     outline: none;
   }
 
-  .tree-node.disabled .tree-anchor {
+  .tree-node.disabled > .tree-content > .tree-anchor {
     color: #989191;
     background: #fff;
     opacity: .6;

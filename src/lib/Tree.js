@@ -181,10 +181,12 @@ export default class Tree {
         node.append(children)
         node.isBatch = false
 
-        if (node.checked()) {
-          node.recurseDown(child => {
-            child.state('checked', true)
-          })
+        if (this.options.autoCheckChildren) {
+          if (node.checked()) {
+            node.recurseDown(child => {
+              child.state('checked', true)
+            })
+          }
         }
 
         this.$emit('tree:data:received', node)
@@ -254,7 +256,7 @@ export default class Tree {
         }
       }
 
-      if (node.disabled()) {
+      if (this.options.autoDisableChildren && node.disabled()) {
         node.recurseDown(child => {
           child.state('disabled', true)
         })

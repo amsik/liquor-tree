@@ -44,6 +44,7 @@
     checkbox: false,
     checkOnSelect: false,
     autoCheckChildren: true,
+    autoDisableChildren: true,
     parentSelect: false,
     keyboardNavigation: true,
     paddingLeft: 24,

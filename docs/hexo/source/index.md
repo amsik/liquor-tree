@@ -80,6 +80,7 @@ To register the library you can choose between the 3 methods I mention above.
 | **checkbox**           | Boolean   | false   | `checkbox` mode. It shows checkboxes for every node           |
 | **checkOnSelect**      | Boolean   | false   | For `checkbox` mode only. Node will have `checked` state when user clicks either text or checkbox |
 | **autoCheckChildren**  | Boolean   | true    | For `checkbox` mode only. Children will have the same `checked` state as their parent. |
+| **autoDisableChildren**| Boolean   | true    | Toggles whether children will have the same `disabled` state as their parent. |
 | **parentSelect**       | Boolean   | false   | By clicking node which has children it expands node. i.e we have two ways to expand/collapse node: by clicking on arrow and on text |
 | **keyboardNavigation** | Boolean   | true    | Allows user to navigate tree using keyboard |
 | **propertyNames**      | Object    | -       | This options allows the default tree's structure to be redefined. [See example](#Redefine-Structure) |

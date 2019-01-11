@@ -312,12 +312,17 @@ export default class Node {
       return this
     }
 
-    this.recurseDown(node => {
-      if (node.disabled()) {
-        node.state('disabled', false)
-        node.$emit('enabled')
-      }
-    })
+    if (!this.tree.options.autoDisableChildren) {
+      this.recurseDown(node => {
+        if (node.disabled()) {
+          node.state('disabled', false)
+          node.$emit('enabled')
+        }
+      })
+    } else {
+      this.state('disabled', false)
+      this.$emit('enabled')
+    }
 
     return this
   }
@@ -331,12 +336,17 @@ export default class Node {
       return this
     }
 
-    this.recurseDown(node => {
-      if (node.enabled()) {
-        node.state('disabled', true)
-        node.$emit('disabled')
-      }
-    })
+    if (this.tree.options.autoDisableChildren) {
+      this.recurseDown(node => {
+        if (node.enabled()) {
+          node.state('disabled', true)
+          node.$emit('disabled')
+        }
+      })
+    } else {
+      this.state('disabled', true)
+      this.$emit('disabled')
+    }
 
     return this
   }
@@ -356,7 +366,7 @@ export default class Node {
   }
 
   expand () {
-    if (!this.hasChildren() || this.expanded() || this.disabled()) {
+    if (!this.canExpand()) {
       return this
     }
 
@@ -373,12 +383,24 @@ export default class Node {
     return this
   }
 
+  canExpand () {
+    return this.collapsed() &&
+      this.hasChildren() &&
+      (!this.tree.autoDisableChildren || this.disabled())
+  }
+
+  canCollapse () {
+    return this.expanded() &&
+      this.hasChildren() &&
+      (!this.tree.autoDisableChildren || this.disabled())
+  }
+
   expanded () {
     return this.state('expanded')
   }
 
   collapse () {
-    if (!this.hasChildren() || this.collapsed() || this.disabled()) {
+    if (!this.canCollapse()) {
       return this
     }
 
@@ -401,15 +423,11 @@ export default class Node {
   }
 
   _toggleOpenedState () {
-    if (this.disabled() || !this.hasChildren()) {
-      return this
-    }
-
-    if (this.expanded()) {
+    if (this.canCollapse()) {
       return this.collapse()
+    } else if (this.canExpand()) {
+      return this.expand()
     }
-
-    return this.expand()
   }
 
   isDropable () {
