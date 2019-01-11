@@ -40,6 +40,7 @@
   import Tree from '@/lib/Tree'
 
   const defaults = {
+    direction: 'ltr',
     multiple: true,
     checkbox: false,
     checkOnSelect: false,
@@ -47,7 +48,7 @@
     autoDisableChildren: true,
     parentSelect: false,
     keyboardNavigation: true,
-    paddingLeft: 24,
+    nodeIndent: 24,
     minFetchDelay: 0,
     fetchData: null,
     propertyNames: null,
