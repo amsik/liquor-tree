@@ -3,7 +3,7 @@
     <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @mouseup.stop="select">
       <i
         class="tree-arrow"
-        :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
+        :class="[{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}, options.direction]"
         @mouseup.stop="toggleExpand">
       </i>
 
@@ -241,6 +241,20 @@
     border-left: 0;
     border-top: 0;
     left: 9px;
+    top: 50%;
+    height: 9px;
+    width: 9px;
+    transform: rotate(-45deg) translateY(-50%) translateX(0);
+    transition: transform .25s;
+    transform-origin: center;
+  }
+
+  .tree-arrow.has-child.rtl:after {
+    border: 1.5px solid #494646;
+    position: absolute;
+    border-right: 0;
+    border-bottom: 0;
+    right: 0px;
     top: 50%;
     height: 9px;
     width: 9px;
