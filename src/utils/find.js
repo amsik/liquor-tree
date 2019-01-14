@@ -15,7 +15,7 @@ function striptags (value) {
 function finder (criteria) {
   return function (node) {
     return Object.keys(criteria).every(key => {
-      if (key === 'text') {
+      if (key === 'text' || key === 'id') {
         const c = criteria[key]
         let val = node[key]
 
