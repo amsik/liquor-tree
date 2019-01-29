@@ -77,7 +77,8 @@
           'disabled': state.disabled,
           'matched': state.matched,
           'dragging': state.dragging,
-          'loading': this.loading
+          'loading': this.loading,
+          'draggable': state.draggable
         }
 
         if (this.options.checkbox) {
