@@ -1,7 +1,7 @@
 <template>
   <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
-      <div class="tree-filter-empty">{{ opts.filter.emptyText }}</div>
+      <div class="tree-filter-empty" v-html="opts.filter.emptyText"></div>
     </template>
     <template v-else>
       <ul class="tree-root" @dragstart="onDragStart">
