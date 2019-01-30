@@ -1,36 +1,31 @@
 <template>
   <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
-      <slot name="emptyFilter">Nothing found!</slot>
+      <div class="tree-filter-empty" v-html="opts.filter.emptyText"></div>
     </template>
     <template v-else>
-      <template v-if="matches.length == 0">
-        <slot name="emptyDataset">Empty dataset!</slot>
-      </template>
-      <template v-else>
-        <ul class="tree-root" @dragstart="onDragStart">
-          <template v-if="opts.filter.plainList && matches.length > 0">
-            <TreeNode
-              v-for="node in matches"
-              v-if="node.visible()"
+      <ul class="tree-root" @dragstart="onDragStart">
+        <template v-if="opts.filter.plainList && matches.length > 0">
+          <TreeNode
+            v-for="node in matches"
+            v-if="node.visible()"
 
-              :key="node.id"
-              :node="node"
-              :options="opts"
-            />
-          </template>
-          <template v-else>
-            <TreeNode
-              v-for="node in model"
-              v-if="node && node.visible()"
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
+        </template>
+        <template v-else>
+          <TreeNode
+            v-for="node in model"
+            v-if="node && node.visible()"
 
-              :key="node.id"
-              :node="node"
-              :options="opts"
-            />
-          </template>
-        </ul>
-      </template>
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
+        </template>
+      </ul>
     </template>
 
     <DraggableNode v-if="draggableNode" :target="draggableNode" />
@@ -117,6 +112,10 @@
         filterDefaults,
         opts.filter
       )
+
+      if (!opts.filter.emptyText) {
+        opts.filter.emptyText = 'Empty dataset!'
+      }
 
       return {
         model: null,
