@@ -114,10 +114,6 @@
         opts.filter
       )
 
-      if (!opts.filter.emptyText) {
-        opts.filter.emptyText = 'Empty dataset!'
-      }
-
       return {
         model: null,
         tree: null,
