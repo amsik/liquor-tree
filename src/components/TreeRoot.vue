@@ -59,6 +59,7 @@
   }
 
   const filterDefaults = {
+    emptyText: 'Nothing found!',
     matcher(query, node) {
       return new RegExp(query, 'i').test(node.text)
     },
