@@ -1,31 +1,36 @@
 <template>
   <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
     <template v-if="filter && matches.length == 0" >
-      <div class="tree-filter-empty" v-html="opts.filter.emptyText"></div>
+      <slot name="emptyFilter">Nothing found!</slot>
     </template>
     <template v-else>
-      <ul class="tree-root" @dragstart="onDragStart">
-        <template v-if="opts.filter.plainList && matches.length > 0">
-          <TreeNode
-            v-for="node in matches"
-            v-if="node.visible()"
+      <template v-if="matches.length == 0">
+        <slot name="emptyDataset">Empty dataset!</slot>
+      </template>
+      <template v-else>
+        <ul class="tree-root" @dragstart="onDragStart">
+          <template v-if="opts.filter.plainList && matches.length > 0">
+            <TreeNode
+              v-for="node in matches"
+              v-if="node.visible()"
 
-            :key="node.id"
-            :node="node"
-            :options="opts"
-          />
-        </template>
-        <template v-else>
-          <TreeNode
-            v-for="node in model"
-            v-if="node && node.visible()"
+              :key="node.id"
+              :node="node"
+              :options="opts"
+            />
+          </template>
+          <template v-else>
+            <TreeNode
+              v-for="node in model"
+              v-if="node && node.visible()"
 
-            :key="node.id"
-            :node="node"
-            :options="opts"
-          />
-        </template>
-      </ul>
+              :key="node.id"
+              :node="node"
+              :options="opts"
+            />
+          </template>
+        </ul>
+      </template>
     </template>
 
     <DraggableNode v-if="draggableNode" :target="draggableNode" />
@@ -59,7 +64,6 @@
   }
 
   const filterDefaults = {
-    emptyText: 'Nothing found!',
     matcher(query, node) {
       return new RegExp(query, 'i').test(node.text)
     },
