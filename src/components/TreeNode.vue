@@ -388,7 +388,6 @@
     width: 5px;
   }
 
-
   .tree-node.has-child.loading > .tree-content > .tree-arrow,
   .tree-node.has-child.loading > .tree-content > .tree-arrow:after {
     border-radius: 50%;
@@ -396,6 +395,7 @@
     height: 15px;
     border: 0;
   }
+
   .tree-node.has-child.loading > .tree-content > .tree-arrow {
     font-size: 3px;
     position: relative;
@@ -411,6 +411,7 @@
     animation: loading 1.1s infinite linear;
     margin-right: 8px;
   }
+
   @-webkit-keyframes loading {
     0% {
       -webkit-transform: rotate(0deg);

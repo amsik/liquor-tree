@@ -98,7 +98,8 @@
           addChild(event, node) {
             event.stopPropagation()
 
-            console.log(node)
+            node.addChild('New child')
+            node.expand()
           }
         }
       })

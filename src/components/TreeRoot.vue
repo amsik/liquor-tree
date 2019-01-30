@@ -61,7 +61,15 @@
   const filterDefaults = {
     emptyText: 'Nothing found!',
     matcher(query, node) {
-      return new RegExp(query, 'i').test(node.text)
+      const isMatched = new RegExp(query, 'i').test(node.text)
+
+      if (isMatched) {
+        if (node.parent && new RegExp(query, 'i').test(node.parent.text)) {
+          return false
+        }
+      }
+
+      return isMatched
     },
     plainList: false,
     showChildren: true
