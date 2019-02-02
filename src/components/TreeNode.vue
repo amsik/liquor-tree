@@ -1,17 +1,17 @@
 <template>
   <li class="tree-node" :data-id="node.id" :class="nodeClass" @mousedown.stop="handleMouseDown">
-    <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @mouseup.stop="select">
+    <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @click.stop="select">
       <i
         class="tree-arrow"
         :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
-        @mouseup.stop="toggleExpand">
+        @click.stop="toggleExpand">
       </i>
 
       <i
         v-if="options.checkbox"
         class="tree-checkbox"
         :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
-        @mouseup.stop="check">
+        @click.stop="check">
       </i>
 
       <span
