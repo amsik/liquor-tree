@@ -3,7 +3,7 @@
     <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @click.stop="select">
       <i
         class="tree-arrow"
-        :class="{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}"
+        :class="[{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}, options.direction]"
         @click.stop="toggleExpand">
       </i>
 
