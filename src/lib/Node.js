@@ -527,11 +527,13 @@ export default class Node {
     this.tree._editingNode = null
     this.tree.activeElement = null
 
+    const prevText = this.text
+
     if (newText && newText !== false && this.text !== newText) {
       this.text = newText
     }
 
-    this.$emit('editing:stop', this.text === newText)
+    this.$emit('editing:stop', prevText)
   }
 
   index (verbose) {

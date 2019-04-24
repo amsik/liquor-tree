@@ -43,6 +43,7 @@
           </div>
           <div class="example-tree">
             <tree
+              ref="tree"
               :options="treeOptions0" />
           </div>
         </div>
@@ -59,7 +60,16 @@
             editing: true,
             dnd: true
           }
-        })
+        }),
+        mounted() {
+          this.$refs.tree.$on('node:editing:start', (node) => {
+          	console.log('Start editing: ' + node.text)
+          })
+          
+        	this.$refs.tree.$on('node:editing:stop', (node, isTextChanged) => {
+          	console.log('Stop editing: ' + node.text + ', ' + isTextChanged)
+          })
+        }
       })
     </script>
 
