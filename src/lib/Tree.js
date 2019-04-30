@@ -187,6 +187,8 @@ export default class Tree {
               child.state('checked', true)
             })
           }
+          
+          node.refreshIndeterminateState()
         }
 
         this.$emit('tree:data:received', node)

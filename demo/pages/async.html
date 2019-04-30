@@ -108,10 +108,16 @@
           },
 
           fetchExample1: {
-            minFetchDelay: 5000,
+            checkbox: true,
+            minFetchDelay: 600,
             fetchData(node) {
               // return Promise object
-              return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).catch(e => console.log(e))
+              return fetch(`/assets/data/fetch0/data-${node.id}.json`).then(r => r.json()).then(data => {
+                data[0].state = {
+                  checked: true
+                }
+                return data
+              }).catch(e => console.log(e))
             }
           },
 
