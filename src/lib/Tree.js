@@ -172,7 +172,7 @@ export default class Tree {
 
     this.$emit('tree:data:fetch', node)
 
-    if (this.options.minFetchDelay > 0) {
+    if (this.options.minFetchDelay > 0 && node.vm) {
       node.vm.loading = true
     }
 
@@ -187,7 +187,7 @@ export default class Tree {
               child.state('checked', true)
             })
           }
-          
+
           node.refreshIndeterminateState()
         }
 
@@ -198,7 +198,10 @@ export default class Tree {
       fetchDelay(this.options.minFetchDelay),
       result
     ]).then(_ => {
-      node.vm.loading = false
+      if (node.vm) {
+        node.vm.loading = false
+      }
+
       return result
     })
   }
@@ -211,7 +214,7 @@ export default class Tree {
         .catch(this.options.onFetchError)
     }
 
-    if (false === parseData) {
+    if (parseData === false) {
       return result
     }
 

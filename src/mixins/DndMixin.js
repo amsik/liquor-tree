@@ -109,11 +109,11 @@ function callDndCb (args, opts, method) {
     return
   }
 
-  return opts[method](...args) === false ? false : true
+  return opts[method](...args) !== false
 }
 
-function clearDropClasses(parent) {
-  for (let key in DropPosition) {
+function clearDropClasses (parent) {
+  for (const key in DropPosition) {
     const el = parent.querySelectorAll(`.${DropPosition[key]}`)
 
     for (let i = 0; i < el.length; i++) {

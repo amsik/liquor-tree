@@ -215,7 +215,7 @@ describe('Lib: Node.js', () => {
     expect(node.enabled()).toBeFalsy()
 
     const childNode = node.children[0]
-    expect(childNode.disabled()).toBeTruthy()
+    expect(childNode.disabled()).toBeFalsy()
 
     node.enable()
 
