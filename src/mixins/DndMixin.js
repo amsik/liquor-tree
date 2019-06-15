@@ -224,15 +224,15 @@ export default {
             }
           }
 
+          dropPosition = getDropPosition(e, dropDestination)
+
           const cbResult = callDndCb(
-            [this.draggableNode.node, this.$$dropDestination],
+            [this.draggableNode.node, this.$$dropDestination, dropPosition],
             this.tree.options.dnd,
             'onDragOn'
           )
 
           const isDropable = this.$$dropDestination.isDropable() && cbResult !== false
-
-          dropPosition = getDropPosition(e, dropDestination)
 
           if (!isDropable && dropPosition === DropPosition.ON) {
             dropPosition = null
