@@ -222,9 +222,15 @@ export default class Node {
       return this.uncheck()
     }
 
+    const checkDisabledChildren = this.tree.options.checkDisabledChildren
+
     if (this.tree.options.autoCheckChildren) {
       this.recurseDown(node => {
         node.state('indeterminate', false)
+
+        if (node.disabled() && !checkDisabledChildren) {
+          return
+        }
 
         if (!node.checked()) {
           this.tree.check(node)

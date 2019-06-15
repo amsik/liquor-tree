@@ -160,7 +160,7 @@ export default {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
 
           const cbResult = callDndCb(
-            [this.draggableNode.node, this.$$dropDestination],
+            [this.draggableNode.node, this.$$dropDestination, dropPosition],
             this.tree.options.dnd,
             'onDragFinish'
           )

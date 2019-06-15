@@ -80,7 +80,8 @@
           treeData1: getTreeData(false),
           treeOptions1: {
             checkbox: true,
-            multiple: false
+            multiple: false,
+            checkDisabledChildren: false
           },
 
           treeData2: getTreeData(),
@@ -169,7 +170,8 @@
                 children: [
                     {text: 'Item 5.1'},
                     {text: 'Item 5.2'},
-                    {text: 'Item 5.3'}
+                    {text: 'Item 5.3'},
+                    {text: 'Item 5.4', state: {disabled: true}}
                 ],
                 id: 5
             }

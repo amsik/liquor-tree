@@ -46,6 +46,7 @@
     checkOnSelect: false,
     autoCheckChildren: true,
     autoDisableChildren: true,
+    checkDisabledChildren: true,
     parentSelect: false,
     keyboardNavigation: true,
     nodeIndent: 24,
