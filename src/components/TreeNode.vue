@@ -54,6 +54,12 @@
       NodeContent
     },
 
+    watch: {
+      node() {
+        this.node.vm = this
+      }
+    },
+
     data() {
       this.node.vm = this
 
