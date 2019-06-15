@@ -224,12 +224,6 @@ export default {
             }
           }
 
-          const cbResult = callDndCb(
-            [this.draggableNode.node, this.$$dropDestination],
-            this.tree.options.dnd,
-            'onDragOn'
-          )
-
           const isDropable = this.$$dropDestination.isDropable() && cbResult !== false
 
           dropPosition = getDropPosition(e, dropDestination)
@@ -237,6 +231,12 @@ export default {
           if (!isDropable && dropPosition === DropPosition.ON) {
             dropPosition = null
           }
+
+          const cbResult = callDndCb(
+            [this.draggableNode.node, this.$$dropDestination, dropPosition],
+            this.tree.options.dnd,
+            'onDragOn'
+          )
 
           updateHelperClasses(dropDestination, dropPosition)
         }
