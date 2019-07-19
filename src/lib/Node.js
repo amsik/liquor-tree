@@ -496,7 +496,7 @@ export default class Node {
 
     clone.state('dragging', false)
     this.state('dragging', false)
-    this.$emit('dragging:finish')
+    this.$emit('dragging:finish', destination, destinationPosition)
 
     if (clone.state('selected')) {
       tree.selectedNodes.remove(this)
