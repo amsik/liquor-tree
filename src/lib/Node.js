@@ -496,7 +496,8 @@ export default class Node {
 
     clone.state('dragging', false)
     this.state('dragging', false)
-    this.$emit('dragging:finish')
+    // need to call emit on the clone, because we need to have node.parent filled in the event listener
+    clone.$emit('dragging:finish', destination, destinationPosition)
 
     if (clone.state('selected')) {
       tree.selectedNodes.remove(this)
