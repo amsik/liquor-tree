@@ -81,6 +81,15 @@ export default class Node {
     }
   }
 
+  setData (data) {
+    this.data = {
+      ...this.data,
+      ...data
+    }
+
+    return this.tree.data = this.data;
+  }
+
   state (name, value) {
     if (undefined === value) {
       return this.states[name]

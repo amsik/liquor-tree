@@ -182,6 +182,10 @@ export default {
       return this.tree.find(criteria, true)
     },
 
+    update (criteria, callback) {
+      return this.tree.update(criteria, callback);
+    },
+
     expandAll () {
       return this.tree.expandAll()
     },
