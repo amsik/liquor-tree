@@ -479,6 +479,8 @@ export default class Node {
     clone.id = this.id
     tree.__silence = true
 
+    this.remove()
+
     if (destinationPosition === 'drag-on') {
       tree.append(destination, clone)
     } else if (destinationPosition === 'drag-below') {
@@ -486,8 +488,6 @@ export default class Node {
     } else if (destinationPosition === 'drag-above') {
       tree.before(destination, clone)
     }
-
-    this.remove()
 
     destination.refreshIndeterminateState()
 
