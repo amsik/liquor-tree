@@ -81,13 +81,12 @@ export default class Node {
     }
   }
 
-  setData (data) {
-    this.data = {
-      ...this.data,
-      ...data
-    }
+  setData (data = {}) {
+    this.data = Object.assign({}, this.data, data);
 
-    return this.tree.data = this.data;
+    this.$emit('updated', this.data);
+
+    return this.data;
   }
 
   state (name, value) {
