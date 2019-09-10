@@ -486,6 +486,14 @@ Example:
 Now there is only basic functionality of DND includes events (`dragging:start`, `dragging:finish`). Just add `dnd` property to the tree options.
 To more details see the [Issue](https://github.com/amsik/liquor-tree/issues/55) 
 
+**Events and parameters**:
+- `dragging:start`: 
+  - `node`: A `Node`, the node that is dragging
+- `dragging:finish`:
+  - `targetNode`: A `Node`, the node that was dragged
+  - `destinationNode`: A `Node`, where the target node has been dragged
+  - `postion`: A `String`, can be `drag-on`, `drag-below`, or `drag-above`
+
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/h1z2n05k/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
