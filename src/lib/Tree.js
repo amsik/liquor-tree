@@ -237,7 +237,10 @@ export default class Tree {
 
   setModel (data) {
     this.model = this.parse(data, this.options.modelParse)
-    this.vm.model = this.model
+
+    requestAnimationFrame(_ => {
+      this.vm.model = this.model
+    })
 
     /**
     * VueJS transform properties to reactives when constructor is running

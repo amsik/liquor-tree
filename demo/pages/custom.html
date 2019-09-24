@@ -50,7 +50,7 @@
             Font ionicons. (http://ionicons.com). Implementing Filesystem.
           </div>
           <div class="example-tree">
-            <tree :data="treeData0" >
+            <tree :data="treeData0" ref="tree" @tree:mounted="treeMounted">
               <span class="tree-text" slot-scope="{ node }">
                 <template v-if="!node.hasChildren()">
                   <i class="ion-android-star"></i>
@@ -100,7 +100,13 @@
 
             node.addChild('New child')
             node.expand()
+          },
+          treeMounted() {
+            console.log(this.$refs.tree.find({ data: { text: 'User 1' }}))
           }
+        },
+
+        mounted() {
         }
       })
 
