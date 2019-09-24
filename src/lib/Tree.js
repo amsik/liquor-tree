@@ -238,9 +238,11 @@ export default class Tree {
   setModel (data) {
     this.model = this.parse(data, this.options.modelParse)
 
+    /* eslint-disable */
     requestAnimationFrame(_ => {
       this.vm.model = this.model
     })
+    /* eslint-enable */
 
     /**
     * VueJS transform properties to reactives when constructor is running
