@@ -24,7 +24,7 @@ export default class Node {
     })
 
     if (!tree) {
-      throw new Error('Node must has a Tree context!')
+      throw new Error('Node must have a Tree context!')
     }
 
     this.tree = tree
