@@ -52,4 +52,14 @@ export default class Selection extends Array {
 
     return this
   }
+
+  disable () {
+    nodeIterator(this, 'disable')
+    return this
+  }
+
+  enable () {
+    nodeIterator(this, 'enable')
+    return this
+  }
 }

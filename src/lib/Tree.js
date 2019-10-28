@@ -677,7 +677,7 @@ export default class Tree {
     const result = find(this.model, criteria)
 
     if (!result || !result.length) {
-      return null
+      return new Selection(this, [])
     }
 
     if (multiple === true) {

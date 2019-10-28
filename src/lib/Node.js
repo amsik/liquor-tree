@@ -318,7 +318,7 @@ export default class Node {
       return this
     }
 
-    if (!this.tree.options.autoDisableChildren) {
+    if (this.tree.options.autoDisableChildren) {
       this.recurseDown(node => {
         if (node.disabled()) {
           node.state('disabled', false)
