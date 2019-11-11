@@ -687,6 +687,14 @@ export default class Tree {
     return new Selection(this, [result[0]])
   }
 
+  updateData (criteria, callback) {
+    const nodes = this.find(criteria);
+
+    nodes.forEach(node => node.setData(callback(node)));
+
+    return nodes;
+  }
+
   getNodeById (id) {
     let targetNode = null
 
