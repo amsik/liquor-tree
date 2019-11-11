@@ -90,7 +90,7 @@
                 return destinationNode.data.isNotDroppable !== true
               },
               onDragFinish(targetNode, destinationNode, dropPosition) {
-                console.log('onDragFinish', targetNode.text, destinationNode.text, dropPosition)
+                console.log('onDragFinish', `Target: ${targetNode.text}`, `Destination: ${destinationNode.text}`, dropPosition)
                 return destinationNode.data.isNotDroppable !== true
               }
             },

@@ -486,6 +486,14 @@ Example:
 Now there is only basic functionality of DND includes events (`dragging:start`, `dragging:finish`). Just add `dnd` property to the tree options.
 To more details see the [Issue](https://github.com/amsik/liquor-tree/issues/55) 
 
+**Events and parameters**:
+- `dragging:start`: 
+  - `node`: A `Node`, the node that is dragging
+- `dragging:finish`:
+  - `targetNode`: A `Node`, the node that was dragged
+  - `destinationNode`: A `Node`, where the target node has been dragged
+  - `position`: A `String`, can be `drag-on`, `drag-below`, or `drag-above`
+
 <iframe width="100%" height="500" src="//jsfiddle.net/amsik/h1z2n05k/embedded/html,result/dark/" allowpaymentrequest allowfullscreen="allowfullscreen" frameborder="0"></iframe>
 
 
@@ -666,6 +674,41 @@ This method is "syntactic sugar" of `Tree.find(criteria, true)`
 
   Remove Node by criteria.
 
+
+#### [Tree.updateData(criteria, callback)](#Tree-remove-criteria-multiple)
+
+- **Arguments:**
+  - `{ Object | String } criteria` (see [find method](#Tree-find-criteria-multiple-false))
+  - `{ Function } callback`
+
+- **Returns:**
+  - [Selection](#Selection-API)
+
+- **Usage:**
+
+  This method updates the `data` object in a given node. It is an extension of `find` method but with a slight twist. 
+  The first argument is a criteria while the second is a callback which should return a Node.
+```javascript
+  this.$refs.tree.updateData('Node Text', node => ({
+    description: `ID of this node: ${node.id}`
+  }));
+```
+  Under the hood, there is also a `forEach` which gives you the ability to do something like this:
+```javascript
+  this.$refs.tree.updateData('Node Text', node => {
+    if (node.data.someData) {
+      return {
+        ...node.data,
+        isBoolean: true
+      }
+    }
+
+    return {
+      ...node.data,
+      greeting: 'Hello World'
+    }
+  });
+```
 
 ### Selection API
 

@@ -237,7 +237,12 @@ export default class Tree {
 
   setModel (data) {
     this.model = this.parse(data, this.options.modelParse)
-    this.vm.model = this.model
+
+    /* eslint-disable */
+    requestAnimationFrame(_ => {
+      this.vm.model = this.model
+    })
+    /* eslint-enable */
 
     /**
     * VueJS transform properties to reactives when constructor is running
@@ -672,7 +677,7 @@ export default class Tree {
     const result = find(this.model, criteria)
 
     if (!result || !result.length) {
-      return null
+      return new Selection(this, [])
     }
 
     if (multiple === true) {
@@ -682,8 +687,8 @@ export default class Tree {
     return new Selection(this, [result[0]])
   }
 
-  update (criteria, callback) {
-    let nodes = this.find(criteria);
+  updateData (criteria, callback) {
+    const nodes = this.find(criteria);
 
     nodes.forEach(node => node.setData(callback(node)));
 

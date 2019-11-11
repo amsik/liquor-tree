@@ -81,10 +81,10 @@ export default class Node {
     }
   }
 
-  setData (data = {}) {
+  setData (data) {
     this.data = Object.assign({}, this.data, data);
 
-    this.$emit('updated', this.data);
+    this.$emit('data:changed', this.data);
 
     return this.data;
   }
@@ -326,7 +326,7 @@ export default class Node {
       return this
     }
 
-    if (!this.tree.options.autoDisableChildren) {
+    if (this.tree.options.autoDisableChildren) {
       this.recurseDown(node => {
         if (node.disabled()) {
           node.state('disabled', false)
@@ -398,14 +398,20 @@ export default class Node {
   }
 
   canExpand () {
+    if (this.disabled() || !this.hasChildren()) {
+      return false
+    }
+
     return this.collapsed() &&
-      this.hasChildren() &&
       (!this.tree.autoDisableChildren || this.disabled())
   }
 
   canCollapse () {
+    if (this.disabled() || !this.hasChildren()) {
+      return false
+    }
+
     return this.expanded() &&
-      this.hasChildren() &&
       (!this.tree.autoDisableChildren || this.disabled())
   }
 
@@ -487,6 +493,8 @@ export default class Node {
     clone.id = this.id
     tree.__silence = true
 
+    this.remove()
+
     if (destinationPosition === 'drag-on') {
       tree.append(destination, clone)
     } else if (destinationPosition === 'drag-below') {
@@ -494,8 +502,6 @@ export default class Node {
     } else if (destinationPosition === 'drag-above') {
       tree.before(destination, clone)
     }
-
-    this.remove()
 
     destination.refreshIndeterminateState()
 

@@ -66,8 +66,8 @@
           	console.log('Start editing: ' + node.text)
           })
           
-        	this.$refs.tree.$on('node:editing:stop', (node, isTextChanged) => {
-          	console.log('Stop editing: ' + node.text + ', ' + isTextChanged)
+        	this.$refs.tree.$on('node:editing:stop', (node, prevNodeText) => {
+          	console.log('Stop editing: ' + node.text + ', ' + prevNodeText)
           })
         }
       })

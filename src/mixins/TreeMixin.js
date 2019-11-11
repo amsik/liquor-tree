@@ -190,6 +190,10 @@ export default {
       return this.tree.expandAll()
     },
 
+    updateData (criteria, callback) {
+      return this.tree.updateData(criteria, callback);
+    },
+
     collapseAll () {
       return this.tree.collapseAll()
     },

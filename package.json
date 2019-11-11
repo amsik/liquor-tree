@@ -1,7 +1,7 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.60",
+  "version": "0.2.67",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "library": "LiquorTree",
   "homepage": "https://amsik.github.io/liquor-tree/",
@@ -57,6 +57,7 @@
     "vue-template-compiler": "^2.5.17"
   },
   "jest": {
+    "setupFiles": ["./test/setupTests.js"],
     "moduleFileExtensions": [
       "js",
       "vue"

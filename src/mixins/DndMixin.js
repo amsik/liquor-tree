@@ -159,8 +159,6 @@ export default {
         if (this.$$dropDestination && this.tree.isNode(this.$$dropDestination) && this.$$dropDestination.vm) {
           updateHelperClasses(this.$$dropDestination.vm.$el, null)
 
-          this.draggableNode.node.parent = this.$$dropDestination
-
           const cbResult = callDndCb(
             [this.draggableNode.node, this.$$dropDestination, dropPosition],
             this.tree.options.dnd,
@@ -169,6 +167,7 @@ export default {
 
           if (cbResult !== false && !(!this.$$dropDestination.isDropable() && dropPosition === DropPosition.ON || !dropPosition)) {
             this.draggableNode.node.finishDragging(this.$$dropDestination, dropPosition)
+            this.draggableNode.node.parent = this.$$dropDestination
           }
 
           this.$$dropDestination = null
