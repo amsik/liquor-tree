@@ -118,6 +118,9 @@
                 }
                 return data
               }).catch(e => console.log(e))
+            },
+            onFetchError(error) {
+              console.error(error)
             }
           },
 

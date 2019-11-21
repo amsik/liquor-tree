@@ -220,7 +220,11 @@ export default class Tree {
 
     return result
       .then(data => {
-        return this.parse(data, this.options.modelParse)
+        try {
+          return this.parse(data, this.options.modelParse)
+        } catch (e) {
+          throw new Error(e)
+        }
       })
       .catch(this.options.onFetchError)
   }
@@ -236,61 +240,64 @@ export default class Tree {
   }
 
   setModel (data) {
-    this.model = this.parse(data, this.options.modelParse)
+    return new Promise(resolve => {
+      this.model = this.parse(data, this.options.modelParse)
 
-    /* eslint-disable */
-    requestAnimationFrame(_ => {
-      this.vm.model = this.model
-    })
-    /* eslint-enable */
+      /* eslint-disable */
+      requestAnimationFrame(_ => {
+        this.vm.model = this.model
+        resolve()
+      })
+      /* eslint-enable */
 
-    /**
-    * VueJS transform properties to reactives when constructor is running
-    * And we lose List object (extended from Array)
-    */
-    this.selectedNodes = new List()
-    this.checkedNodes = new List()
+      /**
+      * VueJS transform properties to reactives when constructor is running
+      * And we lose List object (extended from Array)
+      */
+      this.selectedNodes = new List()
+      this.checkedNodes = new List()
 
-    recurseDown(this.model, node => {
-      node.tree = this
+      recurseDown(this.model, node => {
+        node.tree = this
 
-      if (node.selected()) {
-        this.selectedNodes.add(node)
-      }
-
-      if (node.checked()) {
-        this.checkedNodes.add(node)
-
-        if (node.parent) {
-          node.parent.refreshIndeterminateState()
+        if (node.selected()) {
+          this.selectedNodes.add(node)
         }
-      }
 
-      if (this.options.autoDisableChildren && node.disabled()) {
-        node.recurseDown(child => {
-          child.state('disabled', true)
-        })
-      }
-    })
+        if (node.checked()) {
+          this.checkedNodes.add(node)
 
-    if (!this.options.multiple && this.selectedNodes.length) {
-      const top = this.selectedNodes.top()
+          if (node.parent) {
+            node.parent.refreshIndeterminateState()
+          }
+        }
 
-      this.selectedNodes.forEach(node => {
-        if (top !== node) {
-          node.state('selected', false)
+        if (this.options.autoDisableChildren && node.disabled()) {
+          node.recurseDown(child => {
+            child.state('disabled', true)
+          })
         }
       })
 
-      this.selectedNodes
-        .empty()
-        .add(top)
-    }
+      if (!this.options.multiple && this.selectedNodes.length) {
+        const top = this.selectedNodes.top()
 
-    // Nodes can't be selected on init. By it's possible to select through API
-    if (this.options.checkOnSelect && this.options.checkbox) {
-      this.unselectAll()
-    }
+        this.selectedNodes.forEach(node => {
+          if (top !== node) {
+            node.state('selected', false)
+          }
+        })
+
+        this.selectedNodes
+          .empty()
+          .add(top)
+      }
+
+      // Nodes can't be selected on init. By it's possible to select through API
+      if (this.options.checkOnSelect && this.options.checkbox) {
+        this.unselectAll()
+      }
+    })
   }
 
   recurseDown (node, fn) {
@@ -720,7 +727,6 @@ export default class Tree {
     try {
       return TreeParser.parse(data, this, options)
     } catch (e) {
-      console.error(e)
       return []
     }
   }
