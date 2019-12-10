@@ -140,7 +140,7 @@
         { name: 'node:dblclick', args: ['Node'] },
         { name: 'node:selected', args: ['Node'] },
         { name: 'node:unselected', args: ['Node'] },
-        { name: 'node:checked', args: ['Node'] },
+        { name: 'node:checked', args: ['Node', 'Target Node'] },
         { name: 'node:unchecked', args: ['Node'] },
         { name: 'node:expanded', args: ['Node'] },
         { name: 'node:collapsed',  args: ['Node'] },
@@ -228,6 +228,7 @@
               )
 
               console.log(arguments)
+              console.log(node.text, newNode ? newNode.text : null)
             }
           }
         }

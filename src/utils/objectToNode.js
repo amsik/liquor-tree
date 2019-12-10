@@ -1,5 +1,5 @@
-import Node from '@/lib/Node'
-import uuidV4 from '@/utils/uuidV4'
+import Node from '../lib/Node'
+import uuidV4 from '../utils/uuidV4'
 
 /**
 * Default Node's states

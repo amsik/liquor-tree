@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import NodeContent from '@/components/NodeContent'
+  import NodeContent from './NodeContent.vue'
 
   const TreeNode = {
     name: 'Node',

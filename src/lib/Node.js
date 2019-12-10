@@ -1,7 +1,7 @@
-import { recurseDown } from '@/utils/recurse'
-import find from '@/utils/find'
-import uuidV4 from '@/utils/uuidV4'
-import Selection from '@/lib/Selection'
+import { recurseDown } from '../utils/recurse'
+import find from '../utils/find'
+import uuidV4 from '../utils/uuidV4'
+import Selection from '../lib/Selection'
 
 export default class Node {
   constructor (tree, item) {
@@ -223,6 +223,7 @@ export default class Node {
     }
 
     const checkDisabledChildren = this.tree.options.checkDisabledChildren
+    const targetNode = this
 
     if (this.tree.options.autoCheckChildren) {
       this.recurseDown(node => {
@@ -236,7 +237,7 @@ export default class Node {
           this.tree.check(node)
 
           node.state('checked', true)
-          node.$emit('checked')
+          node.$emit('checked', node.id === targetNode.id ? undefined : targetNode)
         }
       })
 
@@ -258,6 +259,8 @@ export default class Node {
       return this
     }
 
+    const targetNode = this
+
     if (this.tree.options.autoCheckChildren) {
       this.recurseDown(node => {
         node.state('indeterminate', false)
@@ -266,7 +269,7 @@ export default class Node {
           this.tree.uncheck(node)
 
           node.state('checked', false)
-          node.$emit('unchecked')
+          node.$emit('unchecked', node.id === targetNode.id ? undefined : targetNode)
         }
       })
 

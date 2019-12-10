@@ -1,6 +1,6 @@
-import Tree from '@/lib/Tree'
-import initKeyboardNavigation from '@/utils/keyboardNavigation'
-import assert from '@/utils/assert'
+import Tree from '../lib/Tree'
+import initKeyboardNavigation from '../utils/keyboardNavigation'
+import assert from '../utils/assert'
 
 function initEvents (vm) {
   const { multiple, checkbox } = vm.opts

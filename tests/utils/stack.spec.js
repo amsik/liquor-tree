@@ -1,4 +1,4 @@
-import { List } from '@/utils/stack'
+import { List } from '../../src/utils/stack.js'
 
 describe('utils: stack', () => {
   it('init', () => {

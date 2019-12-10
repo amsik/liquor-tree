@@ -1,4 +1,4 @@
-import objectToNode from '@/utils/objectToNode'
+import objectToNode from '../utils/objectToNode'
 
 /**
   Every Node has certain format:

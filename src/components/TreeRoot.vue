@@ -33,11 +33,11 @@
 </template>
 
 <script>
-  import TreeNode from '@/components/TreeNode'
-  import DraggableNode from '@/components/DraggableNode'
-  import TreeMixin from '@/mixins/TreeMixin'
-  import TreeDnd from '@/mixins/DndMixin'
-  import Tree from '@/lib/Tree'
+  import TreeNode from './TreeNode.vue'
+  import DraggableNode from './DraggableNode.vue'
+  import TreeMixin from '../mixins/TreeMixin.js'
+  import TreeDnd from '../mixins/DndMixin.js'
+  import Tree from '../lib/Tree.js'
 
   const defaults = {
     direction: 'ltr',
@@ -74,7 +74,7 @@
     },
     plainList: false,
     showChildren: true
-  }
+  };
 
   export default {
     name: 'Tree',

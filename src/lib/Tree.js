@@ -1,14 +1,14 @@
-import Node from '@/lib/Node'
-import Selection from '@/lib/Selection'
+import Node from '../lib/Node'
+import Selection from '../lib/Selection'
 
-import find from '@/utils/find'
-import objectToNode from '@/utils/objectToNode'
-import { List } from '@/utils/stack'
-import { TreeParser } from '@/utils/treeParser'
-import { recurseDown } from '@/utils/recurse'
-import { get, createTemplate } from '@/utils/request'
-import sort from '@/utils/sort'
-import fetchDelay from '@/utils/fetchDelay'
+import find from '../utils/find'
+import objectToNode from '../utils/objectToNode'
+import { List } from '../utils/stack'
+import { TreeParser } from '../utils/treeParser'
+import { recurseDown } from '../utils/recurse'
+import { get, createTemplate } from '../utils/request'
+import sort from '../utils/sort'
+import fetchDelay from '../utils/fetchDelay'
 
 export default class Tree {
   constructor (vm) {
