@@ -1,5 +1,8 @@
 <template>
-  <div class="tree-dragnode" :style="style">
+  <div
+    class="tree-dragnode"
+    :style="style"
+  >
     {{ target.node.text }}
   </div>
 </template>

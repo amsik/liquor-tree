@@ -1,10 +1,20 @@
 <template>
-  <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
-    <template v-if="filter && matches.length == 0" >
-      <div class="tree-filter-empty" v-html="opts.filter.emptyText"></div>
+  <component
+    :is="tag"
+    role="tree"
+    :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}"
+  >
+    <template v-if="filter && matches.length == 0">
+      <div
+        class="tree-filter-empty"
+        v-html="opts.filter.emptyText"
+      />
     </template>
     <template v-else>
-      <ul class="tree-root" @dragstart="onDragStart">
+      <ul
+        class="tree-root"
+        @dragstart="onDragStart"
+      >
         <template v-if="opts.filter.plainList && matches.length > 0">
           <template v-for="node in matches">
             <TreeNode
@@ -28,7 +38,10 @@
       </ul>
     </template>
 
-    <DraggableNode v-if="draggableNode" :target="draggableNode" />
+    <DraggableNode
+      v-if="draggableNode"
+      :target="draggableNode"
+    />
   </component>
 </template>
 
@@ -105,12 +118,6 @@
       }
     },
 
-    watch: {
-      filter (term) {
-        this.tree.filter(term)
-      }
-    },
-
     data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
@@ -130,6 +137,12 @@
         opts,
         matches: [],
         draggableNode: null
+      }
+    },
+
+    watch: {
+      filter (term) {
+        this.tree.filter(term)
       }
     }
   }

@@ -1,33 +1,45 @@
 <template>
-  <li role="treeitem" class="tree-node" :data-id="node.id" :class="nodeClass" @mousedown.stop="handleMouseDown">
-    <div class="tree-content" :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]" @click.stop="select">
+  <li
+    role="treeitem"
+    class="tree-node"
+    :data-id="node.id"
+    :class="nodeClass"
+    @mousedown.stop="handleMouseDown"
+  >
+    <div
+      class="tree-content"
+      :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]"
+      @click.stop="select"
+    >
       <i
         class="tree-arrow"
         :class="[{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}, options.direction]"
-        @click.stop="toggleExpand">
-      </i>
+        @click.stop="toggleExpand"
+      />
 
       <i
         v-if="options.checkbox"
         class="tree-checkbox"
         :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
-        @click.stop="check">
-      </i>
+        @click.stop="check"
+      />
 
       <span
+        ref="anchor"
         class="tree-anchor"
         tabindex="-1"
-        ref="anchor"
         @focus="onNodeFocus"
-        @dblclick="tree.$emit('node:dblclick', node)">
-          <node-content :node="node" />
+        @dblclick="tree.$emit('node:dblclick', node)"
+      >
+        <node-content :node="node" />
       </span>
     </div>
 
     <transition name="l-fade">
       <ul
         v-if="hasChildren() && node.states.expanded"
-        class="tree-children">
+        class="tree-children"
+      >
         <template v-for="child in node.children">
           <node
             v-if="child && child.visible()"

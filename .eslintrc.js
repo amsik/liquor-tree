@@ -1,9 +1,17 @@
 module.exports = {
-  extends: ['plugin:vue/recommended', 'plugin:prettier/recommended'],
-  plugins: ['jest', 'prettier'],
+  extends: [
+    //"eslint:recommended",
+    //"plugin:prettier/recommended",
+    "plugin:vue/recommended"
+  ],
+  plugins: [
+   //"prettier".
+  "jest"
+  ],
   rules: {
-    eqeqeq:: 0
-    no-cond-assign: 0,
-    quotes: [1, 'single']
+    eqeqeq: "off",
+    "no-cond-assign": "off"
   }
-};
+}
+
+// fix the warnings and then uncomment more options above if you want
