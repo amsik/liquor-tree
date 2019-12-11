@@ -28,15 +28,14 @@
       <ul
         v-if="hasChildren() && node.states.expanded"
         class="tree-children">
+        <template v-for="child in node.children">
           <node
-            v-for="child in node.children"
             v-if="child && child.visible()"
-
             :key="child.id"
             :node="child"
             :options="options"
-            >
-          </node>
+          />
+        </template>
       </ul>
     </transition>
   </li>
@@ -440,6 +439,4 @@
       transform: rotate(360deg);
     }
   }
-
-
 </style>

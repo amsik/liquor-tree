@@ -6,24 +6,24 @@
     <template v-else>
       <ul class="tree-root" @dragstart="onDragStart">
         <template v-if="opts.filter.plainList && matches.length > 0">
-          <TreeNode
-            v-for="node in matches"
-            v-if="node.visible()"
-
-            :key="node.id"
-            :node="node"
-            :options="opts"
-          />
+          <template v-for="node in matches">
+            <TreeNode
+              v-if="node.visible()"
+              :key="node.id"
+              :node="node"
+              :options="opts"
+            />
+          </template>
         </template>
         <template v-else>
-          <TreeNode
-            v-for="node in model"
-            v-if="node && node.visible()"
-
-            :key="node.id"
-            :node="node"
-            :options="opts"
-          />
+          <template v-for="node in model">
+            <TreeNode
+              v-if="node && node.visible()"
+              :key="node.id"
+              :node="node"
+              :options="opts"
+            />
+          </template>
         </template>
       </ul>
     </template>
