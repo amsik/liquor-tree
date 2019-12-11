@@ -13,7 +13,7 @@ function request (url) {
         resolve(response)
       } catch (e) {
         reject(e)
-      };
+      }
     })
 
     xhr.send(null)
