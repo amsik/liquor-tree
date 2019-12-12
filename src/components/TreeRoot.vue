@@ -7,9 +7,7 @@
       <ul class="tree-root" @dragstart="onDragStart">
         <template v-if="opts.filter.plainList && matches.length > 0">
           <TreeNode
-            v-for="node in matches"
-            v-if="node.visible()"
-
+            v-for="node in visibleMatches"
             :key="node.id"
             :node="node"
             :options="opts"
@@ -17,9 +15,7 @@
         </template>
         <template v-else>
           <TreeNode
-            v-for="node in model"
-            v-if="node && node.visible()"
-
+            v-for="node in visibleModel"
             :key="node.id"
             :node="node"
             :options="opts"
@@ -111,6 +107,20 @@
       }
     },
 
+    computed: {
+      visibleModel() {
+        return this.model.filter(function(node) {
+          return node && node.visible()
+        }) 
+      },
+
+      visibleMatches() {
+        return this.matches.filter(function(node) {
+          return node && node.visible()
+        })
+      }
+    },
+
     data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
@@ -124,7 +134,7 @@
       )
 
       return {
-        model: null,
+        model: [],
         tree: null,
         loading: false,
         opts,

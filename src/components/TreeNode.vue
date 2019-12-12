@@ -29,14 +29,11 @@
         v-if="hasChildren() && node.states.expanded"
         class="tree-children">
           <node
-            v-for="child in node.children"
-            v-if="child && child.visible()"
-
+            v-for="child in visibleChildren"
             :key="child.id"
             :node="child"
             :options="options"
-            >
-          </node>
+          />
       </ul>
     </transition>
   </li>
@@ -93,6 +90,12 @@
         }
 
         return classes
+      },
+
+      visibleChildren() {
+        return this.node.children.filter(function(child) {
+          return child && child.visible()
+        })
       }
     },
 
