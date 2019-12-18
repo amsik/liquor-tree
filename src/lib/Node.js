@@ -82,11 +82,11 @@ export default class Node {
   }
 
   setData (data) {
-    this.data = Object.assign({}, this.data, data);
+    this.data = Object.assign({}, this.data, data)
 
-    this.$emit('data:changed', this.data);
+    this.$emit('data:changed', this.data)
 
-    return this.data;
+    return this.data
   }
 
   state (name, value) {

@@ -14,7 +14,8 @@
     { text: 'Custom theme', href: 'custom-theme.html' },
     { text: 'Vuex Integration', href: 'vuex.html' },
     { text: 'Exporting', href: 'exporting.html' },
-    { text: 'Drag & Drop', href: 'dnd.html' }
+    { text: 'Drag & Drop', href: 'dnd.html' },
+    { text: 'Updating', href: 'updating.html' },
   ]
 
   function initMenu() {

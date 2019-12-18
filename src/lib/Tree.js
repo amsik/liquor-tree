@@ -695,11 +695,11 @@ export default class Tree {
   }
 
   updateData (criteria, callback) {
-    const nodes = this.find(criteria);
+    const nodes = this.find(criteria)
 
-    nodes.forEach(node => node.setData(callback(node)));
+    nodes.forEach(node => node.setData(callback(node)))
 
-    return nodes;
+    return nodes
   }
 
   getNodeById (id) {

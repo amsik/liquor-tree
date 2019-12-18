@@ -45,11 +45,11 @@
         ]
       }),
       mounted() {
-        this.$nextTick(() => {
-          this.$refs.tree.update('Item 1', node => {
-            return { text: 'New Item!' };
+        setTimeout(() => {
+          this.$refs.tree.updateData('Item 1', node => {
+            return { text: 'New Item!' }
           });
-        })
+        }, 1000)
       }
     })
   </script>
