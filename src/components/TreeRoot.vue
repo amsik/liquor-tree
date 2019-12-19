@@ -113,24 +113,6 @@
         default: 'div'
       }
     },
-    watch: {
-      filter (term) {
-        this.tree.filter(term)
-      }
-    },
-    computed: {
-      visibleModel() {
-        return this.model.filter(function(node) {
-          return node && node.visible()
-        }) 
-      },
-
-      visibleMatches() {
-        return this.matches.filter(function(node) {
-          return node && node.visible()
-        })
-      }
-    },
     data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
@@ -150,6 +132,24 @@
         opts,
         matches: [],
         draggableNode: null
+      }
+    },
+    computed: {
+      visibleModel() {
+        return this.model.filter(function(node) {
+          return node && node.visible()
+        }) 
+      },
+
+      visibleMatches() {
+        return this.matches.filter(function(node) {
+          return node && node.visible()
+        })
+      }
+    },
+    watch: {
+      filter (term) {
+        this.tree.filter(term)
       }
     },
 

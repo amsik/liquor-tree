@@ -39,13 +39,13 @@
       <ul
         v-if="hasChildren() && node.states.expanded"
         class="tree-children"
-        >
-          <node
-            v-for="child in visibleChildren"
-            :key="child.id"
-            :node="child"
-            :options="options"
-          />
+      >
+        <node
+          v-for="child in visibleChildren"
+          :key="child.id"
+          :node="child"
+          :options="options"
+        />
       </ul>
     </transition>
   </li>
