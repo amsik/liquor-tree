@@ -16,24 +16,20 @@
         @dragstart="onDragStart"
       >
         <template v-if="opts.filter.plainList && matches.length > 0">
-          <template v-for="node in matches">
-            <TreeNode
-              v-if="node.visible()"
-              :key="node.id"
-              :node="node"
-              :options="opts"
-            />
-          </template>
+          <TreeNode
+            v-for="node in visibleMatches"
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
         </template>
         <template v-else>
-          <template v-for="node in model">
-            <TreeNode
-              v-if="node && node.visible()"
-              :key="node.id"
-              :node="node"
-              :options="opts"
-            />
-          </template>
+          <TreeNode
+            v-for="node in visibleModel"
+            :key="node.id"
+            :node="node"
+            :options="opts"
+          />
         </template>
       </ul>
     </template>
@@ -117,7 +113,24 @@
         default: 'div'
       }
     },
+    watch: {
+      filter (term) {
+        this.tree.filter(term)
+      }
+    },
+    computed: {
+      visibleModel() {
+        return this.model.filter(function(node) {
+          return node && node.visible()
+        }) 
+      },
 
+      visibleMatches() {
+        return this.matches.filter(function(node) {
+          return node && node.visible()
+        })
+      }
+    },
     data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
@@ -131,7 +144,7 @@
       )
 
       return {
-        model: null,
+        model: [],
         tree: null,
         loading: false,
         opts,

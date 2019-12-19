@@ -675,6 +675,41 @@ This method is "syntactic sugar" of `Tree.find(criteria, true)`
   Remove Node by criteria.
 
 
+#### [Tree.updateData(criteria, callback)](#Tree-remove-criteria-multiple)
+
+- **Arguments:**
+  - `{ Object | String } criteria` (see [find method](#Tree-find-criteria-multiple-false))
+  - `{ Function } callback`
+
+- **Returns:**
+  - [Selection](#Selection-API)
+
+- **Usage:**
+
+  This method updates the `data` object in a given node. It is an extension of `find` method but with a slight twist. 
+  The first argument is a criteria while the second is a callback which should return a Node.
+```javascript
+  this.$refs.tree.updateData('Node Text', node => ({
+    description: `ID of this node: ${node.id}`
+  }));
+```
+  Under the hood, there is also a `forEach` which gives you the ability to do something like this:
+```javascript
+  this.$refs.tree.updateData('Node Text', node => {
+    if (node.data.someData) {
+      return {
+        ...node.data,
+        isBoolean: true
+      }
+    }
+
+    return {
+      ...node.data,
+      greeting: 'Hello World'
+    }
+  });
+```
+
 ### Selection API
 
 This array-like object has all array methods (forEach, map and so on) because it inherits `Array` object. This collection has very similar behaviour with jQuery. __All actions apply to all items in the collection.__ I'm going to show one example in more details and other methods have similar logic.

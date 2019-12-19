@@ -13,7 +13,7 @@ const tree = new Tree(vm)
 describe('Lib: Node.js', () => {
   it('node constructor arguments', () => {
     expect(() => { new Node() }).toThrowError('Node can not be empty')
-    expect(() => { new Node(null, {}) }).toThrowError('Node must has a Tree context!')
+    expect(() => { new Node(null, {}) }).toThrowError('Node must have a Tree context!')
 
     // TODO: whether to check Tree instance?
   })

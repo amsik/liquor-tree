@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>Liquor Tree: Updating</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/menu.js"></script>
+
+  <!-- first import Vue -->
+  <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> -->
+  <script src="../assets/vue.js"></script>
+  <script src="/liquor-tree.umd.js"></script>
+</head>
+
+<body>
+  <div class="hello">
+    Updating.
+  </div>
+
+  <div id="app">
+    <div class="examples">
+      <div class="example">
+        <div class="example-description">
+          Basic example
+        </div>
+        <div class="example-tree">
+          <tree ref="tree" :data="treeData" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: () => ({
+        treeData: [
+          { text: 'Item 1' },
+          { text: 'Item 2' },
+          { text: 'Item 3', state: { selected: true } },
+          { text: 'Item 4' }
+        ]
+      }),
+      mounted() {
+        setTimeout(() => {
+          this.$refs.tree.updateData('Item 1', node => {
+            return { text: 'New Item!' }
+          });
+        }, 1000)
+      }
+    })
+  </script>
+
+</body>
+
+</html>

@@ -24,7 +24,7 @@ export default class Node {
     })
 
     if (!tree) {
-      throw new Error('Node must has a Tree context!')
+      throw new Error('Node must have a Tree context!')
     }
 
     this.tree = tree
@@ -79,6 +79,14 @@ export default class Node {
       this.data.text = text
       this.$emit('text:changed', text, oldText)
     }
+  }
+
+  setData (data) {
+    this.data = Object.assign({}, this.data, data)
+
+    this.$emit('data:changed', this.data)
+
+    return this.data
   }
 
   state (name, value) {
