@@ -3,22 +3,59 @@
   "description": "A Vue.js tree component.",
   "version": "0.2.70",
   "author": "Kostiantyn <phlyze@gmail.com>",
-  "library": "LiquorTree",
-  "homepage": "https://amsik.github.io/liquor-tree/",
   "scripts": {
+    "lint": "vue-cli-service lint",
+    "test": "vue-cli-service test:unit",
     "dev": "cross-env NODE_ENV=development rollup -w -c rollup.config.js",
-    "build": "cross-env NODE_ENV=production rollup -c rollup.config.js -- --environment BUILD:production",
-    "lint": "eslint --fix src test",
-    "test": "npm run lint && npm run unit",
-    "unit": "jest",
+    "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "storybook": "start-storybook -p 9001 -c ./docs/storybook -s ./docs/storybook/public"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/amsik/liquor-tree.git"
-  },
-  "module": "dist/liquor-tree.esm.js",
   "main": "dist/liquor-tree.umd.js",
+  "module": "dist/liquor-tree.esm.js",
+  "files": [
+    "src",
+    "dist/*.js"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-alias": "^2.2.0",
+    "@storybook/addon-notes": "^5.2.8",
+    "@storybook/addon-options": "^5.2.8",
+    "@storybook/vue": "^5.2.8",
+    "@vue/cli-plugin-babel": "^4.1.1",
+    "@vue/cli-plugin-eslint": "^4.1.1",
+    "@vue/cli-plugin-unit-jest": "^4.1.1",
+    "@vue/cli-service": "^4.1.1",
+    "@vue/eslint-config-prettier": "^6.0.0",
+    "@vue/test-utils": "^1.0.0-beta.30",
+    "babel-core": "^7.0.0-bridge.0",
+    "canvas": "2.6.0",
+    "core-js": "^3.6.0",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.7.2",
+    "eslint-plugin-jest": "^23.1.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-vue": "^6.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "rollup": "^1.27.13",
+    "rollup-plugin-buble": "^0.19.8",
+    "rollup-plugin-serve": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.4",
+    "rollup-plugin-vue": "4.6.1",
+    "typescript": "^3.7.3",
+    "vue": "^2.6.11",
+    "vue-loader": "^15.8.3",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "browserslist": [
+    ">= 1%",
+    "last 1 major version",
+    "not dead",
+    "Explorer 11"
+  ],
+  "homepage": "https://amsik.github.io/liquor-tree/",
   "keywords": [
     "vue",
     "tree",
@@ -26,51 +63,14 @@
     "vue-tree",
     "treeview"
   ],
+  "library": "LiquorTree",
   "license": "MIT",
-  "files": [
-    "src",
-    "dist/*.js"
-  ],
-  "devDependencies": {
-    "@rollup/plugin-alias": "^2.2.0",
-    "@storybook/addon-notes": "^3.4.11",
-    "@storybook/addon-options": "^3.4.11",
-    "@storybook/vue": "^3.4.11",
-    "@vue/test-utils": "^1.0.0-beta.25",
-    "babel-core": "^6.26.3",
-    "babel-jest": "^22.4.4",
-    "babel-plugin-transform-builtin-extend": "^1.1.2",
-    "babel-preset-env": "^1.7.0",
-    "cross-env": "^5.2.0",
-    "eslint": "^4.19.1",
-    "eslint-plugin-jest": "^21.22.1",
-    "eslint-plugin-vue-libs": "^2.1.0",
-    "jest": "^22.4.4",
-    "rollup": "^0.66.6",
-    "rollup-plugin-buble": "^0.19.8",
-    "rollup-plugin-serve": "^1.0.1",
-    "rollup-plugin-uglify": "^6.0.3",
-    "rollup-plugin-vue": "4.6.0",
-    "vue": "^2.6.10",
-    "vue-jest": "^3.0.5",
-    "vue-loader": "^15.7.2",
-    "vue-template-compiler": "^2.6.10"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amsik/liquor-tree.git"
   },
-  "jest": {
-    "setupFiles": [
-      "./tests/setupTests.js"
-    ],
-    "moduleFileExtensions": [
-      "js",
-      "vue"
-    ],
-    "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/src/$1"
-    },
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
-      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
-    },
-    "testEnvironment": "node"
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
   }
 }

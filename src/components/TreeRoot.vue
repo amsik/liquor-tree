@@ -1,10 +1,20 @@
 <template>
-  <component :is="tag" role="tree" :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}">
-    <template v-if="filter && matches.length == 0" >
-      <div class="tree-filter-empty" v-html="opts.filter.emptyText"></div>
+  <component
+    :is="tag"
+    role="tree"
+    :class="{'tree': true, 'tree-loading': this.loading, 'tree--draggable' : !!this.draggableNode}"
+  >
+    <template v-if="filter && matches.length == 0">
+      <div
+        class="tree-filter-empty"
+        v-html="opts.filter.emptyText"
+      />
     </template>
     <template v-else>
-      <ul class="tree-root" @dragstart="onDragStart">
+      <ul
+        class="tree-root"
+        @dragstart="onDragStart"
+      >
         <template v-if="opts.filter.plainList && matches.length > 0">
           <TreeNode
             v-for="node in visibleMatches"
@@ -24,7 +34,10 @@
       </ul>
     </template>
 
-    <DraggableNode v-if="draggableNode" :target="draggableNode" />
+    <DraggableNode
+      v-if="draggableNode"
+      :target="draggableNode"
+    />
   </component>
 </template>
 
@@ -101,26 +114,6 @@
       }
     },
 
-    watch: {
-      filter (term) {
-        this.tree.filter(term)
-      }
-    },
-
-    computed: {
-      visibleModel() {
-        return this.model.filter(function(node) {
-          return node && node.visible()
-        }) 
-      },
-
-      visibleMatches() {
-        return this.matches.filter(function(node) {
-          return node && node.visible()
-        })
-      }
-    },
-
     data () {
       // we should not mutating a prop directly...
       // that's why we have to create a new object
@@ -141,7 +134,26 @@
         matches: [],
         draggableNode: null
       }
-    }
+    },
+
+    computed: {
+      visibleModel() {
+        return this.model.filter(function(node) {
+          return node && node.visible()
+        }) 
+      },
+      visibleMatches() {
+        return this.matches.filter(function(node) {
+          return node && node.visible()
+        })
+      }
+    },
+    
+    watch: {
+      filter (term) {
+        this.tree.filter(term)
+      }
+    },
   }
 </script>
 
