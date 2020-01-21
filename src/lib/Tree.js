@@ -93,7 +93,7 @@ export default class Tree {
       node.showChildren = true
     })
 
-    this.vm.matches.length = 0
+    this.vm.matches.splice(0)
     this.vm.$emit('tree:filtered', [], '')
   }
 
