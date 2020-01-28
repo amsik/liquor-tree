@@ -20,7 +20,9 @@
       <i
         v-if="options.checkbox"
         class="tree-checkbox"
-        :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
+        :class="{'checked': node.states.checked,
+                 'indeterminate': node.states.indeterminate,
+                 'disabled': !node.states.selectable}"
         @click.stop="check"
       />
 
@@ -89,6 +91,7 @@
           'has-child': hasChildren,
           'expanded': hasChildren && state.expanded,
           'selected': state.selected,
+          'selectable': state.selectable,
           'disabled': state.disabled,
           'matched': state.matched,
           'dragging': state.dragging,
@@ -122,6 +125,7 @@
       },
 
       check() {
+        if (!this.node.selectable()) { return }
         if (this.node.checked()) {
           this.node.uncheck()
         } else {
