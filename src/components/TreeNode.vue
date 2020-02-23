@@ -11,13 +11,13 @@
       :style="[options.direction == 'ltr' ? {'padding-left': padding} : {'padding-right': padding}]"
       @click.stop="select"
     >
-      <i
+      <span
         class="tree-arrow"
         :class="[{'expanded': node.states.expanded, 'has-child': node.children.length || node.isBatch}, options.direction]"
         @click.stop="toggleExpand"
       />
 
-      <i
+      <span
         v-if="options.checkbox"
         class="tree-checkbox"
         :class="{'checked': node.states.checked, 'indeterminate': node.states.indeterminate}"
