@@ -485,17 +485,36 @@ export default class Tree {
   }
 
   nextVisibleNode (node) {
+    const getVisibleSelftOrNextSibling = function (self) {
+      let n = self
+      while (n && n.hidden()) {
+        n = n.next()
+      }
+      return n
+    }
+
     if (node.hasChildren() && node.expanded()) {
-      return node.first()
+      const visibleChild = getVisibleSelftOrNextSibling(node.first())
+      if (visibleChild) {
+        return visibleChild
+      }
     }
 
-    const nextNode = this.nextNode(node)
-
-    if (!nextNode && node.parent) {
-      return node.parent.next()
+    const nextVisibleSibling = getVisibleSelftOrNextSibling(node.next())
+    if (nextVisibleSibling) {
+      return nextVisibleSibling
     }
 
-    return nextNode
+    let ancestor = node.parent
+    while (ancestor) {
+      var ancestorsNextVisibleSibling = getVisibleSelftOrNextSibling(ancestor.next())
+      if (ancestorsNextVisibleSibling) {
+        return ancestorsNextVisibleSibling
+      }
+      ancestor = ancestor.parent
+    }
+
+    return null
   }
 
   prevNode (node) {
@@ -505,17 +524,28 @@ export default class Tree {
   }
 
   prevVisibleNode (node) {
-    const prevNode = this.prevNode(node)
-
-    if (!prevNode) {
-      return node.parent
+    const getVisibleSelfOrPrevSibling = function (self) {
+      let n = self
+      while (n && n.hidden()) {
+        n = n.prev()
+      }
+      return n
+    }
+    const getLastVisibleDescendantOrSelf = function (self) {
+      let n = self
+      while (n && n.hasChildren() && n.expanded()) {
+        n = getVisibleSelfOrPrevSibling(n.last())
+      }
+      return n
     }
 
-    if (prevNode.hasChildren() && prevNode.expanded()) {
-      return prevNode.last()
+    const prevVisibleSibling = getVisibleSelfOrPrevSibling(node.prev())
+    const prevVisibleDescendantOfSameParent = getLastVisibleDescendantOrSelf(prevVisibleSibling)
+    if (prevVisibleDescendantOfSameParent) {
+      return prevVisibleDescendantOfSameParent
     }
 
-    return prevNode
+    return node.parent
   }
 
   addToModel (node, index = this.model.length) {
