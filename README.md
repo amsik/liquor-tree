@@ -86,7 +86,7 @@ There are a lot of examples for you. All sources of stories are located in `liqu
 Check out the `package.json`s script section. There are 2 scripts:
 
 - `npm run dev` - it will open browser and you can *play* with code
-- `npm run build` - it will craete a module file in `production` mode 
+- `npm run build` - it will create a module file in `production` mode 
 
 
 ## License
