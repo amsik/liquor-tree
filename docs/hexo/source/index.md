@@ -221,7 +221,7 @@ The following example illustrates linking to the `VueTree` library without havin
             // see above the format of data
           ],
           treeOptions: {
-            miltiple: false
+            multiple: false
           }
         }
       }
