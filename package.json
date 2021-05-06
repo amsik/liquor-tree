@@ -10,12 +10,6 @@
     "build": "cross-env NODE_ENV=production rollup -c rollup.config.js",
     "storybook": "start-storybook -p 9001 -c ./docs/storybook -s ./docs/storybook/public"
   },
-  "main": "dist/liquor-tree.umd.js",
-  "module": "dist/liquor-tree.esm.js",
-  "files": [
-    "src",
-    "dist/*.js"
-  ],
   "dependencies": {},
   "devDependencies": {
     "@rollup/plugin-alias": "^2.2.0",
